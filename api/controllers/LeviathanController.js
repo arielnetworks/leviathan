@@ -27,13 +27,12 @@ module.exports = {
     var revision = req.param('id');
     getDirectories(new TidalWaveContext(+revision))
     .then(processMock)
+    .then(saveAsRevision)
     .then(function(context) {
       res.json(context);
     })
     .fail(function(err) {
-      res.json({
-        error: err
-      })
+      res.json({error: err});
     });
   },
   _config: {}
@@ -43,6 +42,12 @@ module.exports = {
 
 
 
+function saveAsRevision(context) {
+  return Revision.create(Object.create(context))
+  .then(function() {
+    return context;
+  });
+}
 
 function getDirectories(context) {
   var older = resolvePath(context.revision - 1);
@@ -53,7 +58,7 @@ function getDirectories(context) {
     fs.exists(newer)
   ])
   .then(allExists)
-  .then(function () {
+  .then(function() {
     context.newerPath = newer;
     context.olderPath = older;
     return context;
@@ -91,7 +96,7 @@ function processMock(context) {
  * @constructor
  */
 function TidalWaveContext(revision) {
-  this.revision = revision;
+  this.id = this.revision = revision;
   this.olderPath =
   this.newerPath =
   this.differences = undefined;
