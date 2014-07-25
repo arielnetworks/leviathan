@@ -10,10 +10,24 @@ module.exports = {
 
   attributes: {
   	
+    id: {
+      primaryKey: true,
+      type: 'string'
+    }
+
   	/* e.g.
   	nickname: 'string'
   	*/
     
+  },
+
+  upsert: function(id, document) {
+    return Difference.findOne(id)
+    .then(function(doc) {
+      return doc ?
+          Difference.update(id, document).done(function() {}) :
+          Difference.create(document).done(function() {});
+    })
   }
 
 };

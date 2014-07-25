@@ -43,7 +43,7 @@ module.exports = {
 
 
 function saveAsRevision(context) {
-  return Revision.create(Object.create(context))
+  return Revision.upsert(context.id, Object.create(context))
   .then(function() {
     return context;
   });
@@ -77,10 +77,6 @@ function resolvePath(revision) {
   return path.resolve(CAPTURES_DIR, REVISION_PREFIX + revision);
 }
 
-/**
- * TODO:
- * @param {TidalWaveContext} context
- */
 function processMock(context) {
   return Q().delay(800).then(function() {
     context.differences = {
@@ -102,4 +98,5 @@ function TidalWaveContext(revision) {
   this.differences = undefined;
   Object.seal(this);
 }
+
 
