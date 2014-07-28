@@ -8,12 +8,12 @@
  */
 
 
-(function (io) {
+(function(io) {
 
-  // as soon as this file is loaded, connect automatically, 
+  // as soon as this file is loaded, connect automatically,
   var socket = io.connect();
   if (typeof console !== 'undefined') {
-    log('Connecting to Sails.js...');
+    // log('Connecting to Sails.js...');
   }
 
   socket.on('connect', function socketConnected() {
@@ -26,7 +26,7 @@
       // to run when a new message arrives from the Sails.js
       // server.
       ///////////////////////////////////////////////////////////
-      log('New comet message received :: ', message);
+      // log('New comet message received :: ', message);
       //////////////////////////////////////////////////////
 
     });
@@ -34,19 +34,57 @@
 
     ///////////////////////////////////////////////////////////
     // Here's where you'll want to add any custom logic for
-    // when the browser establishes its socket connection to 
+    // when the browser establishes its socket connection to
     // the Sails.js server.
     ///////////////////////////////////////////////////////////
-    log(
-        'Socket is now connected and globally accessible as `socket`.\n' + 
-        'e.g. to send a GET request to Sails, try \n' + 
-        '`socket.get("/", function (response) ' +
-        '{ console.log(response); })`'
-    );
+    // log(
+    //     'Socket is now connected and globally accessible as `socket`.\n' +
+    //     'e.g. to send a GET request to Sails, try \n' +
+    //     '`socket.get("/", function (response) ' +
+    //     '{ console.log(response); })`'
+    // );
     ///////////////////////////////////////////////////////////
 
 
+    $('#leviathan').on('click', leviathan)
+    reload(getRevision());
+
   });
+
+
+  function leviathan() {
+    var revision = getRevision();
+    socket.get('/leviathan/tidalwave', {
+      id: revision
+    }, renderWithResponse)
+  }
+
+
+  function getRevision() {
+    return +$('#target-revision').val();
+  }
+
+
+  function reload(revision) {
+    if (_.isNumber(revision)) {
+      socket.get('/revision', {
+        id: revision
+      }, renderWithResponse);
+    }
+  }
+
+
+  function renderWithResponse(response) {
+    if (response.differences) {
+      $('#revision-output').empty();
+      var revisionId = response.id;
+      _.each(response.differences, function(d, capture) {
+        var diffId = 'revision:' + revisionId + ':capture:' + capture;
+        var li = '<li><a href="/difference/' + diffId + '">衝突 ' + diffId + '</a></li>';
+        $('#revision-output').append(li);
+      });
+    }
+  }
 
 
   // Expose connected `socket` instance globally so that it's easy
@@ -55,12 +93,12 @@
 
 
   // Simple log function to keep the example simple
-  function log () {
+  function log() {
     if (typeof console !== 'undefined') {
       console.log.apply(console, arguments);
     }
   }
-  
+
 
 })(
 

@@ -18,7 +18,6 @@ module.exports = {
 
   afterCreate: function (revision, next) {
     Q.all(_.map(revision.differences, function (difference, key) {
-      console.log(Difference);
       var id = 'revision:' + revision.id + ':capture:' + key;
       var doc = _.extend(_.clone(difference), {
         id: id,

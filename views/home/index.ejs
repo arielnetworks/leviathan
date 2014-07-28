@@ -1,2 +1,22 @@
 
-<%= ohh %>, yeah.....
+<h1>Leviathan</h1>
+
+
+<form method="POST" action="javascript:void 0" class="forms-inine-list">
+    <label for="target-revision">
+      リビジョン: 
+      r<input value="3" id="target-revision" name="target-revision" placeholder="1" type="text" size="2" />
+    </label>
+    <button id="leviathan" class="btn btn-blue">ザブーン！</button>
+    <br />
+    <span class="small color-gray-light">
+      ひとつ前のリビジョンと全キャプチャの比較をおこないます
+    </span>
+</form>
+
+
+
+<div class="output">
+  <ul id="revision-output" class="end">
+  </ul>
+</div>

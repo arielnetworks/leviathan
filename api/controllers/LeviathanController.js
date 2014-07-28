@@ -24,8 +24,7 @@ var REVISION_PREFIX = 'revision:';
 
 module.exports = {
   tidalwave: function(req, res) {
-    var revision = req.param('id');
-    getDirectories(new TidalWaveContext(+revision))
+    getDirectories(new TidalWaveContext(+req.param('id')))
     .then(processMock)
     .then(saveAsRevision)
     .then(function(context) {
@@ -79,13 +78,15 @@ function resolvePath(revision) {
 
 function processMock(context) {
   return Q().delay(800).then(function() {
-    context.differences = {
-      3: {},
-      6: {},
-      9: {}
-    };
+    context.differences = {};
+    for (var i = 0; i < random(8); i++)
+      context.differences[random(16)] = {};
     return context;
   });
+}
+
+function random(lessThan) {
+  return Math.floor(Math.random() * lessThan);
 }
 
 /**

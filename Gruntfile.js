@@ -29,7 +29,8 @@ module.exports = function (grunt) {
    */
 
   var cssFilesToInject = [
-    'linker/**/*.css'
+    'linker/styles/kube.min.css',
+    'linker/styles/app.css'
   ];
 
 
