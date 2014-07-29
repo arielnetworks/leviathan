@@ -24,7 +24,6 @@ var socket = require('socket.io-client')('ws://10.0.2.90:5000');
 
 
 function handleTidalwave (context) {
-  console.log('tidalwave begins');
   return context.hints.reduce(function(p, hint) {
     return p.then(function(differences) {
       return request(hint).then(function(result) {
@@ -34,18 +33,14 @@ function handleTidalwave (context) {
     });
   }, Q([]))
   .then(function(differences) {
-    console.log('tidalwave done');
     context.differences = differences;
     return context;
-  }).catch(function() {
-    console.log('xxx');
   })
 }
 
 
 
 function handleStore(context) {
-  console.log('storing begins');
   return Difference.destroy({revision: context.id})
   .then(function() {
     return Q.all(_.map(context.differences, function (v, k) {
@@ -61,7 +56,7 @@ function handleStore(context) {
   .then(function(ids) {
     context.differenceIds = ids;
     delete context.differences;
-    return Revision.upsertById(context.id, context)
+    return Revision.upsertById(context.id, context.toData())
   })
   .then(function() {
     return context;

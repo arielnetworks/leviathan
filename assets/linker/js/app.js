@@ -21,6 +21,8 @@
     // Listen for Comet messages from Sails
     socket.on('message', function messageReceived(message) {
 
+      console.log(message);
+
       ///////////////////////////////////////////////////////////
       // Replace the following with your own custom logic
       // to run when a new message arrives from the Sails.js
@@ -30,6 +32,19 @@
       //////////////////////////////////////////////////////
 
     });
+
+
+    socket.on('progress-message', handleProgressMessage);
+
+    var eraseProgressMessage_ = _.debounce(eraseProgressMessage, 2000);
+    function handleProgressMessage(res) {
+      var $el = $('#progress-message').removeClass('color-red').text(res.message);
+      if (res.error) $el.addClass('color-red');
+      if (res.end) eraseProgressMessage_();
+    }
+    function eraseProgressMessage() {
+      $('#progress-message').text('');
+    }
 
 
     ///////////////////////////////////////////////////////////

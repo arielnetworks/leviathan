@@ -26,19 +26,29 @@ var REVISION_PREFIX = 'revision:';
 
 module.exports = {
   tidalwave: function(req, res) {
+    req.socket.emit('progress-message', { message: 'リヴァイアサンしてます...' });
     Q(new TidalwaveContext(+req.param('id') || 3, [
       { 'expect_image': 'customjsp1.png', 'target_image': 'customjsp2.png' },
       { 'expect_image': 'tsucuba_left.png', 'target_image': 'tsucuba_right.png' }
     ]))
     .then(leviathan.tidalwave)
+    .then(function(rv) {
+      req.socket.emit('progress-message', { message: '保存しています...' });
+      return rv;
+    })
     .then(leviathan.store)
+    .then(function(rv) {
+      req.socket.emit('progress-message', { message: '保存しました', end: true });
+      return rv;
+    })
     .catch(function(err) {
+      req.socket.emit('progress-message', { message: '失敗しました', end: true, error: true });
       console.log(err.stack);
       throw new Error;
       return {error: err};
     })
     .done(function(context) {
-      res.json(context.toJson());
+      res.json(context.toData());
     })
   },
   _config: {}
@@ -89,21 +99,32 @@ function random(lessThan) {
   return Math.floor(Math.random() * lessThan);
 }
 
+
+
 /**
  * @constructor
  */
 function TidalwaveContext(revision, hints) {
   this.id = this.revision = revision;
   this.hints = hints;
-  this.olderPath =
-  this.newerPath =
-  this.differences =
+  this.olderPath = undefined;
+  this.newerPath = undefined;
+  this.differences = undefined;
   this.differenceIds = undefined;
   Object.seal(this);
 }
 
-TidalwaveContext.prototype.toJson = function () {
-  var json = _.extend({}, this);
-  delete json.differences;
+TidalwaveContext.JsonKeys = [
+  'id', 'hints', 'olderPath', 'newerPath', 'differenceIds'
+];
+
+TidalwaveContext.prototype.toData = function () {
+  var that = this;
+  var json = {};
+  TidalwaveContext.JsonKeys.forEach(function(key) {
+    if (that[key]) {
+      json[key] = that[key];
+    }
+  })
   return json;
 };
