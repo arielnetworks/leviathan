@@ -10,6 +10,7 @@
     "q-io": "^1.11.3",
     "sails": "0.9.16",
     "sails-disk": "~0.9.0",
+    "socket.io-client": "^1.0.6",
     "underscore": "^1.6.0"
   },
   "scripts": {

@@ -17,7 +17,7 @@ _.longStackSupport = true;
 global.assert = require('assert');
 
 // Start sails and pass it command line arguments
-require('sails').lift(require('optimist').argv);
-
+var sails;
+(sails = require('sails')).lift(require('optimist').argv);
 
 

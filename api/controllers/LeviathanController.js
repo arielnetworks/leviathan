@@ -26,16 +26,19 @@ var REVISION_PREFIX = 'revision:';
 
 module.exports = {
   tidalwave: function(req, res) {
-    getDirectories(new TidalwaveContext(+req.param('id')))
-    .then(processMock)
+    Q(new TidalwaveContext(+req.param('id') || 3, [
+      { 'expect_image': 'customjsp1.png', 'target_image': 'customjsp2.png' },
+      { 'expect_image': 'tsucuba_left.png', 'target_image': 'tsucuba_right.png' }
+    ]))
     .then(leviathan.tidalwave)
+    .then(leviathan.store)
     .catch(function(err) {
       console.log(err.stack);
       throw new Error;
       return {error: err};
     })
     .done(function(context) {
-      res.json(context);
+      res.json(context.toJson());
     })
   },
   _config: {}
@@ -89,12 +92,18 @@ function random(lessThan) {
 /**
  * @constructor
  */
-function TidalwaveContext(revision) {
+function TidalwaveContext(revision, hints) {
   this.id = this.revision = revision;
+  this.hints = hints;
   this.olderPath =
   this.newerPath =
-  this.differences = undefined;
+  this.differences =
+  this.differenceIds = undefined;
   Object.seal(this);
 }
 
-
+TidalwaveContext.prototype.toJson = function () {
+  var json = _.extend({}, this);
+  delete json.differences;
+  return json;
+};

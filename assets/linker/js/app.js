@@ -79,9 +79,9 @@
 
   function renderWithResponse(response) {
     $('#revision-output').empty();
-    if (response.differences) {
+    if (response.differenceIds && !_.isEmpty(response.differenceIds)) {
       var revisionId = response.id;
-      _.each(response.differences, function(d, capture) {
+      _.each(response.differenceIds, function(d, capture) {
         var li = '<li><a href="/difference/' + d + '">衝突 ' + d + '</a></li>';
         $('#revision-output').append(li);
       });
