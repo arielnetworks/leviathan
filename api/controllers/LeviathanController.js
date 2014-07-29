@@ -28,15 +28,15 @@ module.exports = {
   tidalwave: function(req, res) {
     getDirectories(new TidalwaveContext(+req.param('id')))
     .then(processMock)
-    .then(saveAsRevision)
-    .then(function(context) {
-      res.json(context);
-    })
-    .fail(function(err) {
+    .then(leviathan.tidalwave)
+    .catch(function(err) {
       console.log(err.stack);
       throw new Error;
-      res.json({error: err});
-    });
+      return {error: err};
+    })
+    .done(function(context) {
+      res.json(context);
+    })
   },
   _config: {}
 };
@@ -44,13 +44,6 @@ module.exports = {
 
 
 
-
-function saveAsRevision(context) {
-  return leviathan.tidalwave(context)
-  .then(function() {
-    return context;
-  });
-}
 
 function getDirectories(context) {
   var older = resolvePath(context.revision - 1);

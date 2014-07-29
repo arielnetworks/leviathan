@@ -16,6 +16,14 @@
  */
 
 module.exports = {
+
+
+  // index: function(req, res) {
+  //   Revision.find().then(function(docs) {
+  //     console.log(docs);
+  //     return docs;
+  //   }).then(res.json);
+  // },
     
   
   drop: function(req, res) {

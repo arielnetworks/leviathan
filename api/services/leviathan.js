@@ -20,8 +20,8 @@ module.exports = {
         differences: _.map(context.differences, function(d) { return d.id })
       }))
     })
-    .then(function() {
-      return context;
+    .then(function(docs) {
+      return docs[0];
     });
   }
 };
