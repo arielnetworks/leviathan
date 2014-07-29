@@ -46,7 +46,10 @@
     ///////////////////////////////////////////////////////////
 
 
-    $('#leviathan').on('click', leviathan)
+    $('#leviathan').on('click', leviathan);
+    $('#refresh-list').on('click', function() {
+      reload(getRevision());
+    });
     reload(getRevision());
 
   });
@@ -56,7 +59,7 @@
     var revision = getRevision();
     socket.get('/leviathan/tidalwave', {
       id: revision
-    }, renderWithResponse)
+    }, renderWithResponse);
   }
 
 
@@ -75,8 +78,8 @@
 
 
   function renderWithResponse(response) {
+    $('#revision-output').empty();
     if (response.differences) {
-      $('#revision-output').empty();
       var revisionId = response.id;
       _.each(response.differences, function(d, capture) {
         var li = '<li><a href="/difference/' + d + '">衝突 ' + d + '</a></li>';

@@ -11,7 +11,7 @@ module.exports = {
     .then(function() {
       return Q.all(_.map(context.differences, function (v, k) {
         var id = Difference.generateId(context.id, k);
-        return Difference.upsertById(id, {}, { id: id }).get('id');
+        return Difference.upsertById(id, _.extend(v, { id: id })).get('id');
       }))
     })
     .then(function(differences) {
