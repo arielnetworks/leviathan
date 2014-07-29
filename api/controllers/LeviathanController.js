@@ -1,4 +1,6 @@
 
+var leviathan = require('../services/leviathan.js');
+
 /*
  * Assume there is a directory like this:
  * ./captures
@@ -24,13 +26,15 @@ var REVISION_PREFIX = 'revision:';
 
 module.exports = {
   tidalwave: function(req, res) {
-    getDirectories(new TidalWaveContext(+req.param('id')))
+    getDirectories(new TidalwaveContext(+req.param('id')))
     .then(processMock)
     .then(saveAsRevision)
     .then(function(context) {
       res.json(context);
     })
     .fail(function(err) {
+      console.log(err.stack);
+      throw new Error;
       res.json({error: err});
     });
   },
@@ -42,7 +46,7 @@ module.exports = {
 
 
 function saveAsRevision(context) {
-  return Revision.upsert(context.id, Object.create(context))
+  return leviathan.tidalwave(context)
   .then(function() {
     return context;
   });
@@ -79,7 +83,7 @@ function resolvePath(revision) {
 function processMock(context) {
   return Q().delay(800).then(function() {
     context.differences = {};
-    for (var i = 0; i < random(8); i++)
+    for (var i = 0; i < random(8) + 1; i++)
       context.differences[random(16)] = {};
     return context;
   });
@@ -92,7 +96,7 @@ function random(lessThan) {
 /**
  * @constructor
  */
-function TidalWaveContext(revision) {
+function TidalwaveContext(revision) {
   this.id = this.revision = revision;
   this.olderPath =
   this.newerPath =

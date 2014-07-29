@@ -16,33 +16,16 @@ module.exports = {
 
   },
 
-  afterCreate: afterUpsert,
-
-  afterUpdate: afterUpsert,
 
   upsert: function(id, document) {
-    return Difference.destroy({revision: id})
-    .then(function() {
-      return Revision.findOne(id);
-    })
+    var that = this;
+    return that.findOne(id)
     .then(function(doc) {
       return doc ?
-          Revision.update(id, document).done(function() {}) :
-          Revision.create(document).done(function() {});
+          that.update(id, document).toPromise() :
+          that.create(document).then(function(doc) { return [doc] })
     });
   }
 
 };
 
-function afterUpsert(revision, next) {
-  Q.all(_.map(revision.differences, function(difference, key) {
-    var id = 'revision:' + revision.id + ':capture:' + key;
-    var doc = _.extend(_.clone(difference), {
-      id: id,
-      revision: revision.id,
-      capture: +key
-    });
-    return Difference.upsert(id, doc);
-  }))
-  .then(next);
-}

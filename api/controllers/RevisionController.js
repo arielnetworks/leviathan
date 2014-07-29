@@ -18,7 +18,15 @@
 module.exports = {
     
   
-
+  drop: function(req, res) {
+    Q.all([
+      Revision.drop(function() {}),
+      Difference.drop(function() {})
+    ]).then(function() {
+      res.end('done.');
+    })
+  },
+  
 
   /**
    * Overrides for the settings in `config/controllers.js`

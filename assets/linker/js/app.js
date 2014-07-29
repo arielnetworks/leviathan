@@ -79,8 +79,7 @@
       $('#revision-output').empty();
       var revisionId = response.id;
       _.each(response.differences, function(d, capture) {
-        var diffId = 'revision:' + revisionId + ':capture:' + capture;
-        var li = '<li><a href="/difference/' + diffId + '">衝突 ' + diffId + '</a></li>';
+        var li = '<li><a href="/difference/' + d.id + '">衝突 ' + d.id + '</a></li>';
         $('#revision-output').append(li);
       });
     }

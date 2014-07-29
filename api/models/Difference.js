@@ -12,7 +12,8 @@ module.exports = {
   	
     id: {
       primaryKey: true,
-      type: 'string'
+      type: 'string',
+      unique: true
     }
 
   	/* e.g.
@@ -22,12 +23,17 @@ module.exports = {
   },
 
   upsert: function(id, document) {
-    return Difference.findOne(id)
+    var that = this;
+    return that.findOne(id)
     .then(function(doc) {
       return doc ?
-          Difference.update(id, document).done(function() {}) :
-          Difference.create(document).done(function() {});
-    })
+          that.update(id, document).toPromise() :
+          that.create(document).then(function(doc) { return [doc] })
+    });
+  },
+
+  generateId: function (revision, capture) {
+    return 'revision:' + revision + ':capture:' + capture;
   }
 
 };
