@@ -6,7 +6,7 @@
  * @docs		:: http://sailsjs.org/#!documentation/models
  */
 
-module.exports = {
+module.exports = _.extend({
 
   attributes: {
   	
@@ -22,18 +22,8 @@ module.exports = {
     
   },
 
-  upsert: function(id, document) {
-    var that = this;
-    return that.findOne(id)
-    .then(function(doc) {
-      return doc ?
-          that.update(id, document).toPromise() :
-          that.create(document).then(function(doc) { return [doc] })
-    });
-  },
-
   generateId: function (revision, capture) {
     return 'revision:' + revision + ':capture:' + capture;
   }
 
-};
+}, require('./common'));
