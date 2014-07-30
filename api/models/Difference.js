@@ -14,6 +14,18 @@ module.exports = _.extend({
       primaryKey: true,
       type: 'string',
       unique: true
+    },
+
+    /**
+     * 1: OK
+     * 0: not-processed-yet
+     * -1: NG
+     */
+    status: {
+      type: 'integer',
+      max: 1,
+      min: -1,
+      defaultsTo: 0
     }
 
   	/* e.g.
