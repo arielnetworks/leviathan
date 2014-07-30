@@ -27,7 +27,16 @@ module.exports = {
           that.update(condition, document).toPromise() :
           that.create(document).then(function(doc) { return [doc] });
     });
-  }
+  },
+
+  md5Of: (function() {
+    var crypto = require('crypto');
+    return function(seed) {
+      var md5sum = crypto.createHash('md5');
+      md5sum.update(seed);
+      return md5sum.digest('hex');
+    }
+  })()
 
 };
 

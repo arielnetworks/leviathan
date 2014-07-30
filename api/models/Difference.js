@@ -23,7 +23,7 @@ module.exports = _.extend({
   },
 
   generateId: function (revision, capture) {
-    return 'revision:' + revision + ':capture:' + capture;
+    return this.md5Of('revision:' + revision + ':capture:' + capture);
   }
 
 }, require('./common'));
