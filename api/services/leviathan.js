@@ -84,14 +84,11 @@ function request(hint) {
 
 
 
-socket.on('connect', function () {
+function log(msg) {
   console.log();
-  console.log('=====================websocket connected!!======================');
+  console.log('=====================' + msg + '======================');
   console.log();
-});
-socket.on('error', function () {
-  console.log();
-  console.log('=====================websocket error occurs!!======================');
-  console.log();
-});
-
+}
+socket.on('connect', log.bind(null, 'websocket connected!!'));
+socket.on('disconnect', log.bind(null, 'websocket disconnected!!'));
+socket.on('error', log.bind(null, 'websocket error occurs!!'));

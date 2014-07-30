@@ -31,7 +31,8 @@ module.exports = {
       { 'expect_image': 'customjsp1.png', 'target_image': 'customjsp2.png' },
       { 'expect_image': 'tsucuba_left.png', 'target_image': 'tsucuba_right.png' }
     ]))
-    .then(leviathan.tidalwave)
+    // .then(leviathan.tidalwave)
+    .then(tidalwaveMock)
     .then(function(rv) {
       req.socket.emit('progress-message', { message: '保存しています...' });
       return rv;
@@ -59,8 +60,8 @@ module.exports = {
 
 
 function getDirectories(context) {
-  var older = resolvePath(context.revision - 1);
-  var newer = resolvePath(context.revision);
+  var older = resolvePath(context.id - 1);
+  var newer = resolvePath(context.id);
 
   return Q.all([
     fs.exists(older),
@@ -86,11 +87,36 @@ function resolvePath(revision) {
   return path.resolve(CAPTURES_DIR, REVISION_PREFIX + revision);
 }
 
-function processMock(context) {
+function tidalwaveMock(context) {
   return Q().delay(800).then(function() {
-    context.differences = {};
-    for (var i = 0; i < random(8) + 1; i++)
-      context.differences[random(16)] = {};
+    context.differences = [
+      [
+        {
+          "x": 540,
+          "y": 1030,
+          "dx": -4.523705959320068,
+          "dy": -9.316584587097168
+        },
+        {
+          "x": 20,
+          "y": 1040,
+          "dx": -0.28951311111450195,
+          "dy": -12.287890434265137
+        },
+        {
+          "x": 30,
+          "y": 1040,
+          "dx": -2.0693295001983643,
+          "dy": -10.873414039611816
+        },
+        {
+          "x": 40,
+          "y": 1040,
+          "dx": -4.971932888031006,
+          "dy": -10.790426254272461
+        }
+      ]
+    ];
     return context;
   });
 }
@@ -105,13 +131,20 @@ function random(lessThan) {
  * @constructor
  */
 function TidalwaveContext(revision, hints) {
-  this.id = this.revision = revision;
-  this.hints = hints;
-  this.olderPath = undefined;
-  this.newerPath = undefined;
-  this.differences = undefined;
-  this.differenceIds = undefined;
-  Object.seal(this);
+  setDataDescriptor(this, [
+    {name: 'id', value: revision},
+    {name: 'hints', value: hints},
+    {name: 'olderPath', writable: true },
+    {name: 'newerPath', writable: true },
+    {name: 'differences', writable: true },
+    {name: 'differenceIds', writable: true }
+  ]);
+}
+
+function setDataDescriptor(target, properties) {
+  for (var i = 0, p = properties[i]; i < properties.length; p = properties[++i]) {
+    Object.defineProperty(target, p.name, p);
+  }
 }
 
 TidalwaveContext.JsonKeys = [
@@ -124,7 +157,7 @@ TidalwaveContext.prototype.toData = function () {
   TidalwaveContext.JsonKeys.forEach(function(key) {
     if (that[key]) {
       json[key] = that[key];
-    }
+    };
   })
   return json;
 };

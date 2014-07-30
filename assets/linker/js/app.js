@@ -33,7 +33,6 @@
 
     });
 
-
     socket.on('progress-message', handleProgressMessage);
 
     var eraseProgressMessage_ = _.debounce(eraseProgressMessage, 2000);
@@ -97,7 +96,10 @@
     if (response.differenceIds && !_.isEmpty(response.differenceIds)) {
       var revisionId = response.id;
       _.each(response.differenceIds, function(d, capture) {
-        var li = '<li><a href="/difference/' + d + '">衝突 ' + d + '</a></li>';
+        var url = '/difference/' + d;
+        // var url = '/difference/review/' + d;
+        var className = d.status ? d.status == 1 ? 'color-gray-light' : 'color-red' : '';
+        var li = '<li class="' + className + '"><a href="' + url + '">衝突 ' + d + '</a></li>';
         $('#revision-output').append(li);
       });
     }

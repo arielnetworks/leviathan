@@ -21,12 +21,9 @@ module.exports = _.extend({
      * 0: not-processed-yet
      * -1: NG
      */
-    status: {
-      type: 'integer',
-      max: 1,
-      min: -1,
-      defaultsTo: 0
-    }
+    status: 'integer',
+
+    result: 'array'
 
   	/* e.g.
   	nickname: 'string'

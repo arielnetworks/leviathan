@@ -16,6 +16,11 @@
  */
 
 module.exports = {
+
+
+  review: function(req, res) {
+    res.view('difference');
+  },
     
 
   /**
