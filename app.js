@@ -4,9 +4,6 @@
 global.path = require('path');
 
 /***/
-global.fs = require('q-io/fs');
-
-/***/
 global.Q = require('q');
 
 /***/
