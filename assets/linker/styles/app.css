@@ -7,3 +7,9 @@ body {
   background: #F6F6F6;
   padding: 20px;
 }
+
+
+.btn:focus {
+  border-color: #5CA9E4;
+  box-shadow: 0 0 0 2px rgba(70, 161, 231, 0.3),0 1px 2px rgba(0, 0, 0, 0.2) inset;
+}
