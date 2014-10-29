@@ -12,7 +12,7 @@ connection.on('error', console.error.bind(console, '***connection error:'));
 
 // Expose schemas
 module.exports.db = {};
-['revision', 'conflict'].forEach(function(name) {
+['revision', 'capture'].forEach(function(name) {
   module.exports.db[name] = require('./' + name)(mongoose);
 });
 

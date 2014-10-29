@@ -37,7 +37,7 @@ if ('development' == app.get('env')) {
 });
 
 // After connecting DB, launch HTTP server.
-require('./mongo').connection.on('open', function () {
+require('./mongo').connection.on('open', function() {
   http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));
   });
@@ -51,14 +51,25 @@ require('./mongo').connection.on('open', function () {
   ];
   var creatingDummyData = [];
   for (var i = 0; i < 10; i++) {
-    creatingDummyData.push(Q.nfcall(db.revision.update.bind(db.revision, { id: i }, { id: i }, { upsert: true })));
+    creatingDummyData.push(Q.nfcall(db.revision.update.bind(db.revision, { id: i }, {
+      id: i,
+      updated_at: new Date(),
+      $setOnInsert: { created_at: new Date() }
+    }, { upsert: true })));
     for (var j = 0; j < 15; j++) {
-      var conflictId = 'revision' + i + ':capture' + j;
-      creatingDummyData.push(Q.nfcall(db.conflict.update.bind(db.conflict, { id: conflictId }, { id: conflictId, revision: i, capture: j, capture_name: captureNames[j] }, { upsert: true })));
+      var captureId = 'revision' + i + ':capture' + j;
+      creatingDummyData.push(Q.nfcall(db.capture.update.bind(db.capture, { id: captureId }, {
+        id: captureId,
+        revision: i,
+        capture: j,
+        capture_name: captureNames[j],
+        updated_at: new Date(),
+        $setOnInsert: { created_at: new Date() }
+      }, { upsert: true })));
     }
   }
   Q.all(creatingDummyData).then(function() {
-    console.log('-- Dummy data ready.')
+    console.log('-- Dummy data ready.');
   });
 
 });

@@ -1,10 +1,12 @@
 
 module.exports = function(mongoose) {
-  return mongoose.model('Conflict', mongoose.Schema({
+  return mongoose.model('Capture', mongoose.Schema({
     id: String,
     revision: Number,
     capture: Number,
-    capture_name: String
+    capture_name: String,
+    created_at: Date,
+    updated_at: Date
   }));
 };
 
