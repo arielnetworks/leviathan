@@ -7,6 +7,7 @@ var express = require('express');
 // var routes = require('./routes');
 var http = require('http');
 var path = require('path');
+var Q = require('q');
 
 var app = express();
 
@@ -28,14 +29,36 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-
 // Routing
-app.get('/revisions', function(req, res) {
-  res.json({yeah: 'yeah'});
+['revisions'].forEach(function(name) {
+  var router = require('./routes/' + name);
+  for (n in router)
+    app.get('/' + name + (n == 'index' ? '' : '/' + n), router[n]);
 });
 
+// After connecting DB, launch HTTP server.
+require('./mongo').connection.on('open', function () {
+  http.createServer(app).listen(app.get('port'), function() {
+    console.log('Express server listening on port ' + app.get('port'));
+  });
 
+  // Generate dummy data
+  var db = require('./mongo').db;
+  var captureNames = [
+    'ダイアログ', '一覧', 'メニューカテゴリー', 'クイックボタン', 'コンテンツセレクター',
+    'タイトルボックス', 'アプリケーションメニュー', 'パターンセレクター', 'フィールド', 'ウィジェット',
+    'ユーザー・グループ選択ウィジェット', 'タイムライン文書', '関連文書', '通知情報', '新しい文書がありますボタン'
+  ];
+  var creatingDummyData = [];
+  for (var i = 0; i < 10; i++) {
+    creatingDummyData.push(Q.nfcall(db.revision.update.bind(db.revision, { id: i }, { id: i }, { upsert: true })));
+    for (var j = 0; j < 15; j++) {
+      var conflictId = 'revision' + i + ':capture' + j;
+      creatingDummyData.push(Q.nfcall(db.conflict.update.bind(db.conflict, { id: conflictId }, { id: conflictId, revision: i, capture: j, capture_name: captureNames[j] }, { upsert: true })));
+    }
+  }
+  Q.all(creatingDummyData).then(function() {
+    console.log('-- Dummy data ready.')
+  });
 
-http.createServer(app).listen(app.get('port'), function() {
-  console.log('Express server listening on port ' + app.get('port'));
 });
