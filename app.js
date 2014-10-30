@@ -8,6 +8,7 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 var Q = require('q');
+var _ = require('underscore');
 
 var app = express();
 
@@ -30,10 +31,15 @@ if ('development' == app.get('env')) {
 }
 
 // Routing
-['revisions'].forEach(function(name) {
-  var router = require('./routes/' + name);
-  for (n in router)
-    app.get('/' + name + (n == 'index' ? '' : '/' + n), router[n]);
+_.each([
+  'revisions',
+  'tidal-wave'
+], function(name) {
+  _.each(require('./routes/' + name), function(actions, method) {
+    _.each(actions, function(handler, action) {
+      app[method]('/' + name + (action == 'index' ? '' : '/' + action), handler);
+    });
+  });
 });
 
 // After connecting DB, launch HTTP server.

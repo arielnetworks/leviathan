@@ -7,7 +7,12 @@ var db = require('../mongo').db;
 
 
 
-module.exports['index'] = function(req, res) {
+var GetRevisions = {};
+module.exports['get'] = GetRevisions;
+
+
+
+GetRevisions['index'] = function(req, res) {
   Q.nfcall(db.revision.find.bind(db.revision, {}, null,
       queryOption(+req.param('skip'), +req.param('limit'), 'id')))
   .then(function(docs) {
@@ -18,7 +23,7 @@ module.exports['index'] = function(req, res) {
   .catch (handleError.bind(null, res));
 };
 
-module.exports[':id'] = function(req, res) {
+GetRevisions[':id'] = function(req, res) {
   Q.nfcall(db.revision.findOne.bind(db.revision, {id: req.param('id')}))
   .then(function(doc) {
     res.json(doc || {});
@@ -26,7 +31,7 @@ module.exports[':id'] = function(req, res) {
   .catch (handleError.bind(null, res));
 };
 
-module.exports[':id/captures'] = function(req, res) {
+GetRevisions[':id/captures'] = function(req, res) {
   Q.all([
     Q.nfcall(db.revision.findOne.bind(db.revision, {id: req.param('id')})),
     Q.nfcall(db.capture.find.bind(db.capture, { revision: req.param('id') },
@@ -41,7 +46,7 @@ module.exports[':id/captures'] = function(req, res) {
   .catch (handleError.bind(null, res));
 };
 
-module.exports[':id/captures/:cid'] = function(req, res) {
+GetRevisions[':id/captures/:cid'] = function(req, res) {
   Q.nfcall(db.capture.findOne.bind(db.capture, { revision: req.param('id'), capture: req.param('cid') }))
   .then(res.json.bind(res))
   .catch (handleError.bind(null, res));
