@@ -43,13 +43,13 @@ _.each([
 });
 
 // After connecting DB, launch HTTP server.
-require('./mongo').connection.on('open', function() {
+require('./persistent').connection.on('open', function() {
   http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));
   });
 
   // // Generate dummy data
-  // var db = require('./mongo').db;
+  // var db = require('./persistent').db;
   // var captureNames = [
   //   'ダイアログ', '一覧', 'メニューカテゴリー', 'クイックボタン', 'コンテンツセレクター',
   //   'タイトルボックス', 'アプリケーションメニュー', 'パターンセレクター', 'フィールド', 'ウィジェット',

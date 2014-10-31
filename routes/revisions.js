@@ -3,7 +3,7 @@ var Q = require('q');
 var _ = require('underscore');
 
 // DB Shemas
-var db = require('../mongo').db;
+var db = require('../persistent').db;
 
 
 

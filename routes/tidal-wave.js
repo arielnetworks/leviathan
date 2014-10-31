@@ -2,7 +2,7 @@
 
 var Q = require('q');
 var TidalWave = require('../tidal-wave-wrap');
-var db = require('../mongo').db;
+var db = require('../persistent').db;
 
 var PostTidalWave = {};
 module.exports['post'] = PostTidalWave;
