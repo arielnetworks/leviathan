@@ -43,7 +43,7 @@ _.each([
 });
 
 // After connecting DB, launch HTTP server.
-require('./persistent').connection.on('open', function() {
+require('./persist').connection.on('open', function() {
   http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));
   });

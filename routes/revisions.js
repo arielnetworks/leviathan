@@ -3,8 +3,8 @@ var Q = require('q');
 var _ = require('underscore');
 
 // DB Shemas
-var Schema = require('../persistent').Schema;
-var persistent = require('../persistent');
+var Schema = require('../persist').Schema;
+var persist = require('../persist');
 
 
 
@@ -14,7 +14,7 @@ module.exports['get'] = GetRevisions;
 
 
 GetRevisions['index'] = function(req, res) {
-  persistent.findRevisions(queryOption(+req.param('skip'), +req.param('limit'), 'id'))
+  persist.findRevisions(queryOption(+req.param('skip'), +req.param('limit'), 'id'))
   .then(function(docs) {
     res.json({
       revisions: docs || []
@@ -24,7 +24,7 @@ GetRevisions['index'] = function(req, res) {
 };
 
 GetRevisions[':id'] = function(req, res) {
-  persistent.findRevision(req.param('id'))
+  persist.findRevision(req.param('id'))
   .then(function(doc) {
     res.json(doc || {});
   })
@@ -33,8 +33,8 @@ GetRevisions[':id'] = function(req, res) {
 
 GetRevisions[':id/captures'] = function(req, res) {
   Q.all([
-    persistent.findRevision(req.param('id')),
-    persistent.findCaptures(req.param('id'), queryOption(+req.param('skip'), +req.param('limit'), 'id'))
+    persist.findRevision(req.param('id')),
+    persist.findCaptures(req.param('id'), queryOption(+req.param('skip'), +req.param('limit'), 'id'))
   ])
   .then(function(results) {
     res.json({
@@ -46,7 +46,7 @@ GetRevisions[':id/captures'] = function(req, res) {
 };
 
 GetRevisions[':id/captures/:cid'] = function(req, res) {
-  persistent.findCapture(req.param('id'), req.param('cid'))
+  persist.findCapture(req.param('id'), req.param('cid'))
   .then(res.json.bind(res))
   .catch (handleError.bind(null, res));
 };

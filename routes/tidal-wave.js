@@ -3,8 +3,8 @@
 var _ = require('underscore');
 var Q = require('q');
 var TidalWave = require('../tidal-wave-wrap');
-var Schema = require('../persistent').Schema;
-var persistent = require('../persistent');
+var Schema = require('../persist').Schema;
+var persist = require('../persist');
 
 var PostTidalWave = {};
 module.exports['post'] = PostTidalWave;
@@ -14,7 +14,7 @@ module.exports['post'] = PostTidalWave;
 PostTidalWave[':id'] = function(req, res) {
   var rid = req.param('id');
   Q.all([
-    persistent.upsertRevision(rid),
+    persist.upsertRevision(rid),
     collectCaptures(rid)
   ])
   .then(function(results) {
@@ -44,7 +44,7 @@ function insertCapture(rid, data) {
   var cname = generateHash(captureName);
   var cid = 'revision:' + rid + ':capture:' + cname;
 
-  return persistent.upsertCapture(rid, cid, _.extend(data, {
+  return persist.upsertCapture(rid, cid, _.extend(data, {
     capture: cname,
     captureName: captureName,
   }));
