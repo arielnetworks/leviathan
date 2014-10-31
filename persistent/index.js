@@ -1,4 +1,5 @@
 
+var _ = require('underscore');
 var Q = require('q');
 var mongoose = require('mongoose');
 
@@ -8,6 +9,8 @@ module.exports.findRevisions = findRevisions;
 module.exports.findRevision = findRevision;
 module.exports.findCaptures = findCaptures;
 module.exports.findCapture = findCapture;
+module.exports.upsertRevision = upsertRevision;
+module.exports.upsertCapture = upsertCapture;
 
 
 
@@ -39,4 +42,19 @@ function findCaptures(rid, queryOption) {
 }
 function findCapture(rid, cid) {
   return Q.nfcall(Schema.capture.findOne.bind(Schema.capture, { revision: rid, id: cid }));
+}
+function upsertRevision(id, data) {
+  return Q.nfcall(Schema.revision.update.bind(Schema.revision, { id: id }, _.extend({
+    id: id,
+    updated_at: new Date(),
+    $setOnInsert: { created_at: new Date() }
+  }, data || {}), { upsert: true }));
+}
+function upsertCapture(rid, cid, data) {
+  return Q.nfcall(Schema.capture.update.bind(Schema.capture, { id: cid }, _.extend({
+    id: cid,
+    revision: rid,
+    updated_at: new Date(),
+    $setOnInsert: { created_at: new Date() }
+  }, data), { upsert: true }));
 }

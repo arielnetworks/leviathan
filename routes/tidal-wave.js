@@ -1,8 +1,10 @@
 
 
+var _ = require('underscore');
 var Q = require('q');
 var TidalWave = require('../tidal-wave-wrap');
 var Schema = require('../persistent').Schema;
+var persistent = require('../persistent');
 
 var PostTidalWave = {};
 module.exports['post'] = PostTidalWave;
@@ -12,7 +14,7 @@ module.exports['post'] = PostTidalWave;
 PostTidalWave[':id'] = function(req, res) {
   var rid = req.param('id');
   Q.all([
-    insertRevision(rid),
+    persistent.upsertRevision(rid),
     collectCaptures(rid)
   ])
   .then(function(results) {
@@ -45,24 +47,16 @@ function insertRevision(rid) {
 }
 
 function insertCapture(rid, data) {
-  console.log(data);
   // TODO:
   var captureName = data['expect_image'].match(/(?:expected\/)(.*)/)[1];
-  var cNameId = generateHash(captureName);
-  var cid = 'revision:' + rid + ':capture:' + cNameId;
+  var cname = generateHash(captureName);
+  var cid = 'revision:' + rid + ':capture:' + cname;
 
-  return Q.nfcall(Schema.capture.update.bind(Schema.capture, { id: cid }, {
-    id: cid,
-    revision: rid,
-    capture: cNameId,
+  return persistent.upsertCapture(rid, cid, _.extend(data, {
+    capture: cname,
+    // TODO: use "captureName"
     capture_name: captureName,
-
-    status: data['status'],
-    vector: data['vector'],
-
-    updated_at: new Date(),
-    $setOnInsert: { created_at: new Date() }
-  }, { upsert: true }));
+  }));
 }
 
 function generateHash(seed) {
