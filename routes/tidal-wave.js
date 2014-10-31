@@ -2,7 +2,7 @@
 
 var Q = require('q');
 var TidalWave = require('../tidal-wave-wrap');
-var db = require('../persistent').db;
+var Schema = require('../persistent').Schema;
 
 var PostTidalWave = {};
 module.exports['post'] = PostTidalWave;
@@ -37,7 +37,7 @@ function collectCaptures(rid) {
 }
 
 function insertRevision(rid) {
-  return Q.nfcall(db.revision.update.bind(db.revision, { id: rid }, {
+  return Q.nfcall(Schema.revision.update.bind(Schema.revision, { id: rid }, {
     id: rid,
     updated_at: new Date(),
     $setOnInsert: { created_at: new Date() }
@@ -51,7 +51,7 @@ function insertCapture(rid, data) {
   var cNameId = generateHash(captureName);
   var cid = 'revision:' + rid + ':capture:' + cNameId;
 
-  return Q.nfcall(db.capture.update.bind(db.capture, { id: cid }, {
+  return Q.nfcall(Schema.capture.update.bind(Schema.capture, { id: cid }, {
     id: cid,
     revision: rid,
     capture: cNameId,

@@ -11,8 +11,8 @@ connection.on('error', console.error.bind(console, '***connection error:'));
 
 
 // Expose schemas
-module.exports.db = {};
+module.exports.Schema = {};
 ['revision', 'capture'].forEach(function(name) {
-  module.exports.db[name] = require('./' + name)(mongoose);
+  module.exports.Schema[name] = require('./' + name)(mongoose);
 });
 

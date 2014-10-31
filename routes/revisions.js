@@ -3,7 +3,7 @@ var Q = require('q');
 var _ = require('underscore');
 
 // DB Shemas
-var db = require('../persistent').db;
+var Schema = require('../persistent').Schema;
 
 
 
@@ -13,7 +13,7 @@ module.exports['get'] = GetRevisions;
 
 
 GetRevisions['index'] = function(req, res) {
-  Q.nfcall(db.revision.find.bind(db.revision, {}, null,
+  Q.nfcall(Schema.revision.find.bind(Schema.revision, {}, null,
       queryOption(+req.param('skip'), +req.param('limit'), 'id')))
   .then(function(docs) {
     res.json({
@@ -24,7 +24,7 @@ GetRevisions['index'] = function(req, res) {
 };
 
 GetRevisions[':id'] = function(req, res) {
-  Q.nfcall(db.revision.findOne.bind(db.revision, {id: req.param('id')}))
+  Q.nfcall(Schema.revision.findOne.bind(Schema.revision, {id: req.param('id')}))
   .then(function(doc) {
     res.json(doc || {});
   })
@@ -33,8 +33,8 @@ GetRevisions[':id'] = function(req, res) {
 
 GetRevisions[':id/captures'] = function(req, res) {
   Q.all([
-    Q.nfcall(db.revision.findOne.bind(db.revision, {id: req.param('id')})),
-    Q.nfcall(db.capture.find.bind(db.capture, { revision: req.param('id') },
+    Q.nfcall(Schema.revision.findOne.bind(Schema.revision, {id: req.param('id')})),
+    Q.nfcall(Schema.capture.find.bind(Schema.capture, { revision: req.param('id') },
         null, queryOption(+req.param('skip'), +req.param('limit'), 'id')))
   ])
   .then(function(results) {
@@ -47,7 +47,7 @@ GetRevisions[':id/captures'] = function(req, res) {
 };
 
 GetRevisions[':id/captures/:cid'] = function(req, res) {
-  Q.nfcall(db.capture.findOne.bind(db.capture, { revision: req.param('id'), capture: req.param('cid') }))
+  Q.nfcall(Schema.capture.findOne.bind(Schema.capture, { revision: req.param('id'), capture: req.param('cid') }))
   .then(res.json.bind(res))
   .catch (handleError.bind(null, res));
 };
