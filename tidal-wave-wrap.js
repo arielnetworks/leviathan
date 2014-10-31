@@ -6,15 +6,15 @@ var Opticalflow = require('node-optical-flow');
 
 module.exports = TidalWave;
 
-function TidalWave(options) {
+function TidalWave(revisionId) {
   EventEmitter.call(this);
 
-  this.options_ = _.extend({
+  this.options_ = {
     expectedPath: path.resolve(__dirname, '../tidal-wave/test/fixture/expected'),
-    targetPath: path.resolve(__dirname, '../tidal-wave/test/fixture/revision2'),
+    targetPath: path.resolve(__dirname, '../tidal-wave/test/fixture/revision' + revisionId),
     span: 10,    // Optional
     threshold: 5 // Optional 
-  }, options);
+  };
 
   var that = this;
   this.o = new Opticalflow;

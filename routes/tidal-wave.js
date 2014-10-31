@@ -31,7 +31,7 @@ PostTidalWave[':id'] = function(req, res) {
 
 function collectCaptures(rid) {
   var d = Q.defer();
-  var t = new TidalWave({});
+  var t = new TidalWave(rid);
   t.on('message', insertCapture.bind(null, rid));
   t.on('error', d.reject);
   t.on('finish', d.resolve); // Pass report
