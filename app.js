@@ -59,8 +59,8 @@ require('./persistent').connection.on('open', function() {
   // for (var i = 0; i < 10; i++) {
   //   creatingDummyData.push(Q.nfcall(db.revision.update.bind(db.revision, { id: i }, {
   //     id: i,
-  //     updated_at: new Date(),
-  //     $setOnInsert: { created_at: new Date() }
+  //     updatedAt: new Date(),
+  //     $setOnInsert: { createdAt: new Date() }
   //   }, { upsert: true })));
   //   for (var j = 0; j < 15; j++) {
   //     var captureId = 'revision' + i + ':capture' + j;
@@ -68,9 +68,9 @@ require('./persistent').connection.on('open', function() {
   //       id: captureId,
   //       revision: i,
   //       capture: j,
-  //       capture_name: captureNames[j],
-  //       updated_at: new Date(),
-  //       $setOnInsert: { created_at: new Date() }
+  //       captureName: captureNames[j],
+  //       updatedAt: new Date(),
+  //       $setOnInsert: { createdAt: new Date() }
   //     }, { upsert: true })));
   //   }
   // }

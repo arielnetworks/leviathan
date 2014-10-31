@@ -47,7 +47,7 @@ function insertCapture(rid, data) {
   return persistent.upsertCapture(rid, cid, _.extend(data, {
     capture: cname,
     // TODO: use "captureName"
-    capture_name: captureName,
+    captureName: captureName,
   }));
 }
 

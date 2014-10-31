@@ -45,15 +45,15 @@ function findCapture(rid, cid) {
 function upsertRevision(id, data) {
   return Q.nfcall(Schema.revision.update.bind(Schema.revision, { id: id }, _.extend({
     id: id,
-    updated_at: new Date(),
-    $setOnInsert: { created_at: new Date() }
+    updatedAt: new Date(),
+    $setOnInsert: { createdAt: new Date() }
   }, data || {}), { upsert: true }));
 }
 function upsertCapture(rid, cid, data) {
   return Q.nfcall(Schema.capture.update.bind(Schema.capture, { id: cid }, _.extend({
     id: cid,
     revision: rid,
-    updated_at: new Date(),
-    $setOnInsert: { created_at: new Date() }
+    updatedAt: new Date(),
+    $setOnInsert: { createdAt: new Date() }
   }, data), { upsert: true }));
 }

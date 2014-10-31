@@ -4,13 +4,13 @@ module.exports = function(mongoose) {
     id: String, // revision:{rid}:capture:{cid}
     revision: Number,
     capture: String,
-    capture_name: String,
+    captureName: String,
 
     status: String,
     vector: [ {} ],
 
-    created_at: Date,
-    updated_at: Date
+    createdAt: Date,
+    updatedAt: Date
   }));
 };
 
