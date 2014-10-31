@@ -1,10 +1,14 @@
 
 module.exports = function(mongoose) {
   return mongoose.model('Capture', mongoose.Schema({
-    id: String,
+    id: String, // revision:{rid}:capture:{cid}
     revision: Number,
-    capture: Number,
+    capture: String,
     capture_name: String,
+
+    status: String,
+    vector: [ {} ],
+
     created_at: Date,
     updated_at: Date
   }));
