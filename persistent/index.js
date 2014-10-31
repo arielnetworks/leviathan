@@ -21,10 +21,9 @@ connection.on('error', console.error.bind(console, '***connection error:'));
 
 
 
-// Expose schemas TODO: remove exporting
-var Schema = module.exports.Schema = {};
+var Schema = {};
 ['revision', 'capture'].forEach(function(name) {
-  module.exports.Schema[name] = require('./' + name)(mongoose);
+  Schema[name] = require('./' + name)(mongoose);
 });
 
 

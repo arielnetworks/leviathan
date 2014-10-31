@@ -46,7 +46,6 @@ GetRevisions[':id/captures'] = function(req, res) {
 };
 
 GetRevisions[':id/captures/:cid'] = function(req, res) {
-  console.log(req.param('cid'));
   persistent.findCapture(req.param('id'), req.param('cid'))
   .then(res.json.bind(res))
   .catch (handleError.bind(null, res));

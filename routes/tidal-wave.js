@@ -18,8 +18,8 @@ PostTidalWave[':id'] = function(req, res) {
     collectCaptures(rid)
   ])
   .then(function(results) {
-    console.log(results);
-    return results[1]; // collect captures
+    var report = results[1];
+    return report;
   })
   .then(res.json.bind(res))
   .catch (function(reason) {
@@ -34,16 +34,8 @@ function collectCaptures(rid) {
   var t = new TidalWave({});
   t.on('message', insertCapture.bind(null, rid));
   t.on('error', d.reject);
-  t.on('finish', d.resolve);
+  t.on('finish', d.resolve); // Pass report
   return d.promise;
-}
-
-function insertRevision(rid) {
-  return Q.nfcall(Schema.revision.update.bind(Schema.revision, { id: rid }, {
-    id: rid,
-    updated_at: new Date(),
-    $setOnInsert: { created_at: new Date() }
-  }, { upsert: true }));
 }
 
 function insertCapture(rid, data) {
