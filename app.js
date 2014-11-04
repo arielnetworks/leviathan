@@ -4,16 +4,22 @@
  */
 
 var express = require('express');
-// var routes = require('./routes');
 var http = require('http');
 var path = require('path');
-var Q = require('q');
 var _ = require('underscore');
 
-var app = express();
+// Setup configuration
+var PORT = process.env.PORT || 3000;
+'mongodb://localhost/leviathan'
 
-// all environments
-app.set('port', process.env.PORT || 3000);
+global.configure = {
+  USE_MONGO: !!process.env.MONGODB,
+  MONGODB: process.env.MONGODB || null
+};
+
+// Express environments
+var app = express();
+app.set('port', PORT);
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.favicon());
 app.use(express.logger('dev'));
@@ -24,8 +30,6 @@ app.use(express.cookieParser('your secret here'));
 app.use(express.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
-
-// development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
@@ -45,6 +49,6 @@ _.each([
 // After connecting DB, launch HTTP server.
 require('./persist').connection.on('open', function() {
   http.createServer(app).listen(app.get('port'), function() {
-    console.log('Express server listening on port ' + app.get('port'));
+    console.log('Leviathan server listening on port ' + app.get('port'));
   });
 });
