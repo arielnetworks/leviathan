@@ -14,7 +14,7 @@ module.exports['get'] = GetRevisions;
 
 
 GetRevisions['index'] = function(req, res) {
-  persist.findRevisions(queryOption(+req.param('skip'), +req.param('limit'), 'id'))
+  persist.findRevisions(+req.param('skip'), +req.param('limit'), {'id': -1})
   .then(function(docs) {
     res.json({
       revisions: docs || []
@@ -34,7 +34,7 @@ GetRevisions[':id'] = function(req, res) {
 GetRevisions[':id/captures'] = function(req, res) {
   Q.all([
     persist.findRevision(req.param('id')),
-    persist.findCaptures(req.param('id'), queryOption(+req.param('skip'), +req.param('limit'), 'id'))
+    persist.findCaptures(req.param('id'), +req.param('skip'), +req.param('limit'), {'id': -1})
   ])
   .then(function(results) {
     res.json({
@@ -52,16 +52,6 @@ GetRevisions[':id/captures/:cid'] = function(req, res) {
 };
 
 
-
-function queryOption(skip, limit, descBy) {
-  var sort = {};
-  sort[descBy] = -1;
-  return {
-    skip: _.isNumber(skip) ? skip : 0,
-    limit: _.isNumber(limit) ? limit : 20,
-    sort: sort
-  }
-}
 
 function handleError(res, reason) {
   res.json({

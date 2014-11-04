@@ -8,15 +8,16 @@ var http = require('http');
 var path = require('path');
 var _ = require('underscore');
 
-// Setup configuration
+
+
+// Setup global configuration
 var PORT = process.env.PORT || 3000;
 global.configure = {
   // Example: "mongodb://localhost/leviathan"
   // If null, nedb (disk persistence). will be used.
-  MONGODB: process.env.MONGODB || null
+  MONGODB: process.env.MONGODB || null,
+  NEDB_PATH: process.env.NEDB_PATH || path.resolve(__dirname, 'nedb')
 };
-
-
 
 // Express environments
 var app = express();
@@ -54,5 +55,6 @@ require('./persist').ready.then(function() {
   });
 })
 .catch(function() {
-  console.log('boom');
+  console.log('boom.');
+  process.exit(1);
 })
