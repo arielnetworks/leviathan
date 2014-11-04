@@ -10,12 +10,13 @@ var _ = require('underscore');
 
 // Setup configuration
 var PORT = process.env.PORT || 3000;
-'mongodb://localhost/leviathan'
-
 global.configure = {
-  USE_MONGO: !!process.env.MONGODB,
+  // Example: "mongodb://localhost/leviathan"
+  // If null, nedb (disk persistence). will be used.
   MONGODB: process.env.MONGODB || null
 };
+
+
 
 // Express environments
 var app = express();
@@ -47,8 +48,11 @@ _.each([
 });
 
 // After connecting DB, launch HTTP server.
-require('./persist').connection.on('open', function() {
+require('./persist').ready.then(function() {
   http.createServer(app).listen(app.get('port'), function() {
     console.log('Leviathan server listening on port ' + app.get('port'));
   });
-});
+})
+.catch(function() {
+  console.log('boom');
+})

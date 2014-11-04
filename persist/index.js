@@ -2,6 +2,10 @@
 var _ = require('underscore');
 var Q = require('q');
 
+// Export promise fulfilled when a database get ready.
+var deferredConnection = Q.defer();
+module.exports.ready = deferredConnection.promise;
+
 
 
 module.exports.findRevisions = findRevisions;
@@ -14,16 +18,18 @@ module.exports.upsertCapture = upsertCapture;
 
 
 var Schema = {};
+var SchemaNames = ['revision', 'capture'];
 
-if (global.configure.USE_MONGO) {
+if (!!global.configure.MONGODB) {
   var mongoose = require('mongoose');
 
   // Establish mongodb connection
-  mongoose.connect('mongodb://localhost/leviathan');
-  var connection = module.exports.connection = mongoose.connection;
-  connection.on('error', console.error.bind(console, '***connection error:'));
-  ['revision', 'capture'].forEach(function(name) {
-    Schema[name] = require('./' + name)(mongoose);
+  mongoose.connect(global.configure.MONGODB);
+  mongoose.connection.on('error', deferredConnection.reject.bind(deferredConnection));
+  mongoose.connection.on('open', deferredConnection.resolve.bind(deferredConnection));
+  SchemaNames.forEach(function(name) {
+    var schema = require('./' + name);
+    Schema[name] = mongoose.model(name, mongoose.Schema(schema));
   });
 
 } else {
