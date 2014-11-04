@@ -1,7 +1,6 @@
 
 var _ = require('underscore');
 var Q = require('q');
-var mongoose = require('mongoose');
 
 
 
@@ -14,17 +13,26 @@ module.exports.upsertCapture = upsertCapture;
 
 
 
-// Establish mongodb connection
-mongoose.connect('mongodb://localhost/leviathan');
-var connection = module.exports.connection = mongoose.connection;
-connection.on('error', console.error.bind(console, '***connection error:'));
-
-
-
 var Schema = {};
-['revision', 'capture'].forEach(function(name) {
-  Schema[name] = require('./' + name)(mongoose);
-});
+
+if (global.configure.USE_MONGO) {
+  var mongoose = require('mongoose');
+
+  // Establish mongodb connection
+  mongoose.connect('mongodb://localhost/leviathan');
+  var connection = module.exports.connection = mongoose.connection;
+  connection.on('error', console.error.bind(console, '***connection error:'));
+  ['revision', 'capture'].forEach(function(name) {
+    Schema[name] = require('./' + name)(mongoose);
+  });
+
+} else {
+  var mongoose = require('nedb');
+
+  // Prepare nedb database
+  console.log('use nedb');
+}
+
 
 
 
