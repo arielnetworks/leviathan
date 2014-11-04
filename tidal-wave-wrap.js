@@ -16,11 +16,10 @@ function TidalWave(revisionId) {
     threshold: 5 // Optional 
   };
 
-  var that = this;
   this.o = new Opticalflow;
-  this.o.on('message', function (message) { that.emit('message', message); });
-  this.o.on('error', function (error) { that.emit('error', error); });
-  this.o.on('finish', function (finish) { that.emit('finish', finish); });
+  this.o.on('message', this.emit.bind(this, 'message'));
+  this.o.on('error', this.emit.bind(this, 'error'));
+  this.o.on('finish', this.emit.bind(this, 'finish'));
 
   this.o.calc(this.options_.expectedPath, this.options_.targetPath, {});
 }
