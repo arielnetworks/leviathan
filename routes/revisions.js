@@ -8,8 +8,8 @@ var persist = require('../persist');
 
 
 
-var GetRevisions = {};
-module.exports['get'] = GetRevisions;
+var GetRevisions = module.exports['get'] = {};
+var PostRevisions = module.exports['post'] = {};
 
 
 
@@ -51,6 +51,16 @@ GetRevisions[':id/captures/:cid'] = function(req, res) {
   .catch (handleError.bind(null, res));
 };
 
+PostRevisions[':id/captures/:cid'] = function(req, res) {
+  // TODO
+  // var data = {};
+  // var status = getStatusFromReqest(req);
+  // if (status) data['status'] = status;
+  // persist.upsertCapture(req.param('id'), req.param('cid'), data)
+  // .then(res.json.bind(res))
+  // .catch (handleError.bind(null, res));
+};
+
 
 
 function handleError(res, reason) {
@@ -58,4 +68,12 @@ function handleError(res, reason) {
     error: 1,
     reason: reason
   });
+}
+var Status = ['UNPROCESSED', 'IS_BUG', 'IS_OK'];
+function getStatusFromReqest(req) {
+  var v = req.body && req.body['status'];
+  if (!v) return null;
+  v = v.toUpperCase();
+  if (!_.contains(Status, v)) return null;
+  return v;
 }

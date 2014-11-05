@@ -4,12 +4,14 @@ module.exports = {
   revision: Number,
   capture: String,
   captureName: String,
-
-  status: String,
-  vector: [ {} ],
-
+  modifiedStatus: String, // "UNPROCESSED" | "IS_OK" | "IS_BUG"
+  modifiedBy: String,
   createdAt: Date,
   updatedAt: Date
+
+  // From "tidal-wave" module
+  status: String, // "SUSPICIOUS" | "OK" | "ERROR"
+  vector: [{}]
 };
 
 // TODO: Use virtual field?
