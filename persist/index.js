@@ -95,24 +95,25 @@ function findCapture(rid, cid) {
 //   query.skip(skip || 0).limit(limit || 20).sort(sort || {'id': -1});
 // }
 function upsertRevision(id, data) {
+  data = data || {};
   return Q.ninvoke(models.revision, 'findOne', {where: { id: id } })
   .then(function(r) {
     if (r) {
-      return Q.ninvoke(r, 'updateAttributes', data);
+      return Q.ninvoke(r, 'updateAttributes', data)
     } else {
-      data = data || {};
       data['id'] = id;
       return Q.ninvoke(models.revision, 'create', data);
     }
-  })
+  });
 }
 function upsertCapture(rid, cid, data) {
+  data = data || {};
   return Q.ninvoke(models.capture, 'findOne', {where: { id: cid, revision: rid } })
   .then(function(c) {
     if (c) {
       return Q.ninvoke(r, 'updateAttributes', data);
     } else {
-      return Q.ninvoke(models.revision, 'create', data);
+      return Q.ninvoke(models.capture, 'create', data);
     }
   })
 }
