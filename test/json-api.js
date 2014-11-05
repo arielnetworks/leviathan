@@ -7,22 +7,36 @@ var assert = require('assert');
 describe('Application', function() {
 
   var server;
-  after(function() {
+  afterEach(function() {
     if (server) {
       server.close();
       server = null;
     }
   });
 
-  _.each(['nedb'], function(dbType) {
-    
-    it('should launch good in ' + dbType, function(done) {
-      launchApplication(dbType).then(function(v) {
-        server = v.server;
-        request(v.app)
-        .get('/revisions')
-        .expect(200, done);
-      })
+  _.each(['memory'], function(dbType) {
+
+    describe('should work in ' + dbType + ' storage', function() {
+
+      it('should launch good in ' + dbType, function(done) {
+        launchApplication(dbType).then(function(v) {
+          server = v.server;
+          request(v.app)
+          .get('/revisions')
+          .expect(200, done);
+        })
+      });
+
+      it('should store tidal-wave result' + dbType, function(done) {
+        launchApplication(dbType).then(function(v) {
+          server = v.server;
+          request(v.app)
+          .post('/tidal-wave/2')
+          .expect(200)
+          .expect({ total: 2, reported: 1 }, done);
+        })
+      });
+
     });
 
   })
@@ -33,16 +47,10 @@ function launchApplication(dbType) {
   var application = require('../app');
   var configure;
   switch(dbType) {
-    case 'nedb':
+    case 'memory':
       configure = {
-        PORT: 3000,
-        NEDB: path.resolve(__dirname, '.nedb')
-      };
-      break;
-    case 'mongodb':
-      configure = {
-        PORT: 3000,
-        MONGODB: process.env.MONGODB || null
+        port: 3000,
+        db: {}
       };
       break;
   }

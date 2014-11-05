@@ -6,8 +6,7 @@ module.exports = {
   captureName: String,
   modifiedStatus: String, // "UNPROCESSED" | "IS_OK" | "IS_BUG"
   modifiedBy: String,
-  createdAt: Date,
-  updatedAt: Date,
+  updatedAt: { type: Date, default: function() { return new Date } },
 
   // From "tidal-wave" module
   status: String, // "SUSPICIOUS" | "OK" | "ERROR"

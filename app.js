@@ -18,9 +18,6 @@ module.exports.launch = launch;
 
 /**
  * @param { {
- *    PORT: Number,
- *    MONGODB: String,
- *    NEDB: String
  *  } } configure
  * @return {Q.Promise<
  *    app: {}
@@ -33,7 +30,7 @@ function launch(configure) {
     
   // Express environments
   var app = express();
-  app.set('port', global.configure.PORT);
+  app.set('port', global.configure.port);
   app.set('views', path.join(__dirname, 'views'));
   app.use(express.favicon());
   app.use(express.logger('dev'));
@@ -62,7 +59,7 @@ function launch(configure) {
 
   // After connecting DB, launch HTTP server.
   var server;
-  return require('./persist').ready
+  return require('./persist').ready()
   .then(function() {
     server = http.createServer(app);
     return Q.ninvoke(server, 'listen', app.get('port'));

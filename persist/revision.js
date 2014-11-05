@@ -1,6 +1,5 @@
 
 module.exports = {
   id: Number,
-  createdAt: Date,
-  updatedAt: Date
+  updatedAt: { type: Date, default: function() { return new Date } }
 };
