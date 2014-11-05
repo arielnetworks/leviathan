@@ -7,7 +7,7 @@ module.exports = {
   modifiedStatus: String, // "UNPROCESSED" | "IS_OK" | "IS_BUG"
   modifiedBy: String,
   createdAt: Date,
-  updatedAt: Date
+  updatedAt: Date,
 
   // From "tidal-wave" module
   status: String, // "SUSPICIOUS" | "OK" | "ERROR"

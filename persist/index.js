@@ -12,7 +12,7 @@ module.exports.findCaptures = findCaptures;
 module.exports.findCapture = findCapture;
 module.exports.upsertRevision = upsertRevision;
 module.exports.upsertCapture = upsertCapture;
-
+module.exports.updateCapture = updateCapture;
 
 
 
@@ -89,6 +89,18 @@ function upsertCapture(rid, cid, data) {
     // XXX: nedb cannot use "$setOnInsert"
     // $setOnInsert: { createdAt: new Date() }
   }, data), { upsert: true }));
+}
+function updateCapture(rid, cid, data) {
+  return Q.nfcall(Schema.capture.update.bind(Schema.capture, { id: cid, revision: rid }, {
+    '$set': data
+  }))
+  .then(function(numUpdated) {
+    // Returning numUpdated.
+    if (global.configure.MONGODB) {
+      return arguments[0][0];
+    }
+    return numUpdated; // nedb is a bad guy.
+  });
 }
 
 if (!module.exports.ready) {

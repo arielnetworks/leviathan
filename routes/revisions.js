@@ -52,13 +52,19 @@ GetRevisions[':id/captures/:cid'] = function(req, res) {
 };
 
 PostRevisions[':id/captures/:cid'] = function(req, res) {
-  // TODO
-  // var data = {};
-  // var status = getStatusFromReqest(req);
-  // if (status) data['status'] = status;
-  // persist.upsertCapture(req.param('id'), req.param('cid'), data)
-  // .then(res.json.bind(res))
-  // .catch (handleError.bind(null, res));
+  var data = {};
+  var status = getStatusFromReqest(req);
+  if (status) data['modifiedStatus'] = status;
+  persist.updateCapture(req.param('id'), req.param('cid'), data)
+  .then(function(numUpdated) {
+    if (numUpdated > 0) {
+      return persist.findCapture(req.param('id'), req.param('cid'));
+    } else {
+      return { error: true, reason: 'Document Not Updated.', params: req.params };
+    }
+  })
+  .then(res.json.bind(res))
+  .catch (handleError.bind(null, res));
 };
 
 
@@ -71,7 +77,7 @@ function handleError(res, reason) {
 }
 var Status = ['UNPROCESSED', 'IS_BUG', 'IS_OK'];
 function getStatusFromReqest(req) {
-  var v = req.body && req.body['status'];
+  var v = req.body && req.body['modifiedStatus'];
   if (!v) return null;
   v = v.toUpperCase();
   if (!_.contains(Status, v)) return null;
