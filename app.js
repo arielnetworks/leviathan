@@ -30,8 +30,6 @@ module.exports.launch = launch;
 function launch(configure) {
 
   global.configure = configure;
-
-  console.log(global.configure);
     
   // Express environments
   var app = express();

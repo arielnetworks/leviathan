@@ -4,7 +4,7 @@ var request = require('supertest');
 var assert = require('assert');
 var launched = require('../app').launch({
   PORT: 3000,
-  NEDB_PATH: path.resolve(__dirname, 'nedb')
+  NEDB_PATH: path.resolve(__dirname, '.nedb')
 });
 
 describe('Application', function() {
