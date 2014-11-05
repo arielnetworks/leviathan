@@ -9,8 +9,17 @@ var launched = require('../app').launch({
 
 describe('Application', function() {
 
+  var server;
+  after(function() {
+    if (server) {
+      server.close();
+      server = null;
+    }
+  });
+
   it('should launch good.', function(done) {
     launched.then(function(v) {
+      server = v.server;
       request(v.app)
       .get('/revisions')
       .expect(200, done);

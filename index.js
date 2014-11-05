@@ -10,13 +10,4 @@ var configure = {
   NEDB_PATH: process.env.NEDB_PATH || path.resolve(__dirname, 'nedb')
 };
 
-var promiseLaunch = require('./app').launch(configure);
-promiseLaunch.then(function(args) {
-  console.log(args.server);
-})
-
-// console.log(app);
-// 
-// setTimeout(function() {
-//   app.close();
-// }, 3000);
+require('./app').launch(configure);
