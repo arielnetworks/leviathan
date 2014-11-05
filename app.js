@@ -8,6 +8,7 @@ var http = require('http');
 var path = require('path');
 var _ = require('underscore');
 var Q = require('q');
+Q.longStackSupport = true;
 
 
 
@@ -16,6 +17,11 @@ module.exports.launch = launch;
 
 
 /**
+ * @param { {
+ *    PORT: Number,
+ *    MONGODB: String,
+ *    NEDB_PATH: String
+ *  } } configure
  * @return {Q.Promise<
  *    app: {}
  *    server: tls.Server
@@ -70,9 +76,9 @@ function launch(configure) {
       server: server
     };
   })
-  .catch (function(reason) {
+  .catch (function(error) {
     console.log('Launching application fails.');
-    console.log(reason);
+    console.log(error.stack);
     process.exit(1);
   });
 
