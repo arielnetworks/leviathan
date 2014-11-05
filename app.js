@@ -20,7 +20,7 @@ module.exports.launch = launch;
  * @param { {
  *    PORT: Number,
  *    MONGODB: String,
- *    NEDB_PATH: String
+ *    NEDB: String
  *  } } configure
  * @return {Q.Promise<
  *    app: {}

@@ -42,7 +42,7 @@ if (!!global.configure.MONGODB) {
   module.exports.ready = Q.all(SchemaNames.map(function(name) {
     // TODO
     return Q.fcall(function() {
-      var db = Schema[name] = new Datastore(path.join(global.configure.NEDB_PATH, name + '.db'));
+      var db = Schema[name] = new Datastore(path.join(global.configure.NEDB, name + '.db'));
       return Q.ninvoke(db, 'loadDatabase');
     })
   }))
