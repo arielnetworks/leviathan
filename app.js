@@ -57,24 +57,43 @@ function launch(configure) {
     });
   });
 
-  // After connecting DB, launch HTTP server.
-  var server;
-  return require('./persist').ready()
-  .then(function() {
-    server = http.createServer(app);
-    return Q.ninvoke(server, 'listen', app.get('port'));
-  })
+  var server = http.createServer(app);
+
+  var promiseLaunch = require('./persist').ready()
+  .then(Q.nbind(server.listen, server, app.get('port')))
   .then(function() {
     console.log('Leviathan server listening on port ' + app.get('port'));
-    return {
-      app: app,
-      server: server
-    };
   })
   .catch (function(error) {
     console.log('Launching application fails.');
     console.log(error.stack);
     process.exit(1);
   });
+
+  return {
+    app: app,
+    server: server,
+    promiseLaunch: promiseLaunch
+  };
+
+  // // After connecting DB, launch HTTP server.
+  // var server;
+  // return require('./persist').ready()
+  // .then(function() {
+  //   server = http.createServer(app);
+  //   return Q.ninvoke(server, 'listen', app.get('port'));
+  // })
+  // .then(function() {
+  //   console.log('Leviathan server listening on port ' + app.get('port'));
+  //   return {
+  //     app: app,
+  //     server: server
+  //   };
+  // })
+  // .catch (function(error) {
+  //   console.log('Launching application fails.');
+  //   console.log(error.stack);
+  //   process.exit(1);
+  // });
 
 }
