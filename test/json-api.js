@@ -42,9 +42,9 @@ describe('Application', function() {
         request(app)
         .get('/revisions')
         .expect(200)
-        .expect({ 
+        .expect({
           revisions: [
-            { id: 2, updatedAt: '1970-01-01T00:00:00.000Z' },
+            { id: 2, updatedAt: '1970-01-01T00:00:00.000Z' }
           ]
         }, done);
       });
@@ -53,7 +53,7 @@ describe('Application', function() {
         request(app)
         .get('/revisions/2')
         .expect(200)
-        .expect({ 
+        .expect({
           id: 2, updatedAt: '1970-01-01T00:00:00.000Z'
         }, done);
       });
@@ -62,23 +62,23 @@ describe('Application', function() {
         request(app)
         .get('/revisions/2/captures')
         .expect(200)
-        .expect({ 
+        .expect({
           revision: {
             id: 2,
-            updatedAt: '1970-01-01T00:00:00.000Z' 
+            updatedAt: '1970-01-01T00:00:00.000Z'
           },
           captures: [{
-            capture: "db38f7f3f5d7d765f97e45d185066cc9",
-            captureName: "scenario2/capture2.png",
-            expect_image: "/home/pig/git/tidal-wave/test/fixture/expected/scenario2/capture2.png",
-            id: "revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9",
+            capture: 'db38f7f3f5d7d765f97e45d185066cc9',
+            captureName: 'scenario2/capture2.png',
+            expect_image: '/home/pig/git/tidal-wave/test/fixture/expected/scenario2/capture2.png',
+            id: 'revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9',
             revision: 2,
             span: 10,
-            status: "SUSPICIOUS",
-            target_image: "/home/pig/git/tidal-wave/test/fixture/revision2/scenario2/capture2.png",
+            status: 'SUSPICIOUS',
+            target_image: '/home/pig/git/tidal-wave/test/fixture/revision2/scenario2/capture2.png',
             threshold: 5,
             time: 0.1,
-            updatedAt: "1970-01-01T00:00:00.000Z",
+            updatedAt: '1970-01-01T00:00:00.000Z',
             vector: [
               { dx: -5.360568046569824, dy: -0.0551748163998127, id: 1, x: 80, y: 70 },
               { dx: -6.001735687255859, dy: -1.3181204795837402, id: 2, x: 130, y: 70 },
@@ -107,36 +107,36 @@ describe('Application', function() {
             ]
           },
           {
-            capture: "9018988ae55e012e437aa24cbf9a400a",
-            captureName: "scenario1/capture1.jpg",
-            expect_image: "/home/pig/git/tidal-wave/test/fixture/expected/scenario1/capture1.jpg",
-            id: "revision:2:capture:9018988ae55e012e437aa24cbf9a400a",
+            capture: '9018988ae55e012e437aa24cbf9a400a',
+            captureName: 'scenario1/capture1.jpg',
+            expect_image: '/home/pig/git/tidal-wave/test/fixture/expected/scenario1/capture1.jpg',
+            id: 'revision:2:capture:9018988ae55e012e437aa24cbf9a400a',
             revision: 2,
             span: 10,
-            status: "OK",
-            target_image: "/home/pig/git/tidal-wave/test/fixture/revision2/scenario1/capture1.jpg",
+            status: 'OK',
+            target_image: '/home/pig/git/tidal-wave/test/fixture/revision2/scenario1/capture1.jpg',
             threshold: 5,
             time: 0.1,
-            updatedAt: "1970-01-01T00:00:00.000Z",
+            updatedAt: '1970-01-01T00:00:00.000Z',
             vector: []
           }],
           revision: {
             id: 2,
-            updatedAt: "1970-01-01T00:00:00.000Z"
+            updatedAt: '1970-01-01T00:00:00.000Z'
           }
         }, done);
       });
 
     });
 
-  })
+  });
 
 });
 
 function launchApplication(dbType) {
   var application = require('../app');
   var configure;
-  switch(dbType) {
+  switch (dbType) {
     case 'memory':
       configure = {
         port: 3000,
