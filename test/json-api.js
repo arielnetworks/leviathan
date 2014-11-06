@@ -136,16 +136,16 @@ describe('Application', function() {
 
       // Now we have 2 revisions in a store.
 
-      // XXX: failing
-      // it('GET /revisions returns 2 documents in' + dbType, function(done) {
-      //   request(app)
-      //   .get('/revisions')
-      //   .expect(200)
-      //   .expect(function(res) {
-      //     var json = res.body;
-      //     assert.equal(json.revisions.length, 2);
-      //   }, done);
-      // });
+      it('GET /revisions returns 2 documents in' + dbType, function(done) {
+        request(app)
+        .get('/revisions')
+        .expect({
+          revisions: [
+            { id: 1, updatedAt: '1970-01-01T00:00:00.000Z' },
+            { id: 2, updatedAt: '1970-01-01T00:00:00.000Z' }
+          ]
+        }, done);
+      });
 
     });
 

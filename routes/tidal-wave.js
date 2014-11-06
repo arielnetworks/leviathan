@@ -32,10 +32,19 @@ PostTidalWave[':id'] = function(req, res) {
 function collectCaptures(rid) {
   var d = Q.defer();
   var t = new TidalWave(rid);
+
   t.on('message', upsertCapture.bind(null, rid));
+  t.once('error', cleanup);
   t.once('error', d.reject);
-  t.once('finish', d.resolve); // Pass report
+  t.once('finish', cleanup);
+  t.once('finish', d.resolve);
+
   return d.promise;
+
+  function cleanup() {
+    t.removeAllListeners();
+    delete t;
+  }
 }
 
 function upsertRevision(id, data) {
