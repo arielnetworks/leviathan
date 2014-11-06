@@ -17,6 +17,7 @@ module.exports.updateCapture = updateCapture;
 
 
 
+var isTesting = process.env.NODE_ENV == 'test';
 var jugglingdb = require('jugglingdb');
 var SchemaNames = ['revision', 'capture'];
 var models = {};
@@ -33,34 +34,6 @@ module.exports.ready = function() {
   });
 
   return deferred.promise;
-
-  // var deferredConnection = Q.defer();
-  // module.exports.ready = deferredConnection.promise;
-  // var mongoose = require('mongoose');
-
-  // // Establish mongodb connection
-  // mongoose.connect(global.configure.MONGODB);
-  // mongoose.connection.on('error', deferredConnection.reject.bind(deferredConnection));
-  // mongoose.connection.on('open', function() {
-  //   console.log('Ready to use mongodb.');
-  //   deferredConnection.resolve();
-  // });
-  // SchemaNames.forEach(function(name) {
-  //   var schema = require('./' + name);
-  //   Schema[name] = mongoose.model(name, mongoose.Schema(schema));
-  // });
-
-  // var Datastore = require('nedb');
-  // module.exports.ready = Q.all(SchemaNames.map(function(name) {
-  //   // TODO
-  //   return Q.fcall(function() {
-  //     var db = Schema[name] = new Datastore(path.join(global.configure.NEDB, name + '.db'));
-  //     return Q.ninvoke(db, 'loadDatabase');
-  //   });
-  // }))
-  // .then(function() {
-  //   console.log('Ready to use nedb.');
-  // });
 };
 
 
@@ -107,7 +80,13 @@ function upsertRevision(id, data) {
   });
 }
 function upsertCapture(rid, cid, data) {
+  // TODO: implement "upsertManulaly" function and share it
   data = data || {};
+  data['id'] = cid;
+  data['revision'] = rid;
+  if (isTesting) {
+    data['time'] = 0.1;
+  }
   return Q.ninvoke(models.capture, 'findOne', {where: { id: cid, revision: rid } })
   .then(function(c) {
     if (c) {
