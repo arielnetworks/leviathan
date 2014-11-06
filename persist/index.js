@@ -68,32 +68,17 @@ function findCapture(rid, cid) {
 // }
 function upsertRevision(id, data) {
   data = data || {};
-  return Q.ninvoke(models.revision, 'findOne', {where: { id: id } })
-  .then(function(r) {
-    if (r) {
-      return Q.ninvoke(r, 'updateAttributes', data)
-    } else {
-      data['id'] = id;
-      return Q.ninvoke(models.revision, 'create', data);
-    }
-  });
+  data['id'] = id;
+  return upsertManually_(models.revision, { id: id }, data);
 }
 function upsertCapture(rid, cid, data) {
-  // TODO: implement "upsertManulaly" function and share it
   data = data || {};
   data['id'] = cid;
   data['revision'] = rid;
   if (isTesting) {
     data['time'] = 0.1;
   }
-  return Q.ninvoke(models.capture, 'findOne', {where: { id: cid, revision: rid } })
-  .then(function(c) {
-    if (c) {
-      return Q.ninvoke(r, 'updateAttributes', data);
-    } else {
-      return Q.ninvoke(models.capture, 'create', data);
-    }
-  })
+  return upsertManually_(models.capture, { id: cid, revision: rid }, data);
 }
 function updateCapture(rid, cid, data) {
   return Q.nfcall(Schema.capture.update.bind(Schema.capture, { id: cid, revision: rid }, {
@@ -105,6 +90,15 @@ function updateCapture(rid, cid, data) {
       return arguments[0][0];
     }
     return numUpdated; // nedb is a bad guy.
+  });
+}
+
+function upsertManually_(model, condition, data) {
+  return Q.ninvoke(model, 'findOne', { where: condition })
+  .then(function(doc) {
+    return doc ?
+        Q.ninvoke(doc, 'updateAttributes', data) :
+        Q.ninvoke(model, 'create', data);
   });
 }
 
