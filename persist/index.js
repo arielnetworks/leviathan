@@ -67,8 +67,6 @@ function findCapture(rid, cid) {
 //   query.skip(skip || 0).limit(limit || 20).sort(sort || {'id': -1});
 // }
 function upsertRevision(id, data) {
-  data = data || {};
-  data['id'] = id;
   if (isTesting) {
     data['updatedAt'] = new Date('1970-01-01T00:00:00.000Z');
   }

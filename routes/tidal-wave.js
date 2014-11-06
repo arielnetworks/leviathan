@@ -14,7 +14,7 @@ module.exports['post'] = PostTidalWave;
 PostTidalWave[':id'] = function(req, res) {
   var rid = req.param('id');
   Q.all([
-    persist.upsertRevision(rid),
+    upsertRevision(rid),
     collectCaptures(rid)
   ])
   .then(function(results) {
@@ -36,6 +36,12 @@ function collectCaptures(rid) {
   t.once('error', d.reject);
   t.once('finish', d.resolve); // Pass report
   return d.promise;
+}
+
+function upsertRevision(id, data) {
+  data = data || {};
+  data['id'] = id;
+  return persist.upsertRevision(id, data);
 }
 
 function upsertCapture(rid, data) {
