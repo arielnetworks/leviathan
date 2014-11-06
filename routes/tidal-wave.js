@@ -32,22 +32,19 @@ PostTidalWave[':id'] = function(req, res) {
 function collectCaptures(rid) {
   var d = Q.defer();
   var t = new TidalWave(rid);
-  t.on('message', insertCapture.bind(null, rid));
-  t.on('error', d.reject);
-  t.on('finish', d.resolve); // Pass report
+  t.on('message', upsertCapture.bind(null, rid));
+  t.once('error', d.reject);
+  t.once('finish', d.resolve); // Pass report
   return d.promise;
 }
 
-function insertCapture(rid, data) {
+function upsertCapture(rid, data) {
   // TODO:
-  var captureName = data['expect_image'].match(/(?:expected\/)(.*)/)[1];
-  var cname = generateHash(captureName);
-  var cid = 'revision:' + rid + ':capture:' + cname;
-
-  return persist.upsertCapture(rid, cid, _.extend(data, {
-    capture: cname,
-    captureName: captureName,
-  }));
+  var captureName = data['captureName'] = data['expect_image'].match(/(?:expected\/)(.*)/)[1];
+  var cname = data['capture'] = generateHash(captureName);
+  var cid = data['id'] = 'revision:' + rid + ':capture:' + cname;
+  data['revision'] = rid;
+  return persist.upsertCapture(rid, cid, data);
 }
 
 function generateHash(seed) {

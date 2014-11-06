@@ -31,7 +31,7 @@ describe('Application', function() {
         .expect({ revisions: [] }, done);
       });
 
-      it('GET /tidal-wave/2 in ' + dbType, function(done) {
+      it('POST /tidal-wave/2 in ' + dbType, function(done) {
         request(app)
         .post('/tidal-wave/2')
         .expect(200)
@@ -126,6 +126,26 @@ describe('Application', function() {
           }
         }, done);
       });
+
+      it('POST /tidal-wave/1 should report zero in ' + dbType, function(done) {
+        request(app)
+        .post('/tidal-wave/1')
+        .expect(200)
+        .expect({ total: 2, reported: 0 }, done);
+      });
+
+      // Now we have 2 revisions in a store.
+
+      // XXX: failing
+      // it('GET /revisions returns 2 documents in' + dbType, function(done) {
+      //   request(app)
+      //   .get('/revisions')
+      //   .expect(200)
+      //   .expect(function(res) {
+      //     var json = res.body;
+      //     assert.equal(json.revisions.length, 2);
+      //   }, done);
+      // });
 
     });
 

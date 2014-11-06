@@ -69,14 +69,15 @@ function findCapture(rid, cid) {
 function upsertRevision(id, data) {
   data = data || {};
   data['id'] = id;
+  if (isTesting) {
+    data['updatedAt'] = new Date('1970-01-01T00:00:00.000Z');
+  }
   return upsertManually_(models.revision, { id: id }, data);
 }
 function upsertCapture(rid, cid, data) {
-  data = data || {};
-  data['id'] = cid;
-  data['revision'] = rid;
   if (isTesting) {
     data['time'] = 0.1;
+    data['updatedAt'] = new Date('1970-01-01T00:00:00.000Z');
   }
   return upsertManually_(models.capture, { id: cid, revision: rid }, data);
 }
