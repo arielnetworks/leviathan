@@ -4,6 +4,7 @@ var _ = require('underscore');
 // DB Shemas
 var Schema = require('../persist').Schema;
 var persist = require('../persist');
+var STATUS_CODES = require('http').STATUS_CODES;
 
 
 
@@ -52,15 +53,18 @@ GetRevisions[':id/captures/:cid'] = function(req, res) {
 
 PostRevisions[':id/captures/:cid'] = function(req, res) {
   var data = {};
-  var status = getStatusFromReqest(req);
-  if (status) data['modifiedStatus'] = status;
+  var modifiedStatus = getStatusFromReqest(req);
+  if (modifiedStatus) data['modifiedStatus'] = modifiedStatus;
   persist.updateCapture(req.param('id'), req.param('cid'), data)
-  .then(function(numUpdated) {
-    if (numUpdated > 0) {
-      return persist.findCapture(req.param('id'), req.param('cid'));
-    } else {
-      return { error: true, reason: 'Document Not Updated.', params: req.params };
+  .then(function(doc) {
+    if (doc) {
+      return doc;
     }
+    res.status(404);
+    return {
+      error: true,
+      reason: STATUS_CODES[404]
+    };
   })
   .then(res.json.bind(res))
   .catch (handleError.bind(null, res));

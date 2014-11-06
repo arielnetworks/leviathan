@@ -47,7 +47,7 @@ function findRevision(id) {
 function findCaptures(rid, skip, limit, sort) {
   return Q.ninvoke(models.capture, 'all', {
     where: {
-      revision: rid 
+      revision: rid
     },
     order: 'updatedAt DESC'
   });
@@ -59,9 +59,8 @@ function findCaptures(rid, skip, limit, sort) {
 function findCapture(rid, cid) {
   return Q.ninvoke(models.capture, 'findOne', { where: {
     id: cid,
-    revision: rid 
+    revision: rid
   } });
-  // return Q.nfcall(Schema.capture.findOne.bind(Schema.capture, { revision: rid, id: cid }));
 }
 // function putQueryOptions(query, skip, limit, sort) {
 //   query.skip(skip || 0).limit(limit || 20).sort(sort || {'id': -1});
@@ -80,15 +79,20 @@ function upsertCapture(rid, cid, data) {
   return upsertManually_(models.capture, { id: cid, revision: rid }, data);
 }
 function updateCapture(rid, cid, data) {
-  return Q.nfcall(Schema.capture.update.bind(Schema.capture, { id: cid, revision: rid }, {
-    '$set': data
-  }))
-  .then(function(numUpdated) {
-    // Returning numUpdated.
-    if (global.configure.MONGODB) {
-      return arguments[0][0];
+  return findCapture(rid, cid)
+  .then(function(doc) {
+    if (doc) {
+      return Q.ninvoke(doc, 'updateAttributes', data);
+      // if (!_.every(data, function(v, k) {
+      //   return doc[k] === v;
+      // })) {
+      //   return Q.ninvoke(doc, 'updateAttributes', data);
+      // }
     }
-    return numUpdated; // nedb is a bad guy.
+    // return {
+    //   error: true,
+    //   status:
+    // };
   });
 }
 
