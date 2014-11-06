@@ -143,6 +143,16 @@ function launchApplication(dbType) {
         db: { debug: true }
       };
       break;
+    case 'mongodb':
+      configure = {
+        port: 3000,
+        db: {
+          host: 'localhost',
+          database: 'leviathan_test',
+          debug: true
+        }
+      };
+      break;
   }
   if (!configure) throw new Error('booom');
   return application.launch(configure);

@@ -24,9 +24,8 @@ var models = {};
 
 module.exports.ready = function() {
   var deferred = Q.defer();
-  var dbSetting = global.configure.db;
 
-  var schema = new jugglingdb.Schema('memory');
+  var schema = new jugglingdb.Schema(global.configure.db.type || 'memory');
   schema.on('connected', deferred.resolve.bind(deferred));
   _.each(SchemaNames, function(name) {
     // TODO: use capitalise
