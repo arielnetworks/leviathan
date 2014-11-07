@@ -2,7 +2,7 @@
 
 var _ = require('underscore');
 var Q = require('q');
-var TidalWave = require('../tidal-wave-wrap');
+var TidalWave = require('tidal-wave');
 var Schema = require('../persist').Schema;
 var persist = require('../persist');
 
@@ -18,12 +18,14 @@ PostTidalWave[':id'] = function(req, res) {
     collectCaptures(rid)
   ])
   .then(function(results) {
-    var report = results[1];
-    return report;
+    // TODO: Report result?
+    return { success: true };
+    // var report = results[1];
+    // return report;
   })
   .then(res.json.bind(res))
-  .catch (function(reason) {
-    res.json({error: true, reason: reason});
+  .catch (function(error) {
+    res.json({error: true, reason: error.stack});
   });
 };
 
@@ -31,19 +33,25 @@ PostTidalWave[':id'] = function(req, res) {
 
 function collectCaptures(rid) {
   var d = Q.defer();
-  var t = new TidalWave(rid);
 
-  t.on('message', upsertCapture.bind(null, rid));
-  t.once('error', cleanup);
+  var t = TidalWave.create(
+      // TODO: Use global.configure
+      global.configure.expectedDir,
+      global.configure.targetDirPrefix + rid, {
+        span: 10,
+        threshold: 5
+      });
+
+  t.on('data', upsertCapture.bind(null, rid));
   t.once('error', d.reject);
-  t.once('finish', cleanup);
   t.once('finish', d.resolve);
+  t.once('error', cleanup);
+  t.once('finish', cleanup);
 
   return d.promise;
 
   function cleanup() {
-    t.removeAllListeners();
-    delete t;
+    t = null;
   }
 }
 
@@ -54,7 +62,6 @@ function upsertRevision(id, data) {
 }
 
 function upsertCapture(rid, data) {
-  // TODO:
   var captureName = data['captureName'] = data['expect_image'].match(/(?:expected\/)(.*)/)[1];
   var cname = data['capture'] = generateHash(captureName);
   var cid = data['id'] = 'revision:' + rid + ':capture:' + cname;

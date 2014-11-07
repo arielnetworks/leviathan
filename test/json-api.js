@@ -24,7 +24,7 @@ describe('Application', function() {
         }
       });
 
-      it('should launch good in ' + dbType, function(done) {
+      it('should launch in ' + dbType, function(done) {
         request(app)
         .get('/revisions')
         .expect(200)
@@ -35,7 +35,8 @@ describe('Application', function() {
         request(app)
         .post('/tidal-wave/2')
         .expect(200)
-        .expect({ total: 2, reported: 1 }, done);
+        .expect({ success: true }, done);
+        // .expect({ total: 2, reported: 1 }, done);
       });
 
       it('GET /revisions in' + dbType, function(done) {
@@ -70,12 +71,12 @@ describe('Application', function() {
           captures: [{
             capture: 'db38f7f3f5d7d765f97e45d185066cc9',
             captureName: 'scenario2/capture2.png',
-            expect_image: '/home/pig/git/tidal-wave/test/fixture/expected/scenario2/capture2.png',
+            expect_image: '/home/pig/git/leviathan/test/fixture/expected/scenario2/capture2.png',
             id: 'revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9',
             revision: 2,
             span: 10,
             status: 'SUSPICIOUS',
-            target_image: '/home/pig/git/tidal-wave/test/fixture/revision2/scenario2/capture2.png',
+            target_image: '/home/pig/git/leviathan/test/fixture/revision2/scenario2/capture2.png',
             threshold: 5,
             time: 0.1,
             updatedAt: '1970-01-01T00:00:00.000Z',
@@ -109,12 +110,12 @@ describe('Application', function() {
           {
             capture: '9018988ae55e012e437aa24cbf9a400a',
             captureName: 'scenario1/capture1.jpg',
-            expect_image: '/home/pig/git/tidal-wave/test/fixture/expected/scenario1/capture1.jpg',
+            expect_image: '/home/pig/git/leviathan/test/fixture/expected/scenario1/capture1.jpg',
             id: 'revision:2:capture:9018988ae55e012e437aa24cbf9a400a',
             revision: 2,
             span: 10,
             status: 'OK',
-            target_image: '/home/pig/git/tidal-wave/test/fixture/revision2/scenario1/capture1.jpg',
+            target_image: '/home/pig/git/leviathan/test/fixture/revision2/scenario1/capture1.jpg',
             threshold: 5,
             time: 0.1,
             updatedAt: '1970-01-01T00:00:00.000Z',
@@ -134,12 +135,12 @@ describe('Application', function() {
         .expect({
           capture: 'db38f7f3f5d7d765f97e45d185066cc9',
           captureName: 'scenario2/capture2.png',
-          expect_image: '/home/pig/git/tidal-wave/test/fixture/expected/scenario2/capture2.png',
+          expect_image: '/home/pig/git/leviathan/test/fixture/expected/scenario2/capture2.png',
           id: 'revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9',
           revision: 2,
           span: 10,
           status: 'SUSPICIOUS',
-          target_image: '/home/pig/git/tidal-wave/test/fixture/revision2/scenario2/capture2.png',
+          target_image: '/home/pig/git/leviathan/test/fixture/revision2/scenario2/capture2.png',
           threshold: 5,
           time: 0.1,
           updatedAt: '1970-01-01T00:00:00.000Z',
@@ -176,7 +177,7 @@ describe('Application', function() {
         request(app)
         .post('/tidal-wave/1')
         .expect(200)
-        .expect({ total: 2, reported: 0 }, done);
+        .expect({ success: true }, done);
       });
 
       // Now we have 2 revisions in a store.
@@ -202,12 +203,12 @@ describe('Application', function() {
 
           capture: 'db38f7f3f5d7d765f97e45d185066cc9',
           captureName: 'scenario2/capture2.png',
-          expect_image: '/home/pig/git/tidal-wave/test/fixture/expected/scenario2/capture2.png',
+          expect_image: '/home/pig/git/leviathan/test/fixture/expected/scenario2/capture2.png',
           id: 'revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9',
           revision: 2,
           span: 10,
           status: 'SUSPICIOUS',
-          target_image: '/home/pig/git/tidal-wave/test/fixture/revision2/scenario2/capture2.png',
+          target_image: '/home/pig/git/leviathan/test/fixture/revision2/scenario2/capture2.png',
           threshold: 5,
           time: 0.1,
           updatedAt: '1970-01-01T00:00:00.000Z',
@@ -250,12 +251,12 @@ describe('Application', function() {
 
           capture: 'db38f7f3f5d7d765f97e45d185066cc9',
           captureName: 'scenario2/capture2.png',
-          expect_image: '/home/pig/git/tidal-wave/test/fixture/expected/scenario2/capture2.png',
+          expect_image: '/home/pig/git/leviathan/test/fixture/expected/scenario2/capture2.png',
           id: 'revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9',
           revision: 2,
           span: 10,
           status: 'SUSPICIOUS',
-          target_image: '/home/pig/git/tidal-wave/test/fixture/revision2/scenario2/capture2.png',
+          target_image: '/home/pig/git/leviathan/test/fixture/revision2/scenario2/capture2.png',
           threshold: 5,
           time: 0.1,
           updatedAt: '1970-01-01T00:00:00.000Z',
@@ -300,6 +301,8 @@ function launchApplication(dbType) {
     case 'memory':
       configure = {
         port: 3000,
+        expectedDir: path.resolve(__dirname, 'fixture/expected'),
+        targetDirPrefix: path.resolve(__dirname, 'fixture/revision'),
         db: { debug: true }
       };
       break;

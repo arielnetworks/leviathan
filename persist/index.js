@@ -3,7 +3,6 @@ var _ = require('underscore');
 var Q = require('q');
 Q.longStackSupport = true;
 var path = require('path');
-var capitalize = require('capitalize');
 
 
 
@@ -83,16 +82,7 @@ function updateCapture(rid, cid, data) {
   .then(function(doc) {
     if (doc) {
       return Q.ninvoke(doc, 'updateAttributes', data);
-      // if (!_.every(data, function(v, k) {
-      //   return doc[k] === v;
-      // })) {
-      //   return Q.ninvoke(doc, 'updateAttributes', data);
-      // }
     }
-    // return {
-    //   error: true,
-    //   status:
-    // };
   });
 }
 
