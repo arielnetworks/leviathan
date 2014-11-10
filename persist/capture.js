@@ -1,7 +1,7 @@
 
 module.exports = {
   id: String, // revision:{rid}:capture:{cid}
-  revision: Number,
+  revision: String,
   capture: String,
   captureName: String,
   modifiedStatus: String, // "UNPROCESSED" | "IS_OK" | "IS_BUG"

@@ -5,6 +5,7 @@ var path = require('path');
 var _ = require('underscore');
 var request = require('supertest');
 var assert = require('assert');
+var persist = require('../persist');
 
 describe('Application', function() {
 
@@ -14,14 +15,11 @@ describe('Application', function() {
 
       var tmp = launchApplication(dbType);
       var server = tmp.server;
-      var app = tmp.server;
+      var app = tmp.app;
 
-      // Cleanup a server after each testing for "dbType".
-      after(function() {
-        if (server) {
-          server.close();
-          server = null;
-        }
+      // Cleanup a data after each testing for "dbType".
+      after(function(done) {
+        persist.cleanup().then(done);
       });
 
       it('should launch in ' + dbType, function(done) {
@@ -296,25 +294,23 @@ describe('Application', function() {
 
 function launchApplication(dbType) {
   var application = require('../app');
-  var configure;
+  var configure = {
+    port: 3000,
+    expectedDir: path.resolve(__dirname, 'fixture/expected'),
+    targetDirPrefix: path.resolve(__dirname, 'fixture/revision'),
+    db: { debug: true }
+  };
   switch (dbType) {
     case 'memory':
-      configure = {
-        port: 3000,
-        expectedDir: path.resolve(__dirname, 'fixture/expected'),
-        targetDirPrefix: path.resolve(__dirname, 'fixture/revision'),
-        db: { debug: true }
-      };
       break;
     case 'mongodb':
-      configure = {
-        port: 3000,
+      _.extend(configure, {
         db: {
+          type: 'mongodb',
           host: 'localhost',
-          database: 'leviathan_test',
-          debug: true
+          database: 'leviathan_test'
         }
-      };
+      });
       break;
   }
   if (!configure) throw new Error('booom');

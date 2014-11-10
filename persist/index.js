@@ -1,8 +1,13 @@
 
+var path = require('path');
 var _ = require('underscore');
 var Q = require('q');
 Q.longStackSupport = true;
-var path = require('path');
+var jugglingdb = require('jugglingdb');
+
+var isTesting = process.env.NODE_ENV == 'test';
+var SchemaNames = ['revision', 'capture'];
+var models;
 
 
 
@@ -16,22 +21,26 @@ module.exports.updateCapture = updateCapture;
 
 
 
-var isTesting = process.env.NODE_ENV == 'test';
-var jugglingdb = require('jugglingdb');
-var SchemaNames = ['revision', 'capture'];
-var models = {};
-
 module.exports.ready = function() {
   var deferred = Q.defer();
-
-  var schema = new jugglingdb.Schema(global.configure.db.type || 'memory');
+  models = {};
+  var schema = new jugglingdb.Schema(global.configure.db.type || 'memory', global.configure.db);
   schema.on('connected', deferred.resolve.bind(deferred));
   _.each(SchemaNames, function(name) {
-    // TODO: use capitalise
     models[name] = schema.define(name, require('./' + name));
   });
-
   return deferred.promise;
+};
+
+module.exports.cleanup = function() {
+  return Q.all(
+    _.map(models, function(model) {
+      return Q.ninvoke(model, 'destroyAll');
+    })
+  ).then(function() {
+    models = null;
+    return undefined; // return nothing.
+  });
 };
 
 
@@ -41,7 +50,7 @@ function findRevisions(skip, limit, sort) {
   return Q.ninvoke(models.revision, 'all');
 }
 function findRevision(id) {
-  return Q.ninvoke(models.revision, 'findOne', { where: { id: id } });
+  return Q.ninvoke(models.revision, 'find', id);
 }
 function findCaptures(rid, skip, limit, sort) {
   return Q.ninvoke(models.capture, 'all', {
@@ -56,10 +65,7 @@ function findCaptures(rid, skip, limit, sort) {
   // return Q.ninvoke(query, 'exec');
 }
 function findCapture(rid, cid) {
-  return Q.ninvoke(models.capture, 'findOne', { where: {
-    id: cid,
-    revision: rid
-  } });
+  return Q.ninvoke(models.capture, 'find', cid);
 }
 // function putQueryOptions(query, skip, limit, sort) {
 //   query.skip(skip || 0).limit(limit || 20).sort(sort || {'id': -1});
@@ -87,7 +93,10 @@ function updateCapture(rid, cid, data) {
 }
 
 function upsertManually_(model, condition, data) {
-  return Q.ninvoke(model, 'findOne', { where: condition })
+  return (condition.id != null ?
+      Q.ninvoke(model, 'find', condition.id) :
+      Q.ninvoke(model, 'findOne', { where: condition }))
+  // return Q.ninvoke(model, 'findOne', { where: condition })
   .then(function(doc) {
     return doc ?
         Q.ninvoke(doc, 'updateAttributes', data) :
