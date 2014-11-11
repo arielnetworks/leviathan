@@ -45,30 +45,25 @@ module.exports.cleanup = function() {
 
 
 
-function findRevisions(skip, limit, sort) {
-  // TODO: skip, limit, sort
-  return Q.ninvoke(models.revision, 'all');
+function findRevisions(skip, limit, order) {
+  return Q.ninvoke(models.revision, 'all',
+      extendParams_({}, skip, limit, _.isString(order) ? order : 'id DESC'));
 }
 function findRevision(id) {
   return Q.ninvoke(models.revision, 'find', id);
 }
-function findCaptures(rid, skip, limit, sort) {
-  return Q.ninvoke(models.capture, 'all', {
+function findCaptures(rid, skip, limit, order) {
+  return Q.ninvoke(models.capture, 'all', extendParams_({
     where: {
       revision: rid
-    },
-    order: 'updatedAt DESC'
-  });
-  // var query = Schema.capture.find({ revision: rid });
-  // putQueryOptions(query, skip, limit, sort);
-  // query.skip(skip || 0).limit(limit || 20).sort(sort || {});
-  // return Q.ninvoke(query, 'exec');
+    }
+  }, skip, limit, order));
 }
 function findCapture(rid, cid) {
   return Q.ninvoke(models.capture, 'find', cid);
 }
-// function putQueryOptions(query, skip, limit, sort) {
-//   query.skip(skip || 0).limit(limit || 20).sort(sort || {'id': -1});
+// function putQueryOptions(query, skip, limit, order) {
+//   query.skip(skip || 0).limit(limit || 20).order(order || {'id': -1});
 // }
 function upsertRevision(id, data) {
   if (isTesting) {
@@ -102,6 +97,13 @@ function upsertManually_(model, condition, data) {
         Q.ninvoke(doc, 'updateAttributes', data) :
         Q.ninvoke(model, 'create', data);
   });
+}
+
+function extendParams_(params, skip, limit, order) {
+  params.order = _.isString(order) ? order : 'updatedAt DESC';
+  if (_.isNaN(+skip)) params.skip = +skip;
+  if (_.isNaN(+limit)) params.limit = +limit;
+  return params;
 }
 
 if (!module.exports.ready) {

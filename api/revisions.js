@@ -14,7 +14,7 @@ var PostRevisions = module.exports['post'] = {};
 
 
 GetRevisions['index'] = function(req, res) {
-  persist.findRevisions(+req.param('skip'), +req.param('limit'), {'id': -1})
+  persist.findRevisions(+req.param('skip'), +req.param('limit'), req.param('order'))
   .then(function(docs) {
     res.json({
       revisions: docs || []
@@ -34,7 +34,7 @@ GetRevisions[':id'] = function(req, res) {
 GetRevisions[':id/captures'] = function(req, res) {
   Q.all([
     persist.findRevision(req.param('id')),
-    persist.findCaptures(req.param('id'), +req.param('skip'), +req.param('limit'), {'id': -1})
+    persist.findCaptures(req.param('id'), +req.param('skip'), +req.param('limit'), req.param('order'))
   ])
   .then(function(results) {
     res.json({
