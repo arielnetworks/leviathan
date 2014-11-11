@@ -33,8 +33,7 @@ describe('Application', function() {
         request(app)
         .post('/api/tidal-wave/2')
         .expect(200)
-        .expect({ success: true }, done);
-        // .expect({ total: 2, reported: 1 }, done);
+        .expect({ data: 2, error: 0, request: 2 }, done);
       });
 
       it('GET /api/revisions in' + dbType, function(done) {
@@ -178,7 +177,7 @@ describe('Application', function() {
         request(app)
         .post('/api/tidal-wave/1')
         .expect(200)
-        .expect({ success: true }, done);
+        .expect({ data: 2, error: 0, request: 2 }, done);
       });
 
       // Now we have 2 revisions in a store.

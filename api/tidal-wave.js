@@ -18,10 +18,8 @@ PostTidalWave[':id'] = function(req, res) {
     collectCaptures(rid)
   ])
   .then(function(results) {
-    // TODO: Report result?
-    return { success: true };
-    // var report = results[1];
-    // return report;
+    var report = results[1];
+    return report;
   })
   .then(res.json.bind(res))
   .catch (function(error) {
@@ -35,7 +33,6 @@ function collectCaptures(rid) {
   var d = Q.defer();
 
   var t = TidalWave.create(
-      // TODO: Use global.configure
       global.configure.expectedDir,
       global.configure.targetDirPrefix + rid, {
         span: 10,
