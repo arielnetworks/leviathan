@@ -101,8 +101,8 @@ function upsertManually_(model, condition, data) {
 
 function extendParams_(params, skip, limit, order) {
   params.order = _.isString(order) ? order : 'updatedAt DESC';
-  if (_.isNaN(+skip)) params.skip = +skip;
-  if (_.isNaN(+limit)) params.limit = +limit;
+  if (!_.isNaN(+skip)) params.skip = +skip;
+  if (!_.isNaN(+limit)) params.limit = +limit;
   return params;
 }
 

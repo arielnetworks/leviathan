@@ -180,6 +180,9 @@ describe('Application', function() {
 
       // Now we have 2 revisions in a store.
 
+
+
+      // Parameters test
       it('GET /api/revisions returns 2 documents in' + dbType, function(done) {
         request(app)
         .get('/api/revisions')
@@ -190,6 +193,26 @@ describe('Application', function() {
           ]
         }, done);
       });
+      it('GET /api/revisions?limit=1 should return the first document' + dbType, function(done) {
+        request(app)
+        .get('/api/revisions?limit=1')
+        .expect({
+          revisions: [
+            { id: 2, updatedAt: '1970-01-01T00:00:00.000Z' }
+          ]
+        }, done);
+      });
+      it('GET /api/revisions?limit=1&skip=1 should skip one document' + dbType, function(done) {
+        request(app)
+        .get('/api/revisions?limit=1&skip=1')
+        .expect({
+          revisions: [
+            { id: 1, updatedAt: '1970-01-01T00:00:00.000Z' }
+          ]
+        }, done);
+      });
+
+
 
       it('POST /api/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9 should change status in' + dbType, function(done) {
         request(app)
