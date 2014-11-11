@@ -52,12 +52,12 @@ function findRevisions(skip, limit, order) {
 function findRevision(id) {
   return Q.ninvoke(models.revision, 'find', id);
 }
-function findCaptures(rid, skip, limit, order) {
-  return Q.ninvoke(models.capture, 'all', extendParams_({
-    where: {
-      revision: rid
-    }
-  }, skip, limit, order));
+function findCaptures(rid, skip, limit, order, status, modifiedStatus) {
+  var where = { revision: rid };
+  if (status) where.status = status;
+  if (modifiedStatus) where.modifiedStatus = modifiedStatus;
+  return Q.ninvoke(models.capture, 'all',
+      extendParams_({ where: where }, skip, limit, order));
 }
 function findCapture(rid, cid) {
   return Q.ninvoke(models.capture, 'find', cid);

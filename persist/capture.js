@@ -4,7 +4,10 @@ module.exports = {
   revision: String,
   capture: String,
   captureName: String,
-  modifiedStatus: String, // "UNPROCESSED" | "IS_OK" | "IS_BUG"
+  modifiedStatus: {
+    type: String, // "UNPROCESSED" | "IS_OK" | "IS_BUG"
+    default: 'UNPROCESSED'
+  },
   modifiedBy: String,
   updatedAt: {
     type: Date,
