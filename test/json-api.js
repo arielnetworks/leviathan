@@ -24,22 +24,22 @@ describe('Application', function() {
 
       it('should launch in ' + dbType, function(done) {
         request(app)
-        .get('/revisions')
+        .get('/api/revisions')
         .expect(200)
         .expect({ revisions: [] }, done);
       });
 
-      it('POST /tidal-wave/2 in ' + dbType, function(done) {
+      it('POST /api/tidal-wave/2 in ' + dbType, function(done) {
         request(app)
-        .post('/tidal-wave/2')
+        .post('/api/tidal-wave/2')
         .expect(200)
         .expect({ success: true }, done);
         // .expect({ total: 2, reported: 1 }, done);
       });
 
-      it('GET /revisions in' + dbType, function(done) {
+      it('GET /api/revisions in' + dbType, function(done) {
         request(app)
-        .get('/revisions')
+        .get('/api/revisions')
         .expect(200)
         .expect({
           revisions: [
@@ -48,18 +48,18 @@ describe('Application', function() {
         }, done);
       });
 
-      it('GET /revisions/2 in' + dbType, function(done) {
+      it('GET /api/revisions/2 in' + dbType, function(done) {
         request(app)
-        .get('/revisions/2')
+        .get('/api/revisions/2')
         .expect(200)
         .expect({
           id: 2, updatedAt: '1970-01-01T00:00:00.000Z'
         }, done);
       });
 
-      it('GET /revisions/2/captures in' + dbType, function(done) {
+      it('GET /api/revisions/2/captures in' + dbType, function(done) {
         request(app)
-        .get('/revisions/2/captures')
+        .get('/api/revisions/2/captures')
         .expect(200)
         .expect({
           revision: {
@@ -126,9 +126,9 @@ describe('Application', function() {
         }, done);
       });
 
-      it('GET /revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9 in' + dbType, function(done) {
+      it('GET /api/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9 in' + dbType, function(done) {
         request(app)
-        .get('/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9')
+        .get('/api/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9')
         .expect(200)
         .expect({
           capture: 'db38f7f3f5d7d765f97e45d185066cc9',
@@ -171,18 +171,18 @@ describe('Application', function() {
         }, done);
       });
 
-      it('POST /tidal-wave/1 should report zero in ' + dbType, function(done) {
+      it('POST /api/tidal-wave/1 should report zero in ' + dbType, function(done) {
         request(app)
-        .post('/tidal-wave/1')
+        .post('/api/tidal-wave/1')
         .expect(200)
         .expect({ success: true }, done);
       });
 
       // Now we have 2 revisions in a store.
 
-      it('GET /revisions returns 2 documents in' + dbType, function(done) {
+      it('GET /api/revisions returns 2 documents in' + dbType, function(done) {
         request(app)
-        .get('/revisions')
+        .get('/api/revisions')
         .expect({
           revisions: [
             { id: 1, updatedAt: '1970-01-01T00:00:00.000Z' },
@@ -191,9 +191,9 @@ describe('Application', function() {
         }, done);
       });
 
-      it('POST /revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9 should change status in' + dbType, function(done) {
+      it('POST /api/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9 should change status in' + dbType, function(done) {
         request(app)
-        .post('/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9')
+        .post('/api/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9')
         .send({ modifiedStatus: 'IS_BUG' })
         .expect({
 
@@ -239,9 +239,9 @@ describe('Application', function() {
         }, done);
       });
 
-      it('POST /revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9 should change status again in' + dbType, function(done) {
+      it('POST /api/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9 should change status again in' + dbType, function(done) {
         request(app)
-        .post('/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9')
+        .post('/api/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9')
         .send({ modifiedStatus: 'IS_OK' })
         .expect({
 

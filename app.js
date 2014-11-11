@@ -45,14 +45,14 @@ function launch(configure) {
     app.use(express.errorHandler());
   }
 
-  // Routing
+  // API Routing
   _.each([
     'revisions',
     'tidal-wave'
   ], function(name) {
-    _.each(require('./routes/' + name), function(actions, method) {
+    _.each(require('./api/' + name), function(actions, method) {
       _.each(actions, function(handler, action) {
-        app[method]('/' + name + (action == 'index' ? '' : '/' + action), handler);
+        app[method]('/api/' + name + (action == 'index' ? '' : '/' + action), handler);
       });
     });
   });
