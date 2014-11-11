@@ -182,7 +182,11 @@ describe('Application', function() {
 
 
 
+
       // Parameters test
+      // Without "order" parameter,
+      //  * "/api/revisions" ordered by "id DESC"
+      //  * other api ordered by "updatedAt DESC"
       it('GET /api/revisions returns 2 documents in' + dbType, function(done) {
         request(app)
         .get('/api/revisions')
@@ -210,6 +214,120 @@ describe('Application', function() {
             { id: 1, updatedAt: '1970-01-01T00:00:00.000Z' }
           ]
         }, done);
+      });
+      it('GET /api/revisions?order=id%20ASC should sorts docs as "id ASC"' + dbType, function(done) {
+        request(app)
+        .get('/api/revisions?order=id%20ASC')
+        .expect({
+          revisions: [
+            { id: 1, updatedAt: '1970-01-01T00:00:00.000Z' },
+            { id: 2, updatedAt: '1970-01-01T00:00:00.000Z' }
+          ]
+        }, done);
+      });
+      it('GET /api/revisions/1/captures returns 2 documents in' + dbType, function(done) {
+        request(app)
+        .get('/api/revisions/1/captures')
+        .expect({
+          revision: { id: '1', updatedAt: '1970-01-01T00:00:00.000Z' },
+          captures:
+           [{ id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
+               revision: '1',
+               capture: 'db38f7f3f5d7d765f97e45d185066cc9',
+               captureName: 'scenario2/capture2.png',
+               updatedAt: '1970-01-01T00:00:00.000Z',
+               status: 'OK',
+               span: 10,
+               threshold: 5,
+               vector: [],
+               time: 0.1,
+               target_image: '/home/pig/git/leviathan/test/fixture/revision1/scenario2/capture2.png',
+               expect_image: '/home/pig/git/leviathan/test/fixture/expected/scenario2/capture2.png' },
+             { id: 'revision:1:capture:9018988ae55e012e437aa24cbf9a400a',
+               revision: '1',
+               capture: '9018988ae55e012e437aa24cbf9a400a',
+               captureName: 'scenario1/capture1.jpg',
+               updatedAt: '1970-01-01T00:00:00.000Z',
+               status: 'OK',
+               span: 10,
+               threshold: 5,
+               vector: [],
+               time: 0.1,
+               target_image: '/home/pig/git/leviathan/test/fixture/revision1/scenario1/capture1.jpg',
+               expect_image: '/home/pig/git/leviathan/test/fixture/expected/scenario1/capture1.jpg' }] })
+        .end(done);
+      });
+      it('GET /api/revisions/1/captures?limit=1 returns 2 documents in' + dbType, function(done) {
+        request(app)
+        .get('/api/revisions/1/captures?limit=1')
+        .expect({
+          revision: { id: '1', updatedAt: '1970-01-01T00:00:00.000Z' },
+          captures:
+           [{ id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
+               revision: '1',
+               capture: 'db38f7f3f5d7d765f97e45d185066cc9',
+               captureName: 'scenario2/capture2.png',
+               updatedAt: '1970-01-01T00:00:00.000Z',
+               status: 'OK',
+               span: 10,
+               threshold: 5,
+               vector: [],
+               time: 0.1,
+               target_image: '/home/pig/git/leviathan/test/fixture/revision1/scenario2/capture2.png',
+               expect_image: '/home/pig/git/leviathan/test/fixture/expected/scenario2/capture2.png' }] })
+        .end(done);
+      });
+      it('GET /api/revisions/1/captures?limit=1&skip=1 returns 2 documents in' + dbType, function(done) {
+        request(app)
+        .get('/api/revisions/1/captures?limit=1&skip=1')
+        .expect({
+          revision: { id: '1', updatedAt: '1970-01-01T00:00:00.000Z' },
+          captures:
+           [{ id: 'revision:1:capture:9018988ae55e012e437aa24cbf9a400a',
+               revision: '1',
+               capture: '9018988ae55e012e437aa24cbf9a400a',
+               captureName: 'scenario1/capture1.jpg',
+               updatedAt: '1970-01-01T00:00:00.000Z',
+               status: 'OK',
+               span: 10,
+               threshold: 5,
+               vector: [],
+               time: 0.1,
+               target_image: '/home/pig/git/leviathan/test/fixture/revision1/scenario1/capture1.jpg',
+               expect_image: '/home/pig/git/leviathan/test/fixture/expected/scenario1/capture1.jpg' }] })
+        .end(done);
+      });
+      it('GET /api/revisions/1/captures?order=target_image sorts docs by "target_image ASC" in' + dbType, function(done) {
+        request(app)
+        .get('/api/revisions/1/captures?order=target_image')
+        .expect({
+          revision: { id: '1', updatedAt: '1970-01-01T00:00:00.000Z' },
+          captures:
+           [{ id: 'revision:1:capture:9018988ae55e012e437aa24cbf9a400a',
+               revision: '1',
+               capture: '9018988ae55e012e437aa24cbf9a400a',
+               captureName: 'scenario1/capture1.jpg',
+               updatedAt: '1970-01-01T00:00:00.000Z',
+               status: 'OK',
+               span: 10,
+               threshold: 5,
+               vector: [],
+               time: 0.1,
+               target_image: '/home/pig/git/leviathan/test/fixture/revision1/scenario1/capture1.jpg',
+               expect_image: '/home/pig/git/leviathan/test/fixture/expected/scenario1/capture1.jpg' },
+             { id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
+               revision: '1',
+               capture: 'db38f7f3f5d7d765f97e45d185066cc9',
+               captureName: 'scenario2/capture2.png',
+               updatedAt: '1970-01-01T00:00:00.000Z',
+               status: 'OK',
+               span: 10,
+               threshold: 5,
+               vector: [],
+               time: 0.1,
+               target_image: '/home/pig/git/leviathan/test/fixture/revision1/scenario2/capture2.png',
+               expect_image: '/home/pig/git/leviathan/test/fixture/expected/scenario2/capture2.png' }] })
+        .end(done);
       });
 
 
