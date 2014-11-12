@@ -515,8 +515,9 @@ function launchApplication(dbType) {
   var application = require('../app');
   var configure = {
     port: 3000,
-    expectedDir: path.resolve(__dirname, 'fixture/expected'),
-    targetDirPrefix: path.resolve(__dirname, 'fixture/revision'),
+    baseImageDir: path.resolve(__dirname, 'fixture'),
+    relativeExpectedDir: 'expected',
+    relativeTargetDirPrefix: 'revision', // Optional
     db: { debug: true }
   };
   switch (dbType) {

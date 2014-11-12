@@ -1,5 +1,6 @@
 
 
+var Path = require('path');
 var _ = require('underscore');
 var Q = require('q');
 var TidalWave = require('tidal-wave');
@@ -33,8 +34,8 @@ function collectCaptures(rid) {
   var d = Q.defer();
 
   var t = TidalWave.create(
-      global.configure.expectedDir,
-      global.configure.targetDirPrefix + rid, {
+      Path.resolve(global.configure.baseImageDir, global.configure.relativeExpectedDir),
+      Path.resolve(global.configure.baseImageDir, (global.configure.relativeTargetDirPrefix || '') + rid), {
         span: 10,
         threshold: 5
       });
