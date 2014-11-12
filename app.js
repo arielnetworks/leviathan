@@ -9,6 +9,7 @@ var path = require('path');
 var _ = require('underscore');
 var Q = require('q');
 Q.longStackSupport = true;
+var assert = require('assert');
 
 
 
@@ -26,8 +27,22 @@ module.exports.launch = launch;
  */
 function launch(configure) {
 
-  global.configure = configure;
-    
+  // Define global configuration
+  global.configure = {};
+  Object.defineProperties(global.configure, {
+    baseImageDir: { value: configure.baseImageDir },
+    relativeExpectedDir: { value: configure.relativeExpectedDir },
+    relativeTargetDirPrefix: { value: configure.relativeTargetDirPrefix || '' },
+    port: { value: process.env.PORT || 3000 },
+    publicCaptureDir: { value: configure.publicCaptureDir || '/captures' },
+    db: { value: configure.db || { type: 'memory' } }
+  });
+  Object.seal(global.configure);
+
+  // Required configurations:
+  assert(global.configure.baseImageDir);
+  assert(global.configure.relativeExpectedDir);
+
   // Express environments
   var app = express();
   app.set('port', global.configure.port);
@@ -40,6 +55,10 @@ function launch(configure) {
   app.use(express.cookieParser('your secret here'));
   app.use(express.session());
   app.use(app.router);
+
+  // Expose captures
+  app.use(global.configure.publicCaptureDir || '/captures', express.static(global.configure.baseImageDir));
+
   app.use(express.static(path.join(__dirname, 'public')));
   if ('development' == app.get('env')) {
     app.use(express.errorHandler());

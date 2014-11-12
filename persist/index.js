@@ -1,5 +1,6 @@
 
 var path = require('path');
+var assert = require('assert');
 var _ = require('underscore');
 var Q = require('q');
 Q.longStackSupport = true;
@@ -24,7 +25,8 @@ module.exports.updateCapture = updateCapture;
 module.exports.ready = function() {
   var deferred = Q.defer();
   models = {};
-  var schema = new jugglingdb.Schema(global.configure.db.type || 'memory', global.configure.db);
+  assert(global.configure.db.type, 'Specify "configure.db.type".');
+  var schema = new jugglingdb.Schema(global.configure.db.type, global.configure.db);
   schema.on('connected', deferred.resolve.bind(deferred));
   _.each(SchemaNames, function(name) {
     models[name] = schema.define(name, require('./' + name));
