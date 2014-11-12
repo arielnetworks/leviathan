@@ -517,11 +517,14 @@ function launchApplication(dbType) {
     port: 3000,
     baseImageDir: path.resolve(__dirname, 'fixture'),
     relativeExpectedDir: 'expected',
-    relativeTargetDirPrefix: 'revision', // Optional
+    relativeTargetDirPrefix: 'revision',
     db: { debug: true }
   };
   switch (dbType) {
     case 'memory':
+      _.extend(configure, {
+        db: { type: 'memory' }
+      });
       break;
     case 'mongodb':
       _.extend(configure, {
