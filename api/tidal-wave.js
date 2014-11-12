@@ -60,7 +60,11 @@ function upsertRevision(id, data) {
 }
 
 function upsertCapture(rid, data) {
-  var captureName = data['captureName'] = data['expect_image'].match(/(?:expected\/)(.*)/)[1];
+  // As a relative path from baseImageDir.
+  data['expect_image'] = Path.relative(global.configure.baseImageDir, data['expect_image']);
+  data['target_image'] = Path.relative(global.configure.baseImageDir, data['target_image']);
+
+  var captureName = data['captureName'] = Path.relative(global.configure.relativeExpectedDir, data['expect_image']);
   var cname = data['capture'] = generateHash(captureName);
   var cid = data['id'] = 'revision:' + rid + ':capture:' + cname;
   data['revision'] = rid;
