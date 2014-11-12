@@ -27,7 +27,7 @@ module.exports.launch = launch;
 function launch(configure) {
 
   global.configure = configure;
-    
+
   // Express environments
   var app = express();
   app.set('port', global.configure.port);
@@ -40,6 +40,10 @@ function launch(configure) {
   app.use(express.cookieParser('your secret here'));
   app.use(express.session());
   app.use(app.router);
+
+  // Expose captures
+  app.use(global.configure.publicCaptureDir || '/captures', express.static(global.configure.baseImageDir));
+
   app.use(express.static(path.join(__dirname, 'public')));
   if ('development' == app.get('env')) {
     app.use(express.errorHandler());
