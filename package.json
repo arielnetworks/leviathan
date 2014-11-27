@@ -7,12 +7,14 @@
     "test": "./node_modules/mocha/bin/mocha"
   },
   "dependencies": {
-    "express": "3.4.4",
-    "jade": "*",
+    "body-parser": "^1.9.3",
+    "express": "^4.10.4",
+    "jade": "^1.7.0",
     "jugglingdb": "^0.3.0",
     "jugglingdb-mongodb": "0.0.4-4",
-    "q": "^1.0.1",
-    "supertest": "^0.14.0",
+    "q": "^1.1.2",
+    "static-favicon": "^2.0.0-alpha",
+    "supertest": "^0.15.0",
     "underscore": "^1.7.0"
   },
   "devDependencies": {

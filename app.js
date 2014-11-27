@@ -4,6 +4,10 @@
  */
 
 var express = require('express');
+var favicon = require('static-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 var http = require('http');
 var path = require('path');
 var _ = require('underscore');
@@ -47,14 +51,12 @@ function launch(configure) {
   var app = express();
   app.set('port', global.configure.port);
   app.set('views', path.join(__dirname, 'views'));
-  app.use(express.favicon());
-  app.use(express.logger('dev'));
-  app.use(express.json());
-  app.use(express.urlencoded());
-  app.use(express.methodOverride());
-  app.use(express.cookieParser('your secret here'));
-  app.use(express.session());
-  app.use(app.router);
+
+  app.use(logger('dev'));
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(cookieParser());
+  app.use(express.static(path.join(__dirname, 'public')));
 
   // Expose captures
   app.use(global.configure.publicCaptureDir || '/captures', express.static(global.configure.baseImageDir));
