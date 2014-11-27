@@ -62,7 +62,7 @@ function findReports(rid, skip, limit, order, status, modifiedStatus) {
       extendParams_({ where: where }, skip, limit, order));
 }
 function findReport(rid, cid) {
-  return Q.ninvoke(models.capture, 'find', cid);
+  return Q.ninvoke(models.report, 'find', cid);
 }
 // function putQueryOptions(query, skip, limit, order) {
 //   query.skip(skip || 0).limit(limit || 20).order(order || {'id': -1});
