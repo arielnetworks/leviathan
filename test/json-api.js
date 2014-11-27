@@ -66,6 +66,7 @@ describe('Application', function() {
             updatedAt: '1970-01-01T00:00:00.000Z'
           },
           captures: [{
+            checkedAs: 'UNPROCESSED',
             id: 'revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9',
             capture: 'db38f7f3f5d7d765f97e45d185066cc9',
             captureName: 'scenario2/capture2.png',
@@ -105,6 +106,7 @@ describe('Application', function() {
             ]
           },
           {
+            checkedAs: 'UNPROCESSED',
             capture: '9018988ae55e012e437aa24cbf9a400a',
             captureName: 'scenario1/capture1.jpg',
             expect_image: 'expected/scenario1/capture1.jpg',
@@ -130,6 +132,7 @@ describe('Application', function() {
         .get('/api/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9')
         .expect(200)
         .expect({
+          checkedAs: 'UNPROCESSED',
           capture: 'db38f7f3f5d7d765f97e45d185066cc9',
           captureName: 'scenario2/capture2.png',
           expect_image: 'expected/scenario2/capture2.png',
@@ -229,8 +232,8 @@ describe('Application', function() {
         .get('/api/revisions/1/captures')
         .expect({
           revision: { id: '1', updatedAt: '1970-01-01T00:00:00.000Z' },
-          captures:
-           [{ id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
+          captures: [{ checkedAs: 'UNPROCESSED',
+               id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
                revision: '1',
                capture: 'db38f7f3f5d7d765f97e45d185066cc9',
                captureName: 'scenario2/capture2.png',
@@ -242,7 +245,8 @@ describe('Application', function() {
                time: 0.1,
                target_image: 'revision1/scenario2/capture2.png',
                expect_image: 'expected/scenario2/capture2.png' },
-             { id: 'revision:1:capture:9018988ae55e012e437aa24cbf9a400a',
+             { checkedAs: 'UNPROCESSED',
+               id: 'revision:1:capture:9018988ae55e012e437aa24cbf9a400a',
                revision: '1',
                capture: '9018988ae55e012e437aa24cbf9a400a',
                captureName: 'scenario1/capture1.jpg',
@@ -262,7 +266,8 @@ describe('Application', function() {
         .expect({
           revision: { id: '1', updatedAt: '1970-01-01T00:00:00.000Z' },
           captures:
-           [{ id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
+           [{ checkedAs: 'UNPROCESSED',
+               id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
                revision: '1',
                capture: 'db38f7f3f5d7d765f97e45d185066cc9',
                captureName: 'scenario2/capture2.png',
@@ -282,7 +287,8 @@ describe('Application', function() {
         .expect({
           revision: { id: '1', updatedAt: '1970-01-01T00:00:00.000Z' },
           captures:
-           [{ id: 'revision:1:capture:9018988ae55e012e437aa24cbf9a400a',
+           [{ checkedAs: 'UNPROCESSED',
+               id: 'revision:1:capture:9018988ae55e012e437aa24cbf9a400a',
                revision: '1',
                capture: '9018988ae55e012e437aa24cbf9a400a',
                captureName: 'scenario1/capture1.jpg',
@@ -302,7 +308,8 @@ describe('Application', function() {
         .expect({
           revision: { id: '1', updatedAt: '1970-01-01T00:00:00.000Z' },
           captures:
-           [{ id: 'revision:1:capture:9018988ae55e012e437aa24cbf9a400a',
+           [{ checkedAs: 'UNPROCESSED',
+               id: 'revision:1:capture:9018988ae55e012e437aa24cbf9a400a',
                revision: '1',
                capture: '9018988ae55e012e437aa24cbf9a400a',
                captureName: 'scenario1/capture1.jpg',
@@ -314,7 +321,8 @@ describe('Application', function() {
                time: 0.1,
                target_image: 'revision1/scenario1/capture1.jpg',
                expect_image: 'expected/scenario1/capture1.jpg' },
-             { id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
+             { checkedAs: 'UNPROCESSED',
+               id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
                revision: '1',
                capture: 'db38f7f3f5d7d765f97e45d185066cc9',
                captureName: 'scenario2/capture2.png',

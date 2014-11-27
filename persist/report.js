@@ -8,6 +8,10 @@ module.exports = {
     type: Date,
     default: function() { return new Date }
   },
+  checkedAs: {
+    type: String, // "UNPROCESSED" | "IS_OK" | "IS_BUG"
+    default: 'UNPROCESSED'
+  },
 
   // From "tidal-wave" module
   status: String, // "SUSPICIOUS" | "OK" | "ERROR"
