@@ -64,11 +64,13 @@ function upsertReport(rid, data) {
   data['expect_image'] = Path.relative(global.configure.baseImageDir, data['expect_image']);
   data['target_image'] = Path.relative(global.configure.baseImageDir, data['target_image']);
 
-  var capture = Path.relative(global.configure.relativeExpectedDir, data['expect_image']);
+  var captureName = Path.relative(global.configure.relativeExpectedDir, data['expect_image']);
+  var capture = generateHash(captureName);
   var cid = 'revision:' + rid + ':capture:' + capture;
 
   data['id'] = cid;
-  data['capture'] = generateHash(capture);
+  data['capture'] = capture;
+  data['captureName'] = captureName;
   data['revision'] = rid;
   return persist.upsertReport(rid, cid, data);
 }

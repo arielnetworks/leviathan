@@ -14,8 +14,8 @@ var models;
 
 module.exports.findRevisions = findRevisions;
 module.exports.findRevision = findRevision;
-module.exports.findCaptures = findCaptures;
-module.exports.findCapture = findCapture;
+module.exports.findReports = findReports;
+module.exports.findReport = findReport;
 module.exports.upsertRevision = upsertRevision;
 module.exports.upsertReport = upsertReport;
 module.exports.updateCapture = updateCapture;
@@ -54,14 +54,14 @@ function findRevisions(skip, limit, order) {
 function findRevision(id) {
   return Q.ninvoke(models.revision, 'find', id);
 }
-function findCaptures(rid, skip, limit, order, status, modifiedStatus) {
+function findReports(rid, skip, limit, order, status, modifiedStatus) {
   var where = { revision: rid };
   if (status) where.status = status;
   if (modifiedStatus) where.modifiedStatus = modifiedStatus;
-  return Q.ninvoke(models.capture, 'all',
+  return Q.ninvoke(models.report, 'all',
       extendParams_({ where: where }, skip, limit, order));
 }
-function findCapture(rid, cid) {
+function findReport(rid, cid) {
   return Q.ninvoke(models.capture, 'find', cid);
 }
 // function putQueryOptions(query, skip, limit, order) {
@@ -81,7 +81,7 @@ function upsertReport(rid, cid, data) {
   return upsertManually_(models.report, { id: cid, revision: rid }, data);
 }
 function updateCapture(rid, cid, data) {
-  return findCapture(rid, cid)
+  return findReport(rid, cid)
   .then(function(doc) {
     if (doc) {
       return Q.ninvoke(doc, 'updateAttributes', data);

@@ -3,6 +3,7 @@ module.exports = {
   id: String, // revision:{revision}:capture:{capture}
   revision: String,
   capture: String,
+  captureName: String,
   updatedAt: {
     type: Date,
     default: function() { return new Date }
