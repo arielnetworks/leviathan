@@ -40,7 +40,7 @@ function collectCaptures(rid) {
         threshold: 5
       });
 
-  t.on('data', upsertCapture.bind(null, rid));
+  t.on('data', upsertReport.bind(null, rid));
   t.once('error', d.reject);
   t.once('finish', d.resolve);
   t.once('error', cleanup);
@@ -59,16 +59,18 @@ function upsertRevision(id, data) {
   return persist.upsertRevision(id, data);
 }
 
-function upsertCapture(rid, data) {
+function upsertReport(rid, data) {
   // As a relative path from baseImageDir.
   data['expect_image'] = Path.relative(global.configure.baseImageDir, data['expect_image']);
   data['target_image'] = Path.relative(global.configure.baseImageDir, data['target_image']);
 
-  var captureName = data['captureName'] = Path.relative(global.configure.relativeExpectedDir, data['expect_image']);
-  var cname = data['capture'] = generateHash(captureName);
-  var cid = data['id'] = 'revision:' + rid + ':capture:' + cname;
+  var capture = Path.relative(global.configure.relativeExpectedDir, data['expect_image']);
+  var cid = 'revision:' + rid + ':capture:' + capture;
+
+  data['id'] = cid;
+  data['capture'] = generateHash(capture);
   data['revision'] = rid;
-  return persist.upsertCapture(rid, cid, data);
+  return persist.upsertReport(rid, cid, data);
 }
 
 function generateHash(seed) {

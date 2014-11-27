@@ -7,7 +7,7 @@ Q.longStackSupport = true;
 var jugglingdb = require('jugglingdb');
 
 var isTesting = process.env.NODE_ENV == 'test';
-var SchemaNames = ['revision', 'capture'];
+var SchemaNames = ['revision', 'capture', 'report'];
 var models;
 
 
@@ -17,7 +17,7 @@ module.exports.findRevision = findRevision;
 module.exports.findCaptures = findCaptures;
 module.exports.findCapture = findCapture;
 module.exports.upsertRevision = upsertRevision;
-module.exports.upsertCapture = upsertCapture;
+module.exports.upsertReport = upsertReport;
 module.exports.updateCapture = updateCapture;
 
 
@@ -73,12 +73,12 @@ function upsertRevision(id, data) {
   }
   return upsertManually_(models.revision, { id: id }, data);
 }
-function upsertCapture(rid, cid, data) {
+function upsertReport(rid, cid, data) {
   if (isTesting) {
     data['time'] = 0.1;
     data['updatedAt'] = new Date('1970-01-01T00:00:00.000Z');
   }
-  return upsertManually_(models.capture, { id: cid, revision: rid }, data);
+  return upsertManually_(models.report, { id: cid, revision: rid }, data);
 }
 function updateCapture(rid, cid, data) {
   return findCapture(rid, cid)
