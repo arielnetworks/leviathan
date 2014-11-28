@@ -37,7 +37,12 @@ function collectCaptures(rid) {
   var targetDir = getRevisionDir(rid);
   var t = TidalWave.create(targetDir, {
     getExpectedPath: function(shortPath) {
-      return persist.findOrCreateCapture(generateHash(shortPath))
+      var cid = generateHash(shortPath);
+      return persist.findOrCreateCapture(cid, {
+        id: cid,
+        capture: cid,
+        revision: rid
+      })
       .then(function(capture) {
         if (capture.expectedRevision != null) {
           return Path.resolve(getRevisionDir(capture.expectedRevision), shortPath);
