@@ -55,10 +55,10 @@ function findRevisions(skip, limit, order) {
 function findRevision(id) {
   return Q.ninvoke(models.revision, 'find', id);
 }
-function findReports(rid, skip, limit, order, status, modifiedStatus) {
+function findReports(rid, skip, limit, order, status, checkedAs) {
   var where = { revision: rid };
   if (status) where.status = status;
-  if (modifiedStatus) where.modifiedStatus = modifiedStatus;
+  if (checkedAs) where.checkedAs = checkedAs;
   return Q.ninvoke(models.report, 'all',
       extendParams_({ where: where }, skip, limit, order));
 }

@@ -36,7 +36,7 @@ GetRevisions[':id/captures'] = function(req, res) {
     persist.findRevision(req.param('id')),
     persist.findReports(req.param('id'),
         +req.param('skip'), +req.param('limit'), req.param('order'),
-        req.param('status'), req.param('modifiedStatus'))
+        req.param('status'), req.param('checkedAs'))
   ])
   .then(function(results) {
     res.json({
@@ -55,8 +55,8 @@ GetRevisions[':id/captures/:cid'] = function(req, res) {
 
 PostRevisions[':id/captures/:cid'] = function(req, res) {
   var data = {};
-  var modifiedStatus = getStatusFromReqest(req);
-  if (modifiedStatus) data['modifiedStatus'] = modifiedStatus;
+  var checkedAs = getStatusFromReqest(req);
+  if (checkedAs) data['checkedAs'] = checkedAs;
   persist.updateCapture(req.param('id'), req.param('cid'), data)
   .then(function(doc) {
     if (doc) {
@@ -82,7 +82,7 @@ function handleError(res, reason) {
 }
 var Status = ['UNPROCESSED', 'IS_BUG', 'IS_OK'];
 function getStatusFromReqest(req) {
-  var v = req.body && req.body['modifiedStatus'];
+  var v = req.body && req.body['checkedAs'];
   if (!v) return null;
   v = v.toUpperCase();
   if (!_.contains(Status, v)) return null;
