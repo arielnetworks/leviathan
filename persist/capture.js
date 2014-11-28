@@ -1,9 +1,9 @@
 
 module.exports = {
-  id: String, // revision:{revision}:capture:{capture}
+  id: String, // Same as "capture"
   expectedRevision: String,
-  capture: String,
-  captureName: String,
+  capture: String, // A hash of "captureName"
+  captureName: String, // A short file path to a capture (without revision directory)
   updatedBy: {
     type: String, // User ID
     default: 'system'

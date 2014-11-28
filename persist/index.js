@@ -16,6 +16,7 @@ module.exports.findRevisions = findRevisions;
 module.exports.findRevision = findRevision;
 module.exports.findReports = findReports;
 module.exports.findReport = findReport;
+module.exports.findOrCreateCapture = findOrCreateCapture;
 module.exports.upsertRevision = upsertRevision;
 module.exports.upsertReport = upsertReport;
 module.exports.updateCapture = updateCapture;
@@ -61,31 +62,23 @@ function findReports(rid, skip, limit, order, status, modifiedStatus) {
   return Q.ninvoke(models.report, 'all',
       extendParams_({ where: where }, skip, limit, order));
 }
-function findCapture(cid, opt_report) {
-  return Q.invoke(models.capture, 'findOne', cid)
+function findOrCreateCapture(cid, report) {
+  return Q.ninvoke(models.capture, 'find', cid)
   .then(function(capture) {
     if (capture) {
       return capture;
     }
-    if (opt_report) {
-      return createReport(opt_report);
-    }
-    // Not sure if this works
-    return Q.invoke(models.reports, 'findOne', {
-      where: {
-        capture: cid
-      },
-      order: 'updatedAt DESC'
-    });
-  });
-  function createReport(report) {
-    return Q.invoke(models.capture, 'create', {
+    report = report || {
+      id: cid,
+      capture: cid
+    };
+    return Q.ninvoke(models.capture, 'create', {
       id: report.id,
       expectedRevision: report.revision,
       capture: report.capture,
       captureName: report.captureName
-    });
-  }
+    })
+  });
 }
 function findReport(rid, cid) {
   return Q.ninvoke(models.report, 'find', cid);

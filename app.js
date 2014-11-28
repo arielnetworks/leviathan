@@ -35,7 +35,6 @@ function launch(configure) {
   global.configure = {};
   Object.defineProperties(global.configure, {
     baseImageDir: { value: configure.baseImageDir },
-    relativeExpectedDir: { value: configure.relativeExpectedDir },
     relativeTargetDirPrefix: { value: configure.relativeTargetDirPrefix || '' },
     port: { value: process.env.PORT || 3000 },
     publicCaptureDir: { value: configure.publicCaptureDir || '/captures' },
@@ -45,7 +44,6 @@ function launch(configure) {
 
   // Required configurations:
   assert(global.configure.baseImageDir);
-  assert(global.configure.relativeExpectedDir);
 
   // Express environments
   var app = express();
@@ -56,14 +54,19 @@ function launch(configure) {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(cookieParser());
-  app.use(express.static(path.join(__dirname, 'public')));
 
   // Expose captures
   app.use(global.configure.publicCaptureDir || '/captures', express.static(global.configure.baseImageDir));
 
   app.use(express.static(path.join(__dirname, 'public')));
   if ('development' == app.get('env')) {
-    app.use(express.errorHandler());
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
+    });
   }
 
   // API Routing
