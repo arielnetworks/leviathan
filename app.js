@@ -72,6 +72,7 @@ function launch(configure) {
   // API Routing
   _.each([
     'revisions',
+    'captures',
     'tidal-wave'
   ], function(name) {
     _.each(require('./api/' + name), function(actions, method) {

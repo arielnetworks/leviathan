@@ -16,10 +16,11 @@ module.exports.findRevisions = findRevisions;
 module.exports.findRevision = findRevision;
 module.exports.findReports = findReports;
 module.exports.findReport = findReport;
+module.exports.findCaptures = findCaptures;
 module.exports.findOrCreateCapture = findOrCreateCapture;
 module.exports.updateRevision = updateRevision;
 module.exports.upsertReport = upsertReport;
-module.exports.updateCapture = updateCapture;
+module.exports.updateReport = updateReport;
 
 
 
@@ -62,6 +63,10 @@ function findReports(rid, skip, limit, order, status, checkedAs) {
   return Q.ninvoke(models.report, 'all',
       extendParams_({ where: where }, skip, limit, order));
 }
+function findCaptures(skip, limit, order) {
+  return Q.ninvoke(models.capture, 'all',
+      extendParams_({}, skip, limit, _.isString(order) ? order : 'updatedAt DESC'));
+}
 function findOrCreateCapture(cid, report) {
   return Q.ninvoke(models.capture, 'find', cid)
   .then(function(capture) {
@@ -76,7 +81,8 @@ function findOrCreateCapture(cid, report) {
       id: report.id,
       expectedRevision: report.revision,
       capture: report.capture,
-      captureName: report.captureName
+      captureName: report.captureName,
+      updatedAt: isTesting ? new Date('1970-01-01T00:00:00.000Z') : undefined
     })
   });
 }
@@ -116,10 +122,11 @@ function upsertReport(rid, cid, data) {
   }
   return upsertManually_(models.report, { id: cid, revision: rid }, data);
 }
-function updateCapture(rid, cid, data) {
+function updateReport(rid, cid, data) {
   return findReport(rid, cid)
   .then(function(doc) {
     if (doc) {
+      updateRevision(rid); // Without waiting.
       return Q.ninvoke(doc, 'updateAttributes', data);
     }
   });

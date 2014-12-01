@@ -1,4 +1,6 @@
 
+var isTesting = process.env.NODE_ENV == 'test';
+
 module.exports = {
   id: String, // Same as "capture"
   expectedRevision: String,

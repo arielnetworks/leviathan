@@ -17,12 +17,9 @@ PostTidalWave[':id'] = function(req, res) {
   var rid = req.param('id');
   var result;
   collectCaptures(rid)
-  .then(function(r) {
-    result = r;
-  })
-  .then(persist.updateRevision.bind(null, rid))
-  .then(function() {
-    return result;
+  .then(function(tidalWaveReport) {
+    persist.updateRevision(rid); // Without waiting.
+    return tidalWaveReport;
   })
   .then(res.json.bind(res))
   .catch (function(error) {

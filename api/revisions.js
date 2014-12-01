@@ -2,7 +2,6 @@
 var Q = require('q');
 var _ = require('underscore');
 // DB Shemas
-var Schema = require('../persist').Schema;
 var persist = require('../persist');
 var STATUS_CODES = require('http').STATUS_CODES;
 
@@ -58,7 +57,7 @@ PostRevisions[':id/captures/:cid'] = function(req, res) {
   var checkedAs = getStatusFromReqest(req);
   if (checkedAs) data['checkedAs'] = checkedAs;
   var doc;
-  persist.updateCapture(req.param('id'), req.param('cid'), data)
+  persist.updateReport(req.param('id'), req.param('cid'), data)
   .then(function(doc) {
     if (doc) {
       persist.updateRevision(req.param('id')); // Without waiting.
