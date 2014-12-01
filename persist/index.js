@@ -17,7 +17,7 @@ module.exports.findRevision = findRevision;
 module.exports.findReports = findReports;
 module.exports.findReport = findReport;
 module.exports.findOrCreateCapture = findOrCreateCapture;
-module.exports.upsertRevision = upsertRevision;
+module.exports.updateRevision = updateRevision;
 module.exports.upsertReport = upsertReport;
 module.exports.updateCapture = updateCapture;
 
@@ -87,7 +87,10 @@ function findReport(rid, cid) {
 // function putQueryOptions(query, skip, limit, order) {
 //   query.skip(skip || 0).limit(limit || 20).order(order || {'id': -1});
 // }
-function upsertRevision(id, data) {
+function updateRevision(id) {
+  var data = {
+    id: id
+  };
   if (isTesting) {
     data['updatedAt'] = new Date('1970-01-01T00:00:00.000Z');
   }

@@ -20,7 +20,7 @@ PostTidalWave[':id'] = function(req, res) {
   .then(function(r) {
     result = r;
   })
-  .then(upsertRevision.bind(null, rid))
+  .then(persist.updateRevision.bind(null, rid))
   .then(function() {
     return result;
   })
@@ -65,12 +65,6 @@ function collectCaptures(rid) {
   function cleanup() {
     t = null;
   }
-}
-
-function upsertRevision(id, data) {
-  data = data || {};
-  data['id'] = id;
-  return persist.upsertRevision(id, data);
 }
 
 function upsertReport(rid, data) {

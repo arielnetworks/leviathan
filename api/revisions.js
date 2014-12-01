@@ -57,9 +57,11 @@ PostRevisions[':id/captures/:cid'] = function(req, res) {
   var data = {};
   var checkedAs = getStatusFromReqest(req);
   if (checkedAs) data['checkedAs'] = checkedAs;
+  var doc;
   persist.updateCapture(req.param('id'), req.param('cid'), data)
   .then(function(doc) {
     if (doc) {
+      persist.updateRevision(req.param('id')); // Without waiting.
       return doc;
     }
     res.status(404);
