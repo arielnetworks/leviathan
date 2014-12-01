@@ -32,19 +32,19 @@ JSON API
 
 以下概要を説明します。詳細はtest/json-api.js を確認してください。
  
-### /api/tidal-wave/{rid}
+### POST /api/tidal-wave/{rid}
 
 画像比較を実行します。Jenkins など CI からのキックを想定しています。それが最初の比較の場合、全キャプチャが expect として登録されます。
 
-### /api/revisions
+### GET /api/revisions
 
 tidal-wave が報告した生データと、ユーザーがキャプチャをチェックした結果を返します。
 
-### /api/revisions/{rid}
-### /api/revisions/{rid}/captures
-### /api/revisions/{rid}/captures/{cid}
-### /api/captures
+### GET /api/revisions/{rid}
+### GET /api/revisions/{rid}/captures
+### GET /api/revisions/{rid}/captures/{cid}
+### GET /api/captures
 
 キャプチャ情報と、そのexpectリビジョンを返します。
 
-### /api/captures/{cid}
+### GET /api/captures/{cid}
