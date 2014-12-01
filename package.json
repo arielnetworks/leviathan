@@ -14,10 +14,10 @@
     "jugglingdb-mongodb": "0.0.4-4",
     "q": "^1.1.2",
     "static-favicon": "^2.0.0-alpha",
-    "supertest": "^0.15.0",
     "underscore": "^1.7.0"
   },
   "devDependencies": {
+    "supertest": "^0.15.0",
     "mocha": "^2.0.1"
   }
 }

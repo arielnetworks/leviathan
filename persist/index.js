@@ -91,7 +91,20 @@ function upsertRevision(id, data) {
   if (isTesting) {
     data['updatedAt'] = new Date('1970-01-01T00:00:00.000Z');
   }
-  return upsertManually_(models.revision, { id: id }, data);
+  return Q.all([
+    Q.ninvoke(models.report, 'count', { revision: id, checkedAs: 'UNPROCESSED'}),
+    Q.ninvoke(models.report, 'count', { revision: id, checkedAs: 'IS_OK'}),
+    Q.ninvoke(models.report, 'count', { revision: id, checkedAs: 'IS_BUG'})
+  ])
+  .then(function(counts) {
+    data = _.extend(data, {
+      total: counts.reduce(function(total, c) { return total + c }, 0),
+      'UNPROCESSED': counts[0],
+      'IS_OK': counts[1],
+      'IS_BUG': counts[2],
+    });
+    return upsertManually_(models.revision, { id: id }, data);
+  });
 }
 function upsertReport(rid, cid, data) {
   if (isTesting) {

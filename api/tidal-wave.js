@@ -15,13 +15,14 @@ module.exports['post'] = PostTidalWave;
 
 PostTidalWave[':id'] = function(req, res) {
   var rid = req.param('id');
-  Q.all([
-    upsertRevision(rid),
-    collectCaptures(rid)
-  ])
-  .then(function(results) {
-    var report = results[1];
-    return report;
+  var result;
+  collectCaptures(rid)
+  .then(function(r) {
+    result = r;
+  })
+  .then(upsertRevision.bind(null, rid))
+  .then(function() {
+    return result;
   })
   .then(res.json.bind(res))
   .catch (function(error) {
