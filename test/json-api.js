@@ -54,6 +54,30 @@ describe('Application', function() {
         }, done);
       });
 
+      it('GET /api/captures' + dbType, function(done) {
+        request(app)
+        .get('/api/captures')
+        .expect(200)
+        .expect({
+          "captures": [
+            {
+              "capture": "9018988ae55e012e437aa24cbf9a400a",
+              "expectedRevision": "1",
+              "id": "9018988ae55e012e437aa24cbf9a400a",
+              "updatedAt": "1970-01-01T00:00:00.000Z",
+              "updatedBy": "system"
+            },
+            {
+              "capture": "db38f7f3f5d7d765f97e45d185066cc9",
+              "expectedRevision": "1",
+              "id": "db38f7f3f5d7d765f97e45d185066cc9",
+              "updatedAt": "1970-01-01T00:00:00.000Z",
+              "updatedBy": "system"
+            }
+          ]
+        }, done);
+      });
+
       it('GET /api/revisions/1 in' + dbType, function(done) {
         request(app)
         .get('/api/revisions/1')
@@ -143,6 +167,30 @@ describe('Application', function() {
       });
 
       // Now we have 2 revisions in a store.
+
+      it('/api/captures should not changed any data ' + dbType, function(done) {
+        request(app)
+        .get('/api/captures')
+        .expect(200)
+        .expect({
+          "captures": [
+            {
+              "capture": "9018988ae55e012e437aa24cbf9a400a",
+              "expectedRevision": "1",
+              "id": "9018988ae55e012e437aa24cbf9a400a",
+              "updatedAt": "1970-01-01T00:00:00.000Z",
+              "updatedBy": "system"
+            },
+            {
+              "capture": "db38f7f3f5d7d765f97e45d185066cc9",
+              "expectedRevision": "1",
+              "id": "db38f7f3f5d7d765f97e45d185066cc9",
+              "updatedAt": "1970-01-01T00:00:00.000Z",
+              "updatedBy": "system"
+            }
+          ]
+        }, done);
+      });
 
       it('GET /api/revisions in' + dbType, function(done) {
         request(app)
@@ -545,6 +593,30 @@ describe('Application', function() {
         }, done);
       });
 
+      it('/api/captures should not changed any data ' + dbType, function(done) {
+        request(app)
+        .get('/api/captures')
+        .expect(200)
+        .expect({
+          "captures": [
+            {
+              "capture": "9018988ae55e012e437aa24cbf9a400a",
+              "expectedRevision": "1",
+              "id": "9018988ae55e012e437aa24cbf9a400a",
+              "updatedAt": "1970-01-01T00:00:00.000Z",
+              "updatedBy": "system"
+            },
+            {
+              "capture": "db38f7f3f5d7d765f97e45d185066cc9",
+              "expectedRevision": "1",
+              "id": "db38f7f3f5d7d765f97e45d185066cc9",
+              "updatedAt": "1970-01-01T00:00:00.000Z",
+              "updatedBy": "system"
+            }
+          ]
+        }, done);
+      });
+
       it('POST /api/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9 should change status again in' + dbType, function(done) {
         request(app)
         .post('/api/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9')
@@ -593,7 +665,21 @@ describe('Application', function() {
         }, done);
       });
 
-      it('GET /api/captures' + dbType, function(done) {
+      it('should update its revision count again in' + dbType, function(done) {
+        request(app)
+        .get('/api/revisions/2')
+        .expect(200)
+        .expect({
+          id: 2,
+          total: 2,
+          "UNPROCESSED": 1,
+          "IS_OK": 1,
+          "IS_BUG": 0,
+          updatedAt: '1970-01-01T00:00:00.000Z'
+        }, done);
+      });
+
+      it('should update captures ' + dbType, function(done) {
         request(app)
         .get('/api/captures')
         .expect(200)
@@ -608,26 +694,12 @@ describe('Application', function() {
             },
             {
               "capture": "db38f7f3f5d7d765f97e45d185066cc9",
-              "expectedRevision": "1",
+              "expectedRevision": "2",
               "id": "db38f7f3f5d7d765f97e45d185066cc9",
               "updatedAt": "1970-01-01T00:00:00.000Z",
               "updatedBy": "system"
             }
           ]
-        }, done);
-      });
-
-      it('should update its revision count again in' + dbType, function(done) {
-        request(app)
-        .get('/api/revisions/2')
-        .expect(200)
-        .expect({
-          id: 2,
-          total: 2,
-          "UNPROCESSED": 1,
-          "IS_OK": 1,
-          "IS_BUG": 0,
-          updatedAt: '1970-01-01T00:00:00.000Z'
         }, done);
       });
 
