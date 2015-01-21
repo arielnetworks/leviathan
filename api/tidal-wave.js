@@ -42,8 +42,8 @@ function collectCaptures(rid) {
         revision: rid
       })
       .then(function(capture) {
-        if (capture.expectedRevision != null) {
-          return Path.resolve(getRevisionDir(capture.expectedRevision), shortPath);
+        if (capture.expectedRevision != null && capture.expectedRevision.length) {
+          return Path.resolve(getRevisionDir(_.last(capture.expectedRevision)), shortPath);
         }
         // Looks like it's the first time to run tidal-wave
         return Path.resolve(targetDir, shortPath);

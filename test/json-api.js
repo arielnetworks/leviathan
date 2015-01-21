@@ -62,14 +62,14 @@ describe('Application', function() {
           "captures": [
             {
               "capture": "9018988ae55e012e437aa24cbf9a400a",
-              "expectedRevision": "1",
+              "expectedRevision": ["1"],
               "id": "9018988ae55e012e437aa24cbf9a400a",
               "updatedAt": "1970-01-01T00:00:00.000Z",
               "updatedBy": "system"
             },
             {
               "capture": "db38f7f3f5d7d765f97e45d185066cc9",
-              "expectedRevision": "1",
+              "expectedRevision": ["1"],
               "id": "db38f7f3f5d7d765f97e45d185066cc9",
               "updatedAt": "1970-01-01T00:00:00.000Z",
               "updatedBy": "system"
@@ -176,14 +176,14 @@ describe('Application', function() {
           "captures": [
             {
               "capture": "9018988ae55e012e437aa24cbf9a400a",
-              "expectedRevision": "1",
+              "expectedRevision": ["1"],
               "id": "9018988ae55e012e437aa24cbf9a400a",
               "updatedAt": "1970-01-01T00:00:00.000Z",
               "updatedBy": "system"
             },
             {
               "capture": "db38f7f3f5d7d765f97e45d185066cc9",
-              "expectedRevision": "1",
+              "expectedRevision": ["1"],
               "id": "db38f7f3f5d7d765f97e45d185066cc9",
               "updatedAt": "1970-01-01T00:00:00.000Z",
               "updatedBy": "system"
@@ -601,14 +601,14 @@ describe('Application', function() {
           "captures": [
             {
               "capture": "9018988ae55e012e437aa24cbf9a400a",
-              "expectedRevision": "1",
+              "expectedRevision": ["1"],
               "id": "9018988ae55e012e437aa24cbf9a400a",
               "updatedAt": "1970-01-01T00:00:00.000Z",
               "updatedBy": "system"
             },
             {
               "capture": "db38f7f3f5d7d765f97e45d185066cc9",
-              "expectedRevision": "1",
+              "expectedRevision": ["1"],
               "id": "db38f7f3f5d7d765f97e45d185066cc9",
               "updatedAt": "1970-01-01T00:00:00.000Z",
               "updatedBy": "system"
@@ -687,14 +687,14 @@ describe('Application', function() {
           "captures": [
             {
               "capture": "9018988ae55e012e437aa24cbf9a400a",
-              "expectedRevision": "1",
+              "expectedRevision": ["1"],
               "id": "9018988ae55e012e437aa24cbf9a400a",
               "updatedAt": "1970-01-01T00:00:00.000Z",
               "updatedBy": "system"
             },
             {
               "capture": "db38f7f3f5d7d765f97e45d185066cc9",
-              "expectedRevision": "2",
+              "expectedRevision": ["2"], //XXX
               "id": "db38f7f3f5d7d765f97e45d185066cc9",
               "updatedAt": "1970-01-01T00:00:00.000Z",
               "updatedBy": "system"

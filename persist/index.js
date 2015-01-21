@@ -21,6 +21,7 @@ module.exports.findOrCreateCapture = findOrCreateCapture;
 module.exports.updateRevision = updateRevision;
 module.exports.upsertReport = upsertReport;
 module.exports.updateReport = updateReport;
+module.exports.updateCapture = updateCapture;
 
 
 
@@ -79,7 +80,7 @@ function findOrCreateCapture(cid, report) {
     };
     return Q.ninvoke(models.capture, 'create', {
       id: report.id,
-      expectedRevision: report.revision,
+      expectedRevision: [report.revision],
       capture: report.capture,
       captureName: report.captureName,
       updatedAt: isTesting ? new Date('1970-01-01T00:00:00.000Z') : undefined
@@ -130,6 +131,10 @@ function updateReport(rid, cid, data) {
       return Q.ninvoke(doc, 'updateAttributes', data);
     }
   });
+}
+function updateCapture(cid, expectedRevision) {
+  return upsertManually_(models.capture,
+      { id: cid }, { expectedRevision: expectedRevision }, true);
 }
 
 function upsertManually_(model, condition, data) {
