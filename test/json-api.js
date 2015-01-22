@@ -134,59 +134,59 @@ describe('Application', function() {
       }, done);
     });
 
-    // it('GET /api/revisions/2/captures/revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9 in' , function(done) {
-    //   request(app)
-    //   .get('/api/revisions/2/captures/revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9')
-    //   .expect(200)
-    //   .expect({
-    //     checkedAs: 'UNPROCESSED',
-    //     id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
-    //     capture: 'db38f7f3f5d7d765f97e45d185066cc9',
-    //     captureName: 'scenario2/capture2.png',
-    //     expect_image: 'revision1/scenario2/capture2.png',
-    //     revision: '1',
-    //     span: 10,
-    //     status: 'OK',
-    //     target_image: 'revision1/scenario2/capture2.png',
-    //     threshold: 5,
-    //     time: 0.1,
-    //     updatedAt: '1970-01-01T00:00:00.000Z',
-    //     vector: []
-    //   }, done);
-    // });
+    it('GET /api/revisions/2/captures/revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9 in' , function(done) {
+      request(app)
+      .get('/api/revisions/2/captures/revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9')
+      .expect(200)
+      .expect({
+        checkedAs: 'UNPROCESSED',
+        id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
+        capture: 'db38f7f3f5d7d765f97e45d185066cc9',
+        captureName: 'scenario2/capture2.png',
+        expect_image: 'revision1/scenario2/capture2.png',
+        revision: '1',
+        span: 10,
+        status: 'OK',
+        target_image: 'revision1/scenario2/capture2.png',
+        threshold: 5,
+        time: 0.1,
+        updatedAt: '1970-01-01T00:00:00.000Z',
+        vector: []
+      }, done);
+    });
 
-    // it('POST /api/tidal-wave/2 should report zero in ' , function(done) {
-    //   request(app)
-    //   .post('/api/tidal-wave/2')
-    //   .expect(200)
-    //   .expect({ data: 2, error: 0, request: 2 }, done);
-    // });
+    it('POST /api/tidal-wave/2 should report zero in ' , function(done) {
+      request(app)
+      .post('/api/tidal-wave/2')
+      .expect(200)
+      .expect({ data: 2, error: 0, request: 2 }, done);
+    });
 
     // // Now we have 2 revisions in a store.
 
-    // it('/api/captures should not changed any data ' , function(done) {
-    //   request(app)
-    //   .get('/api/captures')
-    //   .expect(200)
-    //   .expect({
-    //     "captures": [
-    //       {
-    //         "capture": "9018988ae55e012e437aa24cbf9a400a",
-    //         "expectedRevision": ["1"],
-    //         "id": "9018988ae55e012e437aa24cbf9a400a",
-    //         "updatedAt": "1970-01-01T00:00:00.000Z",
-    //         "updatedBy": "system"
-    //       },
-    //       {
-    //         "capture": "db38f7f3f5d7d765f97e45d185066cc9",
-    //         "expectedRevision": ["1"],
-    //         "id": "db38f7f3f5d7d765f97e45d185066cc9",
-    //         "updatedAt": "1970-01-01T00:00:00.000Z",
-    //         "updatedBy": "system"
-    //       }
-    //     ]
-    //   }, done);
-    // });
+    it('/api/captures should not changed any data ' , function(done) {
+      request(app)
+      .get('/api/captures')
+      .expect(200)
+      .expect({
+        "captures": [
+          {
+            "capture": "9018988ae55e012e437aa24cbf9a400a",
+            "expectedRevision": ["1"],
+            "id": "9018988ae55e012e437aa24cbf9a400a",
+            "updatedAt": "1970-01-01T00:00:00.000Z",
+            "updatedBy": "system"
+          },
+          {
+            "capture": "db38f7f3f5d7d765f97e45d185066cc9",
+            "expectedRevision": ["1"],
+            "id": "db38f7f3f5d7d765f97e45d185066cc9",
+            "updatedAt": "1970-01-01T00:00:00.000Z",
+            "updatedBy": "system"
+          }
+        ]
+      }, done);
+    });
 
     // it('GET /api/revisions in' , function(done) {
     //   request(app)

@@ -21,7 +21,7 @@ var fetchedCaptures = dbConnected.collection('captures');
 module.exports.findRevisions = findRevisions;
 module.exports.findRevision = findRevision;
 module.exports.findReports = findReports;
-// module.exports.findReport = findReport;
+module.exports.findReport = findReport;
 module.exports.findCaptures = findCaptures;
 module.exports.findOrCreateCapture = findOrCreateCapture;
 module.exports.updateRevision = updateRevision;
@@ -50,16 +50,20 @@ function cleanup() {
 function findOrCreateCapture(cid, report) {
   var query = {id: cid};
   return fetchedCaptures.then(function(collection) {
-    return collection.update(query, {
-      id: report.id,
-      expectedRevision: [report.revision],
-      capture: report.capture,
-      // captureName: report.captureName,
-      updatedAt: isTesting ? new Date('1970-01-01T00:00:00.000Z') : undefined,
-      updatedBy: 'system'
-    }, {upsert: true})
-    .then(function() {
-      return collection.findOne(query)
+    return collection.findOne(query, {_id: false})
+    .then(function(capture) {
+      if (capture) return capture;
+      return collection.update(query, {
+        id: report.id,
+        expectedRevision: [report.revision],
+        capture: report.capture,
+        // captureName: report.captureName,
+        updatedAt: isTesting ? new Date('1970-01-01T00:00:00.000Z') : undefined,
+        updatedBy: 'system'
+      }, {upsert: true})
+      .then(function() {
+        return collection.findOne(query)
+      })
     })
   });
 }
@@ -93,6 +97,12 @@ function upsertReport(rid, cid, data) {
   })
 }
 
+function findReport(rid, cid) {
+  return fetchedReports.then(function(collection) {
+    return collection.findOne({id: cid}, {_id: false})
+  });
+}
+
 function findReports(rid, skip, limit, order, status, checkedAs) {
   var where = { revision: rid };
   if (status) where.status = status;
@@ -113,7 +123,6 @@ function updateRevision(id) {
     ])
   })
   .then(function(counts) {
-    console.log(counts);
     return fetchedRevisions.then(function(collection) {
       data = _.extend(data, {
         total: counts.reduce(function(total, c) { return total + c }, 0),
