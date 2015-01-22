@@ -20,3 +20,10 @@ GetRevisions['index'] = function(req, res) {
   })
   .catch (handleError.bind(null, res));
 };
+
+function handleError(res, reason) {
+  res.json({
+    error: 1,
+    reason: reason
+  });
+}

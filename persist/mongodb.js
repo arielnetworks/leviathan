@@ -27,7 +27,7 @@ module.exports.findOrCreateCapture = findOrCreateCapture;
 module.exports.updateRevision = updateRevision;
 module.exports.upsertReport = upsertReport;
 // module.exports.updateReport = updateReport;
-module.exports.updateCapture = updateCapture;
+// module.exports.updateCapture = updateCapture;
 module.exports.cleanup = cleanup;
 module.exports._destroy = _destroy;
 
@@ -54,8 +54,9 @@ function findOrCreateCapture(cid, report) {
       id: report.id,
       expectedRevision: [report.revision],
       capture: report.capture,
-      captureName: report.captureName,
-      updatedAt: isTesting ? new Date('1970-01-01T00:00:00.000Z') : undefined
+      // captureName: report.captureName,
+      updatedAt: isTesting ? new Date('1970-01-01T00:00:00.000Z') : undefined,
+      updatedBy: 'system'
     }, {upsert: true})
     .then(function() {
       return collection.findOne(query)
@@ -63,14 +64,14 @@ function findOrCreateCapture(cid, report) {
   });
 }
 
-function updateCapture(cid, expectedRevision) {
-  return fetchedCaptures.then(function(collection) {
-    return collection.update({id: cid}, {$set: {expectedRevision: expectedRevision}}, {upsert: true})
-    .then(function() {
-      return collection.findOne({id: cid})
-    })
-  })
-}
+// function updateCapture(cid, expectedRevision) {
+//   return fetchedCaptures.then(function(collection) {
+//     return collection.update({id: cid}, {$set: {expectedRevision: expectedRevision}}, {upsert: true})
+//     .then(function() {
+//       return collection.findOne({id: cid})
+//     })
+//   })
+// }
 
 function findCaptures(skip, limit, order) {
   return fetchedCaptures.then(function(collection) {
