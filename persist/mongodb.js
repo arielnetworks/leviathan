@@ -83,7 +83,7 @@ function updateCapture(cid, expectedRevision) {
 
 function findCaptures(skip, limit, order) {
   return fetchedReports.then(function(collection) {
-    return collection.find({},
+    return collection.find({}, {_id: false},
         extendParams_({}, skip, limit, _.isString(order) ? order : 'updatedAt DESC')).toArray();
   });
 }
@@ -113,13 +113,16 @@ function findReports(rid, skip, limit, order, status, checkedAs) {
 function updateRevision(id) {
   var data = { id: id };
   if (isTesting) { data['updatedAt'] = new Date('1970-01-01T00:00:00.000Z') }
-  return fetchedRevisions.then(function(collection) {
+  return fetchedReports.then(function(collection) {
     return Q.all([
       collection.count({ revision: id, checkedAs: 'UNPROCESSED' }),
       collection.count({ revision: id, checkedAs: 'IS_OK' }),
       collection.count({ revision: id, checkedAs: 'IS_BUG' })
     ])
-    .then(function(counts) {
+  })
+  .then(function(counts) {
+    console.log(counts);
+    return fetchedRevisions.then(function(collection) {
       data = _.extend(data, {
         total: counts.reduce(function(total, c) { return total + c }, 0),
         'UNPROCESSED': counts[0],
@@ -135,14 +138,14 @@ function updateRevision(id) {
 }
 
 function findRevision(id) {
-  return fetchedRevisions.then(function(revisions) {
-    return revisions.findOne({id: id})
+  return fetchedRevisions.then(function(collection) {
+    return collection.findOne({id: id})
   });
 }
 
 function findRevisions(skip, limit, order) {
-  return fetchedRevisions.then(function(revisions) {
-    return revisions.find({},
+  return fetchedRevisions.then(function(collection) {
+    return collection.find({}, {_id: false},
         extendParams_({}, skip, limit, _.isString(order) ? order : 'id DESC')).toArray();
   });
 }

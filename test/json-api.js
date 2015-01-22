@@ -34,23 +34,23 @@ describe('Application', function() {
       .expect({ data: 2, error: 0, request: 2 }, done);
     });
 
-    // it('GET /api/revisions in' + dbType, function(done) {
-    //   request(app)
-    //   .get('/api/revisions')
-    //   .expect(200)
-    //   .expect({
-    //     revisions: [
-    //       {
-    //         id: 1,
-    //         total: 2,
-    //         "UNPROCESSED": 2,
-    //         "IS_OK": 0,
-    //         "IS_BUG": 0,
-    //         updatedAt: '1970-01-01T00:00:00.000Z'
-    //       }
-    //     ]
-    //   }, done);
-    // });
+    it('GET /api/revisions in' + dbType, function(done) {
+      request(app)
+      .get('/api/revisions')
+      .expect(200)
+      .expect({
+        revisions: [
+          {
+            id: 1,
+            total: 2,
+            "UNPROCESSED": 2,
+            "IS_OK": 0,
+            "IS_BUG": 0,
+            updatedAt: '1970-01-01T00:00:00.000Z'
+          }
+        ]
+      }, done);
+    });
 
     // it('GET /api/captures' + dbType, function(done) {
     //   request(app)

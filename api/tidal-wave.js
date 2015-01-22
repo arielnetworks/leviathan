@@ -77,6 +77,7 @@ function upsertReport(rid, data) {
   data['capture'] = capture;
   data['captureName'] = captureName;
   data['revision'] = rid;
+  data['checkedAs'] = 'UNPROCESSED';
   return persist.upsertReport(rid, cid, data);
 }
 
