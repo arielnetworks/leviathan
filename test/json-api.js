@@ -9,32 +9,30 @@ var persist = require('../persist/mongodb');
 
 describe('Application', function() {
 
-  var dbType = 'memory';
+  describe('should work in '  + ' storage', function() {
 
-  describe('should work in ' + dbType + ' storage', function() {
-
-    var tmp = launchApplication(dbType);
+    var tmp = launchApplication();
     var server = tmp.server;
     var app = tmp.app;
 
     before(persist._destroy);
     after(persist._destroy);
 
-    it('should launch in ' + dbType, function(done) {
+    it('should launch in ' , function(done) {
       request(app)
       .get('/api/revisions')
       .expect(200)
       .expect({ revisions: [] }, done);
     });
 
-    it('POST /api/tidal-wave/1 in ' + dbType, function(done) {
+    it('POST /api/tidal-wave/1 in ' , function(done) {
       request(app)
       .post('/api/tidal-wave/1')
       .expect(200)
       .expect({ data: 2, error: 0, request: 2 }, done);
     });
 
-    it('GET /api/revisions in' + dbType, function(done) {
+    it('GET /api/revisions in' , function(done) {
       request(app)
       .get('/api/revisions')
       .expect(200)
@@ -52,7 +50,7 @@ describe('Application', function() {
       }, done);
     });
 
-    // it('GET /api/captures' + dbType, function(done) {
+    // it('GET /api/captures' , function(done) {
     //   request(app)
     //   .get('/api/captures')
     //   .expect(200)
@@ -76,7 +74,7 @@ describe('Application', function() {
     //   }, done);
     // });
 
-    // it('GET /api/revisions/1 in' + dbType, function(done) {
+    // it('GET /api/revisions/1 in' , function(done) {
     //   request(app)
     //   .get('/api/revisions/1')
     //   .expect(200)
@@ -90,7 +88,7 @@ describe('Application', function() {
     //   }, done);
     // });
 
-    // it('GET /api/revisions/1/captures in' + dbType, function(done) {
+    // it('GET /api/revisions/1/captures in' , function(done) {
     //   request(app)
     //   .get('/api/revisions/1/captures')
     //   .expect(200)
@@ -136,7 +134,7 @@ describe('Application', function() {
     //   }, done);
     // });
 
-    // it('GET /api/revisions/2/captures/revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9 in' + dbType, function(done) {
+    // it('GET /api/revisions/2/captures/revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9 in' , function(done) {
     //   request(app)
     //   .get('/api/revisions/2/captures/revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9')
     //   .expect(200)
@@ -157,7 +155,7 @@ describe('Application', function() {
     //   }, done);
     // });
 
-    // it('POST /api/tidal-wave/2 should report zero in ' + dbType, function(done) {
+    // it('POST /api/tidal-wave/2 should report zero in ' , function(done) {
     //   request(app)
     //   .post('/api/tidal-wave/2')
     //   .expect(200)
@@ -166,7 +164,7 @@ describe('Application', function() {
 
     // // Now we have 2 revisions in a store.
 
-    // it('/api/captures should not changed any data ' + dbType, function(done) {
+    // it('/api/captures should not changed any data ' , function(done) {
     //   request(app)
     //   .get('/api/captures')
     //   .expect(200)
@@ -190,7 +188,7 @@ describe('Application', function() {
     //   }, done);
     // });
 
-    // it('GET /api/revisions in' + dbType, function(done) {
+    // it('GET /api/revisions in' , function(done) {
     //   request(app)
     //   .get('/api/revisions')
     //   .expect(200)
@@ -216,7 +214,7 @@ describe('Application', function() {
     //   }, done);
     // });
 
-    // it('GET /api/revisions/2 in' + dbType, function(done) {
+    // it('GET /api/revisions/2 in' , function(done) {
     //   request(app)
     //   .get('/api/revisions/2')
     //   .expect(200)
@@ -230,7 +228,7 @@ describe('Application', function() {
     //   }, done);
     // });
 
-    // it('GET /api/revisions/2/captures in' + dbType, function(done) {
+    // it('GET /api/revisions/2/captures in' , function(done) {
     //   request(app)
     //   .get('/api/revisions/2/captures')
     //   .expect({
@@ -309,7 +307,7 @@ describe('Application', function() {
     // // Without "order" parameter,
     // //  * "/api/revisions" ordered by "id DESC"
     // //  * other api ordered by "updatedAt DESC"
-    // it('GET /api/revisions returns 2 documents in' + dbType, function(done) {
+    // it('GET /api/revisions returns 2 documents in' , function(done) {
     //   request(app)
     //   .get('/api/revisions')
     //   .expect({
@@ -333,7 +331,7 @@ describe('Application', function() {
     //     ]
     //   }, done);
     // });
-    // it('GET /api/revisions?limit=1 should return the first document' + dbType, function(done) {
+    // it('GET /api/revisions?limit=1 should return the first document' , function(done) {
     //   request(app)
     //   .get('/api/revisions?limit=1')
     //   .expect({
@@ -349,7 +347,7 @@ describe('Application', function() {
     //     ]
     //   }, done);
     // });
-    // it('GET /api/revisions?limit=1&skip=1 should skip one document' + dbType, function(done) {
+    // it('GET /api/revisions?limit=1&skip=1 should skip one document' , function(done) {
     //   request(app)
     //   .get('/api/revisions?limit=1&skip=1')
     //   .expect({
@@ -365,7 +363,7 @@ describe('Application', function() {
     //     ]
     //   }, done);
     // });
-    // it('GET /api/revisions?order=id%20ASC should sorts docs as "id ASC"' + dbType, function(done) {
+    // it('GET /api/revisions?order=id%20ASC should sorts docs as "id ASC"' , function(done) {
     //   request(app)
     //   .get('/api/revisions?order=id%20ASC')
     //   .expect({
@@ -389,7 +387,7 @@ describe('Application', function() {
     //     ]
     //   }, done);
     // });
-    // it('GET /api/revisions/1/captures returns 2 documents in' + dbType, function(done) {
+    // it('GET /api/revisions/1/captures returns 2 documents in' , function(done) {
     //   request(app)
     //   .get('/api/revisions/1/captures')
     //   .expect({
@@ -429,7 +427,7 @@ describe('Application', function() {
     //          expect_image: 'revision1/scenario1/capture1.jpg' }] })
     //   .end(done);
     // });
-    // it('GET /api/revisions/1/captures?limit=1 returns 2 documents in' + dbType, function(done) {
+    // it('GET /api/revisions/1/captures?limit=1 returns 2 documents in' , function(done) {
     //   request(app)
     //   .get('/api/revisions/1/captures?limit=1')
     //   .expect({
@@ -457,7 +455,7 @@ describe('Application', function() {
     //          expect_image: 'revision1/scenario2/capture2.png' }] })
     //   .end(done);
     // });
-    // it('GET /api/revisions/1/captures?limit=1&skip=1 returns 2 documents in' + dbType, function(done) {
+    // it('GET /api/revisions/1/captures?limit=1&skip=1 returns 2 documents in' , function(done) {
     //   request(app)
     //   .get('/api/revisions/1/captures?limit=1&skip=1')
     //   .expect({
@@ -485,7 +483,7 @@ describe('Application', function() {
     //          expect_image: 'revision1/scenario1/capture1.jpg' }] })
     //   .end(done);
     // });
-    // it('GET /api/revisions/1/captures?order=target_image sorts docs by "target_image ASC" in' + dbType, function(done) {
+    // it('GET /api/revisions/1/captures?order=target_image sorts docs by "target_image ASC" in' , function(done) {
     //   request(app)
     //   .get('/api/revisions/1/captures?order=target_image')
     //   .expect({
@@ -529,7 +527,7 @@ describe('Application', function() {
 
     // // Test changing "checkedAs" status
 
-    // it('POST /api/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9 should change "checkedAs" in' + dbType, function(done) {
+    // it('POST /api/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9 should change "checkedAs" in' , function(done) {
     //   request(app)
     //   .post('/api/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9')
     //   .send({ checkedAs: 'IS_BUG' })
@@ -577,7 +575,7 @@ describe('Application', function() {
     //   }, done);
     // });
 
-    // it('should update its revision count' + dbType, function(done) {
+    // it('should update its revision count' , function(done) {
     //   request(app)
     //   .get('/api/revisions/2')
     //   .expect(200)
@@ -591,7 +589,7 @@ describe('Application', function() {
     //   }, done);
     // });
 
-    // it('/api/captures should not changed any data ' + dbType, function(done) {
+    // it('/api/captures should not changed any data ' , function(done) {
     //   request(app)
     //   .get('/api/captures')
     //   .expect(200)
@@ -615,7 +613,7 @@ describe('Application', function() {
     //   }, done);
     // });
 
-    // it('POST /api/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9 should change status again in' + dbType, function(done) {
+    // it('POST /api/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9 should change status again in' , function(done) {
     //   request(app)
     //   .post('/api/revisions/2/captures/revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9')
     //   .send({ checkedAs: 'IS_OK' })
@@ -663,7 +661,7 @@ describe('Application', function() {
     //   }, done);
     // });
 
-    // it('should update its revision count again in' + dbType, function(done) {
+    // it('should update its revision count again in' , function(done) {
     //   request(app)
     //   .get('/api/revisions/2')
     //   .expect(200)
@@ -677,7 +675,7 @@ describe('Application', function() {
     //   }, done);
     // });
 
-    // it('should update captures ' + dbType, function(done) {
+    // it('should update captures ' , function(done) {
     //   request(app)
     //   .get('/api/captures')
     //   .expect(200)
@@ -701,7 +699,7 @@ describe('Application', function() {
     //   }, done);
     // });
 
-    // it('GET /api/revisions/2/captures?status=SUSPICIOUS should filter docs by status in' + dbType, function(done) {
+    // it('GET /api/revisions/2/captures?status=SUSPICIOUS should filter docs by status in' , function(done) {
     //   request(app)
     //   .get('/api/revisions/2/captures?status=SUSPICIOUS')
     //   .expect({
@@ -754,7 +752,7 @@ describe('Application', function() {
     //   .end(done);
     // });
 
-    // it('GET /api/revisions/2/captures?checkedAs=UNPROCESSED should filter docs by checkedAs in' + dbType, function(done) {
+    // it('GET /api/revisions/2/captures?checkedAs=UNPROCESSED should filter docs by checkedAs in' , function(done) {
     //   request(app)
     //   .get('/api/revisions/2/captures?checkedAs=UNPROCESSED')
     //   .expect({
@@ -787,7 +785,7 @@ describe('Application', function() {
 
 });
 
-function launchApplication(dbType) {
+function launchApplication() {
   var application = require('../app');
   var configure = {
     port: 3000,
@@ -795,22 +793,6 @@ function launchApplication(dbType) {
     relativeTargetDirPrefix: 'revision',
     // db: { debug: true }
   };
-  // switch (dbType) {
-  //   case 'memory':
-  //     _.extend(configure, {
-  //       db: { type: 'memory' }
-  //     });
-  //     break;
-  //   case 'mongodb':
-  //     _.extend(configure, {
-  //       db: {
-  //         type: 'mongodb',
-  //         host: 'localhost',
-  //         database: 'leviathan_test'
-  //       }
-  //     });
-  //     break;
-  // }
   return application.launch(configure);
 }
 

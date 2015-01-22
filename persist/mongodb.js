@@ -33,15 +33,6 @@ module.exports._destroy = _destroy;
 
 
 
-// updateCapture('c:xxx', 'g')
-// .then(function(doc) {
-//   return findCaptures(0, 10);
-// })
-// .then(console.log)
-// .catch(function(err) {console.log(err.stack)});
-
-
-
 function _destroy() {
   return Q.all([fetchedRevisions, fetchedReports, fetchedCaptures].map(function(fetched) {
     return fetched.then(function(collection) {
@@ -82,7 +73,7 @@ function updateCapture(cid, expectedRevision) {
 }
 
 function findCaptures(skip, limit, order) {
-  return fetchedReports.then(function(collection) {
+  return fetchedCaptures.then(function(collection) {
     return collection.find({}, {_id: false},
         extendParams_({}, skip, limit, _.isString(order) ? order : 'updatedAt DESC')).toArray();
   });
