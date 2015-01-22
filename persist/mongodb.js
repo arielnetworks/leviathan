@@ -98,7 +98,7 @@ function findReports(rid, skip, limit, order, status, checkedAs) {
   if (status) where.status = status;
   if (checkedAs) where.checkedAs = checkedAs;
   return fetchedReports.then(function(reports) {
-    return reports.find(where).toArray();
+    return reports.find(where, {_id: false}).toArray();
   });
 }
 
@@ -131,7 +131,7 @@ function updateRevision(id) {
 
 function findRevision(id) {
   return fetchedRevisions.then(function(collection) {
-    return collection.findOne({id: id})
+    return collection.findOne({id: id}, {_id: false})
   });
 }
 

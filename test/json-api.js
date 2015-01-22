@@ -74,65 +74,65 @@ describe('Application', function() {
       }, done);
     });
 
-    // it('GET /api/revisions/1 in' , function(done) {
-    //   request(app)
-    //   .get('/api/revisions/1')
-    //   .expect(200)
-    //   .expect({
-    //     id: 1,
-    //     total: 2,
-    //     "UNPROCESSED": 2,
-    //     "IS_OK": 0,
-    //     "IS_BUG": 0,
-    //     updatedAt: '1970-01-01T00:00:00.000Z'
-    //   }, done);
-    // });
+    it('GET /api/revisions/1 in' , function(done) {
+      request(app)
+      .get('/api/revisions/1')
+      .expect(200)
+      .expect({
+        id: 1,
+        total: 2,
+        "UNPROCESSED": 2,
+        "IS_OK": 0,
+        "IS_BUG": 0,
+        updatedAt: '1970-01-01T00:00:00.000Z'
+      }, done);
+    });
 
-    // it('GET /api/revisions/1/captures in' , function(done) {
-    //   request(app)
-    //   .get('/api/revisions/1/captures')
-    //   .expect(200)
-    //   .expect({
-    //     revision: {
-    //       id: '1',
-    //       total: 2,
-    //       "UNPROCESSED": 2,
-    //       "IS_OK": 0,
-    //       "IS_BUG": 0,
-    //       updatedAt: '1970-01-01T00:00:00.000Z'
-    //     },
-    //     captures: [{
-    //       checkedAs: 'UNPROCESSED',
-    //       id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
-    //       capture: 'db38f7f3f5d7d765f97e45d185066cc9',
-    //       captureName: 'scenario2/capture2.png',
-    //       expect_image: 'revision1/scenario2/capture2.png',
-    //       revision: '1',
-    //       span: 10,
-    //       status: 'OK',
-    //       target_image: 'revision1/scenario2/capture2.png',
-    //       threshold: 5,
-    //       time: 0.1,
-    //       updatedAt: '1970-01-01T00:00:00.000Z',
-    //       vector: []
-    //     },
-    //     {
-    //       checkedAs: 'UNPROCESSED',
-    //       capture: '9018988ae55e012e437aa24cbf9a400a',
-    //       captureName: 'scenario1/capture1.jpg',
-    //       expect_image: 'revision1/scenario1/capture1.jpg',
-    //       id: 'revision:1:capture:9018988ae55e012e437aa24cbf9a400a',
-    //       revision: '1',
-    //       span: 10,
-    //       status: 'OK',
-    //       target_image: 'revision1/scenario1/capture1.jpg',
-    //       threshold: 5,
-    //       time: 0.1,
-    //       updatedAt: '1970-01-01T00:00:00.000Z',
-    //       vector: []
-    //     }]
-    //   }, done);
-    // });
+    it('GET /api/revisions/1/captures in' , function(done) {
+      request(app)
+      .get('/api/revisions/1/captures')
+      .expect(200)
+      .expect({
+        revision: {
+          id: '1',
+          total: 2,
+          "UNPROCESSED": 2,
+          "IS_OK": 0,
+          "IS_BUG": 0,
+          updatedAt: '1970-01-01T00:00:00.000Z'
+        },
+        captures: [{
+          checkedAs: 'UNPROCESSED',
+          id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
+          capture: 'db38f7f3f5d7d765f97e45d185066cc9',
+          captureName: 'scenario2/capture2.png',
+          expect_image: 'revision1/scenario2/capture2.png',
+          revision: '1',
+          span: 10,
+          status: 'OK',
+          target_image: 'revision1/scenario2/capture2.png',
+          threshold: 5,
+          time: 0.1,
+          updatedAt: '1970-01-01T00:00:00.000Z',
+          vector: []
+        },
+        {
+          checkedAs: 'UNPROCESSED',
+          capture: '9018988ae55e012e437aa24cbf9a400a',
+          captureName: 'scenario1/capture1.jpg',
+          expect_image: 'revision1/scenario1/capture1.jpg',
+          id: 'revision:1:capture:9018988ae55e012e437aa24cbf9a400a',
+          revision: '1',
+          span: 10,
+          status: 'OK',
+          target_image: 'revision1/scenario1/capture1.jpg',
+          threshold: 5,
+          time: 0.1,
+          updatedAt: '1970-01-01T00:00:00.000Z',
+          vector: []
+        }]
+      }, done);
+    });
 
     // it('GET /api/revisions/2/captures/revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9 in' , function(done) {
     //   request(app)
