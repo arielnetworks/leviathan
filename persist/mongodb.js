@@ -28,29 +28,46 @@ module.exports.updateRevision = updateRevision;
 module.exports.upsertReport = upsertReport;
 // module.exports.updateReport = updateReport;
 module.exports.updateCapture = updateCapture;
+module.exports.cleanup = cleanup;
+module.exports._destroy = _destroy;
 
 
 
-updateCapture('c:xxx', 'g')
-.then(function(doc) {
-  return findCaptures(0, 10);
-})
-.then(console.log)
-.catch(function(err) {console.log(err.stack)});
+// updateCapture('c:xxx', 'g')
+// .then(function(doc) {
+//   return findCaptures(0, 10);
+// })
+// .then(console.log)
+// .catch(function(err) {console.log(err.stack)});
 
 
+
+function _destroy() {
+  return Q.all([fetchedRevisions, fetchedReports, fetchedCaptures].map(function(fetched) {
+    return fetched.then(function(collection) {
+      return collection.count().then(function(num) { // need to count before dropping
+        if (num > 0) return collection.drop();
+      })
+    })
+  }));
+}
+
+function cleanup() {
+  return dbConnected.close();
+}
 
 function findOrCreateCapture(cid, report) {
+  var query = {id: cid};
   return fetchedCaptures.then(function(collection) {
-    return collection.update({id: cid}, {
+    return collection.update(query, {
       id: report.id,
       expectedRevision: [report.revision],
       capture: report.capture,
       captureName: report.captureName,
       updatedAt: isTesting ? new Date('1970-01-01T00:00:00.000Z') : undefined
-    })
+    }, {upsert: true})
     .then(function() {
-      return collection.findOne({id: cid})
+      return collection.findOne(query)
     })
   });
 }

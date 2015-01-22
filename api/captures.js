@@ -2,8 +2,7 @@
 var Q = require('q');
 var _ = require('underscore');
 // DB Shemas
-var Schema = require('../persist').Schema;
-var persist = require('../persist');
+var persist = require('../persist/mongodb');
 // var STATUS_CODES = require('http').STATUS_CODES;
 
 
