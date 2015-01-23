@@ -78,9 +78,10 @@ function findOrCreateCapture(cid, report) {
 // }
 
 function findCaptures(skip, limit, order) {
+  order = parseOrderParam_(order);
   return fetchedCaptures.then(function(collection) {
     return collection.find({}, {_id: false})
-        .skip(skip).limit(limit).sort('updatedAt', -1).toArray();
+        .skip(skip).limit(limit).sort(order.of || 'updatedAt', order.by || -1).toArray();
   });
 }
 
@@ -145,9 +146,28 @@ function findRevision(id) {
 }
 
 function findRevisions(skip, limit, order) {
+  order = parseOrderParam_(order);
   return fetchedRevisions.then(function(collection) {
     return collection.find({}, {_id: false})
-        .skip(skip).limit(limit).sort('id', -1).toArray();
+        .skip(skip).limit(limit).sort(order.of || 'id', order.by || -1).toArray();
   });
 }
 
+function parseOrderParam_(order) {
+  if (!_.isString(order)) return {}
+  if (!~order.indexOf(' ')) return {}
+  var splitted = {};
+  if ((splitted = order.split(' ')).length != 2) return {}
+  return {
+    of: splitted[0],
+    by: splitted[1] == 'ASC' ? 1 : -1
+  };
+}
+(function testParseOrderParam_() {
+  var order1 = parseOrderParam_('id ASC');
+  assert.equal(order1.of, 'id');
+  assert.equal(order1.by, 1);
+  var order2 = parseOrderParam_('updatedAt DESC');
+  assert.equal(order2.of, 'updatedAt');
+  assert.equal(order2.by, -1);
+})()
