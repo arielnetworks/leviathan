@@ -79,8 +79,8 @@ function findOrCreateCapture(cid, report) {
 
 function findCaptures(skip, limit, order) {
   return fetchedCaptures.then(function(collection) {
-    return collection.find({}, {_id: false},
-        extendParams_({}, skip, limit, _.isString(order) ? order : 'updatedAt DESC')).toArray();
+    return collection.find({}, {_id: false})
+        .skip(skip).limit(limit).sort('updatedAt', -1).toArray();
   });
 }
 
@@ -146,38 +146,8 @@ function findRevision(id) {
 
 function findRevisions(skip, limit, order) {
   return fetchedRevisions.then(function(collection) {
-    return collection.find({}, {_id: false},
-        extendParams_({}, skip, limit, _.isString(order) ? order : 'id DESC')).toArray();
+    return collection.find({}, {_id: false})
+        .skip(skip).limit(limit).sort('id', -1).toArray();
   });
-}
-
-
-
-// fetchedRevisions.then(function(collection) {
-//   return collection.insert({a: 2})
-//   .then(function(docs) {
-//     console.log(docs);
-//     return collection.count();
-//   }).then(function(count) {
-//     assert(count, 1);
-//     return collection.find().toArray();
-//   }).then(function(results) {
-//     assert(results.length, 1);
-//     assert(results[0].a, 2);
-//   });
-// }).finally (function() {
-//   dbConnected.close();
-// }).done();
-
-
-
-
-
-
-function extendParams_(params, skip, limit, order) {
-  params.order = _.isString(order) ? order : 'updatedAt DESC';
-  if (!_.isNaN(+skip)) params.skip = +skip;
-  if (!_.isNaN(+limit)) params.limit = +limit;
-  return params;
 }
 

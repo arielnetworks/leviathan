@@ -188,31 +188,31 @@ describe('Application', function() {
       }, done);
     });
 
-    // it('GET /api/revisions in' , function(done) {
-    //   request(app)
-    //   .get('/api/revisions')
-    //   .expect(200)
-    //   .expect({
-    //     revisions: [
-    //       {
-    //         id: 2,
-    //         total: 2,
-    //         "UNPROCESSED": 2,
-    //         "IS_OK": 0,
-    //         "IS_BUG": 0,
-    //         updatedAt: '1970-01-01T00:00:00.000Z' 
-    //       },
-    //       {
-    //         id: 1,
-    //         total: 2,
-    //         "UNPROCESSED": 2,
-    //         "IS_OK": 0,
-    //         "IS_BUG": 0,
-    //         updatedAt: '1970-01-01T00:00:00.000Z'
-    //       }
-    //     ]
-    //   }, done);
-    // });
+    it('GET /api/revisions in' , function(done) {
+      request(app)
+      .get('/api/revisions')
+      .expect(200)
+      .expect({
+        revisions: [
+          {
+            id: 2,
+            total: 2,
+            "UNPROCESSED": 2,
+            "IS_OK": 0,
+            "IS_BUG": 0,
+            updatedAt: '1970-01-01T00:00:00.000Z' 
+          },
+          {
+            id: 1,
+            total: 2,
+            "UNPROCESSED": 2,
+            "IS_OK": 0,
+            "IS_BUG": 0,
+            updatedAt: '1970-01-01T00:00:00.000Z'
+          }
+        ]
+      }, done);
+    });
 
     // it('GET /api/revisions/2 in' , function(done) {
     //   request(app)
