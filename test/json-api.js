@@ -431,103 +431,103 @@ describe('Application', function() {
              expect_image: 'revision1/scenario1/capture1.jpg' }] })
       .end(done);
     });
-    // it('GET /api/revisions/1/captures?limit=1 returns 2 documents in' , function(done) {
-    //   request(app)
-    //   .get('/api/revisions/1/captures?limit=1')
-    //   .expect({
-    //     revision: {
-    //       id: 1,
-    //       total: 2,
-    //       "UNPROCESSED": 2,
-    //       "IS_OK": 0,
-    //       "IS_BUG": 0,
-    //       updatedAt: '1970-01-01T00:00:00.000Z'
-    //     },
-    //     captures:
-    //      [{ checkedAs: 'UNPROCESSED',
-    //          id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
-    //          revision: '1',
-    //          capture: 'db38f7f3f5d7d765f97e45d185066cc9',
-    //          captureName: 'scenario2/capture2.png',
-    //          updatedAt: '1970-01-01T00:00:00.000Z',
-    //          status: 'OK',
-    //          span: 10,
-    //          threshold: 5,
-    //          vector: [],
-    //          time: 0.1,
-    //          target_image: 'revision1/scenario2/capture2.png',
-    //          expect_image: 'revision1/scenario2/capture2.png' }] })
-    //   .end(done);
-    // });
-    // it('GET /api/revisions/1/captures?limit=1&skip=1 returns 2 documents in' , function(done) {
-    //   request(app)
-    //   .get('/api/revisions/1/captures?limit=1&skip=1')
-    //   .expect({
-    //     revision: {
-    //       id: 1,
-    //       total: 2,
-    //       "UNPROCESSED": 2,
-    //       "IS_OK": 0,
-    //       "IS_BUG": 0,
-    //       updatedAt: '1970-01-01T00:00:00.000Z'
-    //     },
-    //     captures:
-    //      [{ checkedAs: 'UNPROCESSED',
-    //          id: 'revision:1:capture:9018988ae55e012e437aa24cbf9a400a',
-    //          revision: '1',
-    //          capture: '9018988ae55e012e437aa24cbf9a400a',
-    //          captureName: 'scenario1/capture1.jpg',
-    //          updatedAt: '1970-01-01T00:00:00.000Z',
-    //          status: 'OK',
-    //          span: 10,
-    //          threshold: 5,
-    //          vector: [],
-    //          time: 0.1,
-    //          target_image: 'revision1/scenario1/capture1.jpg',
-    //          expect_image: 'revision1/scenario1/capture1.jpg' }] })
-    //   .end(done);
-    // });
-    // it('GET /api/revisions/1/captures?order=target_image sorts docs by "target_image ASC" in' , function(done) {
-    //   request(app)
-    //   .get('/api/revisions/1/captures?order=target_image')
-    //   .expect({
-    //     revision: {
-    //       id: 1,
-    //       total: 2,
-    //       "UNPROCESSED": 2,
-    //       "IS_OK": 0,
-    //       "IS_BUG": 0,
-    //       updatedAt: '1970-01-01T00:00:00.000Z'
-    //     },
-    //     captures:
-    //      [{ checkedAs: 'UNPROCESSED',
-    //          id: 'revision:1:capture:9018988ae55e012e437aa24cbf9a400a',
-    //          revision: '1',
-    //          capture: '9018988ae55e012e437aa24cbf9a400a',
-    //          captureName: 'scenario1/capture1.jpg',
-    //          updatedAt: '1970-01-01T00:00:00.000Z',
-    //          status: 'OK',
-    //          span: 10,
-    //          threshold: 5,
-    //          vector: [],
-    //          time: 0.1,
-    //          target_image: 'revision1/scenario1/capture1.jpg',
-    //          expect_image: 'revision1/scenario1/capture1.jpg' },
-    //        { checkedAs: 'UNPROCESSED',
-    //          id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
-    //          revision: '1',
-    //          capture: 'db38f7f3f5d7d765f97e45d185066cc9',
-    //          captureName: 'scenario2/capture2.png',
-    //          updatedAt: '1970-01-01T00:00:00.000Z',
-    //          status: 'OK',
-    //          span: 10,
-    //          threshold: 5,
-    //          vector: [],
-    //          time: 0.1,
-    //          target_image: 'revision1/scenario2/capture2.png',
-    //          expect_image: 'revision1/scenario2/capture2.png' }] })
-    //   .end(done);
-    // });
+    it('GET /api/revisions/1/captures?limit=1 returns 2 documents in' , function(done) {
+      request(app)
+      .get('/api/revisions/1/captures?limit=1')
+      .expect({
+        revision: {
+          id: 1,
+          total: 2,
+          "UNPROCESSED": 2,
+          "IS_OK": 0,
+          "IS_BUG": 0,
+          updatedAt: '1970-01-01T00:00:00.000Z'
+        },
+        captures:
+         [{ checkedAs: 'UNPROCESSED',
+             id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
+             revision: '1',
+             capture: 'db38f7f3f5d7d765f97e45d185066cc9',
+             captureName: 'scenario2/capture2.png',
+             updatedAt: '1970-01-01T00:00:00.000Z',
+             status: 'OK',
+             span: 10,
+             threshold: 5,
+             vector: [],
+             time: 0.1,
+             target_image: 'revision1/scenario2/capture2.png',
+             expect_image: 'revision1/scenario2/capture2.png' }] })
+      .end(done);
+    });
+    it('GET /api/revisions/1/captures?limit=1&skip=1 returns 2 documents in' , function(done) {
+      request(app)
+      .get('/api/revisions/1/captures?limit=1&skip=1')
+      .expect({
+        revision: {
+          id: 1,
+          total: 2,
+          "UNPROCESSED": 2,
+          "IS_OK": 0,
+          "IS_BUG": 0,
+          updatedAt: '1970-01-01T00:00:00.000Z'
+        },
+        captures:
+         [{ checkedAs: 'UNPROCESSED',
+             id: 'revision:1:capture:9018988ae55e012e437aa24cbf9a400a',
+             revision: '1',
+             capture: '9018988ae55e012e437aa24cbf9a400a',
+             captureName: 'scenario1/capture1.jpg',
+             updatedAt: '1970-01-01T00:00:00.000Z',
+             status: 'OK',
+             span: 10,
+             threshold: 5,
+             vector: [],
+             time: 0.1,
+             target_image: 'revision1/scenario1/capture1.jpg',
+             expect_image: 'revision1/scenario1/capture1.jpg' }] })
+      .end(done);
+    });
+    it('GET /api/revisions/1/captures?order=target_image%20ASC sorts docs by "target_image ASC" in' , function(done) {
+      request(app)
+      .get('/api/revisions/1/captures?order=target_image%20ASC')
+      .expect({
+        revision: {
+          id: 1,
+          total: 2,
+          "UNPROCESSED": 2,
+          "IS_OK": 0,
+          "IS_BUG": 0,
+          updatedAt: '1970-01-01T00:00:00.000Z'
+        },
+        captures:
+         [{ checkedAs: 'UNPROCESSED',
+             id: 'revision:1:capture:9018988ae55e012e437aa24cbf9a400a',
+             revision: '1',
+             capture: '9018988ae55e012e437aa24cbf9a400a',
+             captureName: 'scenario1/capture1.jpg',
+             updatedAt: '1970-01-01T00:00:00.000Z',
+             status: 'OK',
+             span: 10,
+             threshold: 5,
+             vector: [],
+             time: 0.1,
+             target_image: 'revision1/scenario1/capture1.jpg',
+             expect_image: 'revision1/scenario1/capture1.jpg' },
+           { checkedAs: 'UNPROCESSED',
+             id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
+             revision: '1',
+             capture: 'db38f7f3f5d7d765f97e45d185066cc9',
+             captureName: 'scenario2/capture2.png',
+             updatedAt: '1970-01-01T00:00:00.000Z',
+             status: 'OK',
+             span: 10,
+             threshold: 5,
+             vector: [],
+             time: 0.1,
+             target_image: 'revision1/scenario2/capture2.png',
+             expect_image: 'revision1/scenario2/capture2.png' }] })
+      .end(done);
+    });
 
     // // Test changing "checkedAs" status
 
