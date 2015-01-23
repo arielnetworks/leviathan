@@ -72,6 +72,7 @@ function launch(configure) {
   // API Routing
   _.each([
     'revisions',
+    'captures',
     'tidal-wave'
   ], function(name) {
     _.each(require('./api/' + name), function(actions, method) {
@@ -83,10 +84,15 @@ function launch(configure) {
 
   var server = http.createServer(app);
 
-  var promiseLaunch = require('./persist').ready()
-  .then(Q.nbind(server.listen, server, app.get('port')))
+  var promiseLaunch = Q.ninvoke(server, 'listen', app.get('port'))
   .then(function() {
     console.log('Leviathan server listening on port ' + app.get('port'));
+  })
+  .then(function() {
+    return {
+      app: app,
+      server: server
+    };
   })
   .catch (function(error) {
     console.log('Launching application fails.');
@@ -99,25 +105,5 @@ function launch(configure) {
     server: server,
     promiseLaunch: promiseLaunch
   };
-
-  // // After connecting DB, launch HTTP server.
-  // var server;
-  // return require('./persist').ready()
-  // .then(function() {
-  //   server = http.createServer(app);
-  //   return Q.ninvoke(server, 'listen', app.get('port'));
-  // })
-  // .then(function() {
-  //   console.log('Leviathan server listening on port ' + app.get('port'));
-  //   return {
-  //     app: app,
-  //     server: server
-  //   };
-  // })
-  // .catch (function(error) {
-  //   console.log('Launching application fails.');
-  //   console.log(error.stack);
-  //   process.exit(1);
-  // });
 
 }

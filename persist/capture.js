@@ -1,7 +1,7 @@
 
 module.exports = {
   id: String, // Same as "capture"
-  expectedRevision: String,
+  expectedRevision: Schema.JSON,
   capture: String, // A hash of "captureName"
   captureName: String, // A short file path to a capture (without revision directory)
   updatedBy: {

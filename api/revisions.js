@@ -2,7 +2,6 @@
 var Q = require('q');
 var _ = require('underscore');
 // DB Shemas
-var Schema = require('../persist').Schema;
 var persist = require('../persist');
 var STATUS_CODES = require('http').STATUS_CODES;
 
@@ -56,10 +55,20 @@ GetRevisions[':id/captures/:cid'] = function(req, res) {
 PostRevisions[':id/captures/:cid'] = function(req, res) {
   var data = {};
   var checkedAs = getStatusFromReqest(req);
-  if (checkedAs) data['checkedAs'] = checkedAs;
-  persist.updateCapture(req.param('id'), req.param('cid'), data)
+  Q().then(function() {
+    if (checkedAs) {
+      data['checkedAs'] = checkedAs;
+      if (checkedAs == 'IS_OK') {
+        return persist.updateCapture(req.param('cid'), req.param('id'));
+      }
+    }
+  })
+  .then(function() {
+    return persist.updateReport(req.param('id'), req.param('cid'), data)
+  })
   .then(function(doc) {
     if (doc) {
+      persist.updateRevision(req.param('id')); // Without waiting.
       return doc;
     }
     res.status(404);

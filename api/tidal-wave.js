@@ -5,7 +5,6 @@ var _ = require('underscore');
 var Q = require('q');
 Q.longStackSupport = true;
 var TidalWave = require('tidal-wave');
-var Schema = require('../persist').Schema;
 var persist = require('../persist');
 
 var PostTidalWave = {};
@@ -15,13 +14,11 @@ module.exports['post'] = PostTidalWave;
 
 PostTidalWave[':id'] = function(req, res) {
   var rid = req.param('id');
-  Q.all([
-    upsertRevision(rid),
-    collectCaptures(rid)
-  ])
-  .then(function(results) {
-    var report = results[1];
-    return report;
+  var result;
+  collectCaptures(rid)
+  .then(function(tidalWaveReport) {
+    persist.updateRevision(rid); // Without waiting.
+    return tidalWaveReport;
   })
   .then(res.json.bind(res))
   .catch (function(error) {
@@ -37,15 +34,15 @@ function collectCaptures(rid) {
   var targetDir = getRevisionDir(rid);
   var t = TidalWave.create(targetDir, {
     getExpectedPath: function(shortPath) {
-      var cid = generateHash(shortPath);
-      return persist.findOrCreateCapture(cid, {
-        id: cid,
-        capture: cid,
+      var capture = generateHash(shortPath);
+      return persist.findOrCreateCapture(capture, {
+        id: capture,
+        capture: capture,
         revision: rid
       })
       .then(function(capture) {
-        if (capture.expectedRevision != null) {
-          return Path.resolve(getRevisionDir(capture.expectedRevision), shortPath);
+        if (capture.expectedRevision != null && capture.expectedRevision.length) {
+          return Path.resolve(getRevisionDir(_.last(capture.expectedRevision)), shortPath);
         }
         // Looks like it's the first time to run tidal-wave
         return Path.resolve(targetDir, shortPath);
@@ -53,7 +50,7 @@ function collectCaptures(rid) {
     }
   });
 
-  t.on('data', upsertReport.bind(null, rid));
+  t.on('data', updateReport.bind(null, rid));
   t.once('error', d.reject);
   t.once('finish', d.resolve);
   t.once('error', cleanup);
@@ -66,13 +63,7 @@ function collectCaptures(rid) {
   }
 }
 
-function upsertRevision(id, data) {
-  data = data || {};
-  data['id'] = id;
-  return persist.upsertRevision(id, data);
-}
-
-function upsertReport(rid, data) {
+function updateReport(rid, data) {
   var captureName = Path.relative(getRevisionDir(rid), data['target_image']);
 
   // As a relative path from baseImageDir.
@@ -86,7 +77,12 @@ function upsertReport(rid, data) {
   data['capture'] = capture;
   data['captureName'] = captureName;
   data['revision'] = rid;
-  return persist.upsertReport(rid, cid, data);
+  data['checkedAs'] = 'UNPROCESSED';
+  return persist.updateReport(rid, cid, data);
+}
+
+function getCaptureId(rid, cid) {
+  return 'revision:' + rid + ':capture:' + cid;
 }
 
 function generateHash(seed) {
