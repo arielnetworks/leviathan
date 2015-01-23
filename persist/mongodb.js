@@ -25,9 +25,8 @@ module.exports.findReport = findReport;
 module.exports.findCaptures = findCaptures;
 module.exports.findOrCreateCapture = findOrCreateCapture;
 module.exports.updateRevision = updateRevision;
-module.exports.upsertReport = upsertReport;
-// module.exports.updateReport = updateReport;
-// module.exports.updateCapture = updateCapture;
+module.exports.updateReport = updateReport;
+module.exports.updateCapture = updateCapture;
 module.exports.cleanup = cleanup;
 module.exports._destroy = _destroy;
 
@@ -54,7 +53,7 @@ function findOrCreateCapture(cid, report) {
     .then(function(capture) {
       if (capture) return capture;
       return collection.update(query, {
-        id: report.id,
+        id: report.capture,
         expectedRevision: [report.revision],
         capture: report.capture,
         // captureName: report.captureName,
@@ -68,24 +67,27 @@ function findOrCreateCapture(cid, report) {
   });
 }
 
-// function updateCapture(cid, expectedRevision) {
-//   return fetchedCaptures.then(function(collection) {
-//     return collection.update({id: cid}, {$set: {expectedRevision: expectedRevision}}, {upsert: true})
-//     .then(function() {
-//       return collection.findOne({id: cid})
-//     })
-//   })
-// }
-
-function findCaptures(skip, limit, order) {
-  order = parseOrderParam_(order);
+function updateCapture(cid, expectedRevision) {
+  var capture = extractCaptureIdFromCid(cid);
   return fetchedCaptures.then(function(collection) {
-    return collection.find({}, {_id: false})
-        .skip(skip || 0).limit(limit || 20).sort(order.of || 'updatedAt', order.by || -1).toArray();
-  });
+    return collection.update({id: capture}, {$addToSet: {expectedRevision: expectedRevision}}, {upsert: false})
+    .then(function() {
+      return collection.findOne({id: capture})
+    })
+  })
 }
 
-function upsertReport(rid, cid, data) {
+function extractCaptureIdFromCid(cid) {
+  return cid.split(':')[3];
+}
+(function testExtractCaptureIdFromCid() {
+  var capture1 = extractCaptureIdFromCid('revision:1:capture:9018988ae55e012e437aa24cbf9a400a');
+  assert.equal(capture1, '9018988ae55e012e437aa24cbf9a400a');
+  var capture2 = extractCaptureIdFromCid('revision:oiuooiu97979:capture:9018988ae55e012e437aa24cbf9a400a');
+  assert.equal(capture2, '9018988ae55e012e437aa24cbf9a400a');
+})();
+
+function updateReport(rid, cid, data) {
   if (isTesting) {
     data['time'] = 0.1;
     data['updatedAt'] = new Date('1970-01-01T00:00:00.000Z');
@@ -93,9 +95,17 @@ function upsertReport(rid, cid, data) {
   return fetchedReports.then(function(collection) {
     return collection.update({id: cid, revision: rid}, {$set: data}, {upsert: true})
     .then(function() {
-      return collection.findOne({id: cid})
+      return collection.findOne({id: cid}, {_id: false})
     })
   })
+}
+
+function findCaptures(skip, limit, order) {
+  order = parseOrderParam_(order);
+  return fetchedCaptures.then(function(collection) {
+    return collection.find({}, {_id: false})
+        .skip(skip || 0).limit(limit || 20).sort(order.of || 'updatedAt', order.by || -1).toArray();
+  });
 }
 
 function findReport(rid, cid) {

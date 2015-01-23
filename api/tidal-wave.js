@@ -34,10 +34,10 @@ function collectCaptures(rid) {
   var targetDir = getRevisionDir(rid);
   var t = TidalWave.create(targetDir, {
     getExpectedPath: function(shortPath) {
-      var cid = generateHash(shortPath);
-      return persist.findOrCreateCapture(cid, {
-        id: cid,
-        capture: cid,
+      var capture = generateHash(shortPath);
+      return persist.findOrCreateCapture(capture, {
+        id: capture,
+        capture: capture,
         revision: rid
       })
       .then(function(capture) {
@@ -50,7 +50,7 @@ function collectCaptures(rid) {
     }
   });
 
-  t.on('data', upsertReport.bind(null, rid));
+  t.on('data', updateReport.bind(null, rid));
   t.once('error', d.reject);
   t.once('finish', d.resolve);
   t.once('error', cleanup);
@@ -63,7 +63,7 @@ function collectCaptures(rid) {
   }
 }
 
-function upsertReport(rid, data) {
+function updateReport(rid, data) {
   var captureName = Path.relative(getRevisionDir(rid), data['target_image']);
 
   // As a relative path from baseImageDir.
@@ -78,7 +78,11 @@ function upsertReport(rid, data) {
   data['captureName'] = captureName;
   data['revision'] = rid;
   data['checkedAs'] = 'UNPROCESSED';
-  return persist.upsertReport(rid, cid, data);
+  return persist.updateReport(rid, cid, data);
+}
+
+function getCaptureId(rid, cid) {
+  return 'revision:' + rid + ':capture:' + cid;
 }
 
 function generateHash(seed) {
