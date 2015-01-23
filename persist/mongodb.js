@@ -81,7 +81,7 @@ function findCaptures(skip, limit, order) {
   order = parseOrderParam_(order);
   return fetchedCaptures.then(function(collection) {
     return collection.find({}, {_id: false})
-        .skip(skip).limit(limit).sort(order.of || 'updatedAt', order.by || -1).toArray();
+        .skip(skip || 0).limit(limit || 20).sort(order.of || 'updatedAt', order.by || -1).toArray();
   });
 }
 
@@ -106,10 +106,12 @@ function findReport(rid, cid) {
 
 function findReports(rid, skip, limit, order, status, checkedAs) {
   var where = { revision: rid };
+  var order = parseOrderParam_(order);
   if (status) where.status = status;
   if (checkedAs) where.checkedAs = checkedAs;
   return fetchedReports.then(function(reports) {
-    return reports.find(where, {_id: false}).toArray();
+    return reports.find(where, {_id: false})
+        .skip(skip || 0).limit(limit || 20).sort(order.of || 'id', order.by || -1).toArray();
   });
 }
 

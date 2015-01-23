@@ -11,7 +11,11 @@ describe('Application', function() {
 
   describe('should work in '  + ' storage', function() {
 
-    var tmp = launchApplication();
+    var tmp = require('../app').launch({
+      port: 3000,
+      baseImageDir: path.resolve(__dirname, 'fixture'),
+      relativeTargetDirPrefix: 'revision'
+    });
     var server = tmp.server;
     var app = tmp.app;
 
@@ -387,46 +391,46 @@ describe('Application', function() {
         ]
       }, done);
     });
-    // it('GET /api/revisions/1/captures returns 2 documents in' , function(done) {
-    //   request(app)
-    //   .get('/api/revisions/1/captures')
-    //   .expect({
-    //     revision: {
-    //       id: 1,
-    //       total: 2,
-    //       "UNPROCESSED": 2,
-    //       "IS_OK": 0,
-    //       "IS_BUG": 0,
-    //       updatedAt: '1970-01-01T00:00:00.000Z'
-    //     },
-    //     captures: [{ checkedAs: 'UNPROCESSED',
-    //          id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
-    //          revision: '1',
-    //          capture: 'db38f7f3f5d7d765f97e45d185066cc9',
-    //          captureName: 'scenario2/capture2.png',
-    //          updatedAt: '1970-01-01T00:00:00.000Z',
-    //          status: 'OK',
-    //          span: 10,
-    //          threshold: 5,
-    //          vector: [],
-    //          time: 0.1,
-    //          target_image: 'revision1/scenario2/capture2.png',
-    //          expect_image: 'revision1/scenario2/capture2.png' },
-    //        { checkedAs: 'UNPROCESSED',
-    //          id: 'revision:1:capture:9018988ae55e012e437aa24cbf9a400a',
-    //          revision: '1',
-    //          capture: '9018988ae55e012e437aa24cbf9a400a',
-    //          captureName: 'scenario1/capture1.jpg',
-    //          updatedAt: '1970-01-01T00:00:00.000Z',
-    //          status: 'OK',
-    //          span: 10,
-    //          threshold: 5,
-    //          vector: [],
-    //          time: 0.1,
-    //          target_image: 'revision1/scenario1/capture1.jpg',
-    //          expect_image: 'revision1/scenario1/capture1.jpg' }] })
-    //   .end(done);
-    // });
+    it('GET /api/revisions/1/captures returns 2 documents in' , function(done) {
+      request(app)
+      .get('/api/revisions/1/captures')
+      .expect({
+        revision: {
+          id: 1,
+          total: 2,
+          "UNPROCESSED": 2,
+          "IS_OK": 0,
+          "IS_BUG": 0,
+          updatedAt: '1970-01-01T00:00:00.000Z'
+        },
+        captures: [{ checkedAs: 'UNPROCESSED',
+             id: 'revision:1:capture:db38f7f3f5d7d765f97e45d185066cc9',
+             revision: '1',
+             capture: 'db38f7f3f5d7d765f97e45d185066cc9',
+             captureName: 'scenario2/capture2.png',
+             updatedAt: '1970-01-01T00:00:00.000Z',
+             status: 'OK',
+             span: 10,
+             threshold: 5,
+             vector: [],
+             time: 0.1,
+             target_image: 'revision1/scenario2/capture2.png',
+             expect_image: 'revision1/scenario2/capture2.png' },
+           { checkedAs: 'UNPROCESSED',
+             id: 'revision:1:capture:9018988ae55e012e437aa24cbf9a400a',
+             revision: '1',
+             capture: '9018988ae55e012e437aa24cbf9a400a',
+             captureName: 'scenario1/capture1.jpg',
+             updatedAt: '1970-01-01T00:00:00.000Z',
+             status: 'OK',
+             span: 10,
+             threshold: 5,
+             vector: [],
+             time: 0.1,
+             target_image: 'revision1/scenario1/capture1.jpg',
+             expect_image: 'revision1/scenario1/capture1.jpg' }] })
+      .end(done);
+    });
     // it('GET /api/revisions/1/captures?limit=1 returns 2 documents in' , function(done) {
     //   request(app)
     //   .get('/api/revisions/1/captures?limit=1')
@@ -784,15 +788,4 @@ describe('Application', function() {
   });
 
 });
-
-function launchApplication() {
-  var application = require('../app');
-  var configure = {
-    port: 3000,
-    baseImageDir: path.resolve(__dirname, 'fixture'),
-    relativeTargetDirPrefix: 'revision',
-    // db: { debug: true }
-  };
-  return application.launch(configure);
-}
 
