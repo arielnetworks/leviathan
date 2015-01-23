@@ -1,7 +1,4 @@
 
-var Schema = require('jugglingdb').Schema;
-var isTesting = process.env.NODE_ENV == 'test';
-
 module.exports = {
   id: String, // Same as "capture"
   expectedRevision: Schema.JSON,

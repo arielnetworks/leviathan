@@ -1,6 +1,4 @@
 
-var isTesting = process.env.NODE_ENV == 'test';
-
 module.exports = {
   id: String,
   total: Number,

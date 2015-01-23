@@ -2,7 +2,7 @@
 var Q = require('q');
 var _ = require('underscore');
 // DB Shemas
-var persist = require('../persist/mongodb');
+var persist = require('../persist');
 var STATUS_CODES = require('http').STATUS_CODES;
 
 

@@ -5,7 +5,7 @@ var _ = require('underscore');
 var Q = require('q');
 Q.longStackSupport = true;
 var TidalWave = require('tidal-wave');
-var persist = require('../persist/mongodb');
+var persist = require('../persist');
 
 var PostTidalWave = {};
 module.exports['post'] = PostTidalWave;

@@ -30,7 +30,7 @@ Leviathan
 JSON API
 -------------
 
-以下概要を説明します。詳細はtest/json-api.js を確認してください。
+以下概要を説明します。詳細はtest/api.js を確認してください。
  
 ### POST /api/tidal-wave/{rid}
 

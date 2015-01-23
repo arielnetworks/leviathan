@@ -1,11 +1,9 @@
 
 process.env.NODE_ENV = 'test';
 
-var path = require('path');
-var _ = require('underscore');
+var Path = require('path');
 var request = require('supertest');
-var assert = require('assert');
-var persist = require('../persist/mongodb');
+var persist = require('../persist');
 
 describe('Application', function() {
 
@@ -13,7 +11,7 @@ describe('Application', function() {
 
     var tmp = require('../app').launch({
       port: 3000,
-      baseImageDir: path.resolve(__dirname, 'fixture'),
+      baseImageDir: Path.resolve(__dirname, 'fixture'),
       relativeTargetDirPrefix: 'revision'
     });
     var server = tmp.server;
