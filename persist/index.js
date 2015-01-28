@@ -23,7 +23,6 @@ module.exports.findOrCreateCapture = findOrCreateCapture;
 module.exports.updateRevision = updateRevision;
 module.exports.updateReport = updateReport;
 module.exports.updateCapture = updateCapture;
-// module.exports.cleanup = cleanup;
 module.exports._destroy = _destroy;
 
 
@@ -37,14 +36,12 @@ function _destroy() {
   }));
 }
 
-function findOrCreateCapture(cid, report) {
-  var query = {id: cid};
-  console.log('==========', query);
+function findOrCreateCapture(capture, report) {
+  var query = {capture: capture};
   return Q.ninvoke(db.captures, 'findOne', query, {_id: false})
-  .then(function(capture) {
-    if (capture) return capture;
+  .then(function(doc) {
+    if (doc) return doc;
     return Q.ninvoke(db.captures, 'update', query, {
-      id: report.capture,
       expectedRevision: [report.revision],
       capture: report.capture,
       // captureName: report.captureName,
@@ -57,38 +54,28 @@ function findOrCreateCapture(cid, report) {
   });
 }
 
-function updateCapture(cid, expectedRevision) {
-  var capture = extractCaptureIdFromCid(cid);
+function updateCapture(capture, expectedRevision) {
   return Q.ninvoke(db.captures, 'update',
-      {id: capture},
+      {capture: capture},
       {$addToSet: {expectedRevision: expectedRevision}},
       {upsert: false})
   .then(function() {
-    return Q.ninvoke(db.captures, 'findOne', {id: capture});
+    return Q.ninvoke(db.captures, 'findOne', {capture: capture});
   });
 }
 
-function extractCaptureIdFromCid(cid) {
-  return cid.split(':')[3];
-}
-(function testExtractCaptureIdFromCid() {
-  var capture1 = extractCaptureIdFromCid('revision:1:capture:9018988ae55e012e437aa24cbf9a400a');
-  assert.equal(capture1, '9018988ae55e012e437aa24cbf9a400a');
-  var capture2 = extractCaptureIdFromCid('revision:oiuooiu97979:capture:9018988ae55e012e437aa24cbf9a400a');
-  assert.equal(capture2, '9018988ae55e012e437aa24cbf9a400a');
-})();
-
-function updateReport(rid, cid, data) {
+function updateReport(rid, capture, data) {
+  var query = {revision: rid, capture: capture};
   if (isTesting) {
     data['time'] = 0.1;
     data['updatedAt'] = new Date('1970-01-01T00:00:00.000Z');
   }
   return Q.ninvoke(db.reports, 'update',
-      {id: cid, revision: rid},
+      query,
       {$set: data},
       {upsert: true})
   .then(function() {
-    return Q.ninvoke(db.reports, 'findOne', {id: cid}, {_id: false});
+    return Q.ninvoke(db.reports, 'findOne', query, {_id: false});
   });
 }
 
@@ -101,8 +88,8 @@ function findCaptures(skip, limit, order) {
   'toArray');
 }
 
-function findReport(rid, cid) {
-  return Q.ninvoke(db.reports, 'findOne', {id: cid}, {_id: false});
+function findReport(rid, capture) {
+  return Q.ninvoke(db.reports, 'findOne', {revision: rid, capture: capture}, {_id: false})
 }
 
 function findReports(rid, skip, limit, order, status, checkedAs) {

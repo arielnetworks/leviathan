@@ -36,7 +36,6 @@ function collectCaptures(rid) {
     getExpectedPath: function(shortPath) {
       var capture = generateHash(shortPath);
       return persist.findOrCreateCapture(capture, {
-        id: capture,
         capture: capture,
         revision: rid
       })
@@ -71,18 +70,12 @@ function updateReport(rid, data) {
   data['target_image'] = Path.relative(global.configure.baseImageDir, data['target_image']);
 
   var capture = generateHash(captureName);
-  var cid = 'revision:' + rid + ':capture:' + capture;
 
-  data['id'] = cid;
   data['capture'] = capture;
   data['captureName'] = captureName;
   data['revision'] = rid;
   data['checkedAs'] = 'UNPROCESSED';
-  return persist.updateReport(rid, cid, data);
-}
-
-function getCaptureId(rid, cid) {
-  return 'revision:' + rid + ':capture:' + cid;
+  return persist.updateReport(rid, capture, data);
 }
 
 function generateHash(seed) {

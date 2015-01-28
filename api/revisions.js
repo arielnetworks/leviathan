@@ -46,25 +46,25 @@ GetRevisions[':id/captures'] = function(req, res) {
   .catch (handleError.bind(null, res));
 };
 
-GetRevisions[':id/captures/:cid'] = function(req, res) {
-  persist.findReport(req.param('id'), req.param('cid'))
+GetRevisions[':id/captures/:capture'] = function(req, res) {
+  persist.findReport(req.param('id'), req.param('capture'))
   .then(res.json.bind(res))
   .catch (handleError.bind(null, res));
 };
 
-PostRevisions[':id/captures/:cid'] = function(req, res) {
+PostRevisions[':id/captures/:capture'] = function(req, res) {
   var data = {};
   var checkedAs = getStatusFromReqest(req);
   Q().then(function() {
     if (checkedAs) {
       data['checkedAs'] = checkedAs;
       if (checkedAs == 'IS_OK') {
-        return persist.updateCapture(req.param('cid'), req.param('id'));
+        return persist.updateCapture(req.param('capture'), req.param('id'));
       }
     }
   })
   .then(function() {
-    return persist.updateReport(req.param('id'), req.param('cid'), data)
+    return persist.updateReport(req.param('id'), req.param('capture'), data);
   })
   .then(function(doc) {
     if (doc) {
