@@ -24,9 +24,7 @@ GetRevisions['index'] = function(req, res) {
 
 GetRevisions[':id'] = function(req, res) {
   persist.findRevision(req.param('id'))
-  .then(function(doc) {
-    res.json(doc || {});
-  })
+  .then(res.json.bind(res))
   .catch (handleError.bind(null, res));
 };
 

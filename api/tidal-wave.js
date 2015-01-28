@@ -14,10 +14,10 @@ module.exports['post'] = PostTidalWave;
 
 PostTidalWave[':id'] = function(req, res) {
   var rid = req.param('id');
-  var result;
+  var revisionAt = req.param('revisionAt');
   collectCaptures(rid)
   .then(function(tidalWaveReport) {
-    persist.updateRevision(rid); // Without waiting.
+    persist.updateRevision(rid, new Date(revisionAt)); // Without waiting.
     return tidalWaveReport;
   })
   .then(res.json.bind(res))

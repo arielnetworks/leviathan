@@ -32,7 +32,7 @@ function _destroy() {
     return Q.ninvoke(db[name], 'count')
     .then(function(count) {
       if (count > 0) Q.ninvoke(db[name], 'drop');
-    })
+    });
   }));
 }
 
@@ -44,7 +44,6 @@ function findOrCreateCapture(capture, report) {
     return Q.ninvoke(db.captures, 'update', query, {
       expectedRevision: [report.revision],
       capture: report.capture,
-      // captureName: report.captureName,
       updatedAt: isTesting ? new Date('1970-01-01T00:00:00.000Z') : undefined,
       updatedBy: 'system'
     }, {upsert: true})
@@ -89,7 +88,7 @@ function findCaptures(skip, limit, order) {
 }
 
 function findReport(rid, capture) {
-  return Q.ninvoke(db.reports, 'findOne', {revision: rid, capture: capture}, {_id: false})
+  return Q.ninvoke(db.reports, 'findOne', {revision: rid, capture: capture}, {_id: false});
 }
 
 function findReports(rid, skip, limit, order, status, checkedAs) {
@@ -104,8 +103,9 @@ function findReports(rid, skip, limit, order, status, checkedAs) {
   'toArray');
 }
 
-function updateRevision(id) {
+function updateRevision(id, revisionAt) {
   var data = { id: id };
+  if (revisionAt) data.revisionAt = revisionAt;
   if (isTesting) data['updatedAt'] = new Date('1970-01-01T00:00:00.000Z');
   return Q.all([
     Q.ninvoke(db.reports, 'count', { revision: id, checkedAs: 'UNPROCESSED' }),
@@ -119,7 +119,7 @@ function updateRevision(id) {
       'IS_OK': counts[1],
       'IS_BUG': counts[2]
     });
-    return Q.ninvoke(db.revisions, 'update', {id: id}, {$set: data}, {upsert: true})
+    return Q.ninvoke(db.revisions, 'update', {id: id}, {$set: data}, {upsert: true});
   })
   .then(function() {
     return Q.ninvoke(db.revisions, 'findOne', {id: id});

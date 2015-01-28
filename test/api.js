@@ -30,6 +30,7 @@ describe('Application', function() {
     it('POST /api/tidal-wave/1 in ' , function(done) {
       request(app)
       .post('/api/tidal-wave/1')
+      .send({ revisionAt: 1000 })
       .expect(200)
       .expect({ data: 2, error: 0, request: 2 }, done);
     });
@@ -42,6 +43,7 @@ describe('Application', function() {
         revisions: [
           {
             id: 1,
+            "revisionAt": "1970-01-01T00:00:01.000Z",
             total: 2,
             "UNPROCESSED": 2,
             "IS_OK": 0,
@@ -80,6 +82,7 @@ describe('Application', function() {
       .expect(200)
       .expect({
         id: 1,
+        "revisionAt": "1970-01-01T00:00:01.000Z",
         total: 2,
         "UNPROCESSED": 2,
         "IS_OK": 0,
@@ -95,6 +98,7 @@ describe('Application', function() {
       .expect({
         revision: {
           id: '1',
+          "revisionAt": "1970-01-01T00:00:01.000Z",
           total: 2,
           "UNPROCESSED": 2,
           "IS_OK": 0,
@@ -155,6 +159,7 @@ describe('Application', function() {
     it('POST /api/tidal-wave/2 should report zero in ' , function(done) {
       request(app)
       .post('/api/tidal-wave/2')
+      .send({ revisionAt: 2000 })
       .expect(200)
       .expect({ data: 2, error: 0, request: 2 }, done);
     });
@@ -191,6 +196,7 @@ describe('Application', function() {
         revisions: [
           {
             id: 2,
+            "revisionAt": "1970-01-01T00:00:02.000Z",
             total: 2,
             "UNPROCESSED": 2,
             "IS_OK": 0,
@@ -199,6 +205,7 @@ describe('Application', function() {
           },
           {
             id: 1,
+            "revisionAt": "1970-01-01T00:00:01.000Z",
             total: 2,
             "UNPROCESSED": 2,
             "IS_OK": 0,
@@ -215,6 +222,7 @@ describe('Application', function() {
       .expect(200)
       .expect({
         id: 2,
+        "revisionAt": "1970-01-01T00:00:02.000Z",
         total: 2,
         "UNPROCESSED": 2,
         "IS_OK": 0,
@@ -229,6 +237,7 @@ describe('Application', function() {
       .expect({
         revision: {
           id: "2",
+          "revisionAt": "1970-01-01T00:00:02.000Z",
           total: 2,
           "UNPROCESSED": 2,
           "IS_OK": 0,
@@ -307,6 +316,7 @@ describe('Application', function() {
         revisions: [
           {
             id: 2,
+            "revisionAt": "1970-01-01T00:00:02.000Z",
             total: 2,
             "UNPROCESSED": 2,
             "IS_OK": 0,
@@ -315,6 +325,7 @@ describe('Application', function() {
           },
           {
             id: 1,
+            "revisionAt": "1970-01-01T00:00:01.000Z",
             total: 2,
             "UNPROCESSED": 2,
             "IS_OK": 0,
@@ -331,6 +342,7 @@ describe('Application', function() {
         revisions: [
           {
             id: 2,
+            "revisionAt": "1970-01-01T00:00:02.000Z",
             total: 2,
             "UNPROCESSED": 2,
             "IS_OK": 0,
@@ -347,6 +359,7 @@ describe('Application', function() {
         revisions: [
           {
             id: 1,
+            "revisionAt": "1970-01-01T00:00:01.000Z",
             total: 2,
             "UNPROCESSED": 2,
             "IS_OK": 0,
@@ -363,6 +376,7 @@ describe('Application', function() {
         revisions: [
           {
             id: 1,
+            "revisionAt": "1970-01-01T00:00:01.000Z",
             total: 2,
             "UNPROCESSED": 2,
             "IS_OK": 0,
@@ -371,6 +385,7 @@ describe('Application', function() {
           },
           {
             id: 2,
+            "revisionAt": "1970-01-01T00:00:02.000Z",
             total: 2,
             "UNPROCESSED": 2,
             "IS_OK": 0,
@@ -386,6 +401,7 @@ describe('Application', function() {
       .expect({
         revision: {
           id: 1,
+          "revisionAt": "1970-01-01T00:00:01.000Z",
           total: 2,
           "UNPROCESSED": 2,
           "IS_OK": 0,
@@ -424,6 +440,7 @@ describe('Application', function() {
       .expect({
         revision: {
           id: 1,
+          "revisionAt": "1970-01-01T00:00:01.000Z",
           total: 2,
           "UNPROCESSED": 2,
           "IS_OK": 0,
@@ -451,6 +468,7 @@ describe('Application', function() {
       .expect({
         revision: {
           id: 1,
+          "revisionAt": "1970-01-01T00:00:01.000Z",
           total: 2,
           "UNPROCESSED": 2,
           "IS_OK": 0,
@@ -478,6 +496,7 @@ describe('Application', function() {
       .expect({
         revision: {
           id: 1,
+          "revisionAt": "1970-01-01T00:00:01.000Z",
           total: 2,
           "UNPROCESSED": 2,
           "IS_OK": 0,
@@ -567,6 +586,7 @@ describe('Application', function() {
       .expect(200)
       .expect({
         id: 2,
+        "revisionAt": "1970-01-01T00:00:02.000Z",
         total: 2,
         "UNPROCESSED": 1,
         "IS_OK": 0,
@@ -650,6 +670,7 @@ describe('Application', function() {
       .expect(200)
       .expect({
         id: 2,
+        "revisionAt": "1970-01-01T00:00:02.000Z",
         total: 2,
         "UNPROCESSED": 1,
         "IS_OK": 1,
@@ -686,6 +707,7 @@ describe('Application', function() {
       .expect({
         revision: {
           id: 2,
+          "revisionAt": "1970-01-01T00:00:02.000Z",
           total: 2,
           "UNPROCESSED": 1,
           "IS_OK": 1,
@@ -738,6 +760,7 @@ describe('Application', function() {
       .expect({
         revision: {
           id: 2,
+          "revisionAt": "1970-01-01T00:00:02.000Z",
           total: 2,
           "UNPROCESSED": 1,
           "IS_OK": 1,
