@@ -36,14 +36,14 @@ function _destroy() {
   }));
 }
 
-function findOrCreateCapture(capture, report) {
+function findOrCreateCapture(capture, expectedRevisionIfInsert) {
   var query = {capture: capture};
   return Q.ninvoke(db.captures, 'findOne', query, {_id: false})
   .then(function(doc) {
     if (doc) return doc;
     return Q.ninvoke(db.captures, 'update', query, {
-      expectedRevision: [report.revision],
-      capture: report.capture,
+      expectedRevision: [expectedRevisionIfInsert],
+      capture: capture,
       updatedAt: isTesting ? new Date('1970-01-01T00:00:00.000Z') : undefined,
       updatedBy: 'system'
     }, {upsert: true})

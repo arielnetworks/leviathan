@@ -18,7 +18,7 @@ describe('Application', function() {
     var app = tmp.app;
 
     before(persist._destroy);
-    after(persist._destroy);
+    // after(persist._destroy);
 
     it('should launch in ' , function(done) {
       request(app)
