@@ -136,7 +136,7 @@ function findRevisions(skip, limit, order) {
   return Q.ninvoke(db.revisions.find({}, {_id: false})
       .skip(skip)
       .limit(limit)
-      .sort(order.of || 'id', order.by || -1),
+      .sort(order.of || 'revisionAt', order.by || -1),
   'toArray');
 }
 
