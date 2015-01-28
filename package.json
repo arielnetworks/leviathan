@@ -8,13 +8,12 @@
   },
   "dependencies": {
     "body-parser": "^1.9.3",
-    "coffee-script": "^1.8.0",
+    "cookie-parser": "^1.3.3",
     "express": "^4.10.4",
+    "tidal-wave": "../tidal-wave"
     "jade": "^1.7.0",
-    "jugglingdb": "^0.3.0",
-    "jugglingdb-mongodb": "0.0.4-4",
-    "mongodb": "^1.4.29",
-    "poseidon-mongo": "^0.3.0",
+    "mongoskin": "^1.4.12",
+    "morgan": "^1.5.1",
     "q": "^1.1.2",
     "static-favicon": "^2.0.0-alpha",
     "underscore": "^1.7.0"
