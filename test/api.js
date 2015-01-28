@@ -44,10 +44,6 @@ describe('Application', function() {
           {
             id: 1,
             "revisionAt": "1970-01-01T00:00:01.000Z",
-            total: 2,
-            "UNPROCESSED": 2,
-            "IS_OK": 0,
-            "IS_BUG": 0,
             updatedAt: '1970-01-01T00:00:00.000Z'
           }
         ]
@@ -197,19 +193,11 @@ describe('Application', function() {
           {
             id: 2,
             "revisionAt": "1970-01-01T00:00:02.000Z",
-            total: 2,
-            "UNPROCESSED": 2,
-            "IS_OK": 0,
-            "IS_BUG": 0,
             updatedAt: '1970-01-01T00:00:00.000Z' 
           },
           {
             id: 1,
             "revisionAt": "1970-01-01T00:00:01.000Z",
-            total: 2,
-            "UNPROCESSED": 2,
-            "IS_OK": 0,
-            "IS_BUG": 0,
             updatedAt: '1970-01-01T00:00:00.000Z'
           }
         ]
@@ -317,19 +305,11 @@ describe('Application', function() {
           {
             id: 2,
             "revisionAt": "1970-01-01T00:00:02.000Z",
-            total: 2,
-            "UNPROCESSED": 2,
-            "IS_OK": 0,
-            "IS_BUG": 0,
             updatedAt: '1970-01-01T00:00:00.000Z'
           },
           {
             id: 1,
             "revisionAt": "1970-01-01T00:00:01.000Z",
-            total: 2,
-            "UNPROCESSED": 2,
-            "IS_OK": 0,
-            "IS_BUG": 0,
             updatedAt: '1970-01-01T00:00:00.000Z'
           }
         ]
@@ -343,10 +323,6 @@ describe('Application', function() {
           {
             id: 2,
             "revisionAt": "1970-01-01T00:00:02.000Z",
-            total: 2,
-            "UNPROCESSED": 2,
-            "IS_OK": 0,
-            "IS_BUG": 0,
             updatedAt: '1970-01-01T00:00:00.000Z'
           }
         ]
@@ -360,10 +336,6 @@ describe('Application', function() {
           {
             id: 1,
             "revisionAt": "1970-01-01T00:00:01.000Z",
-            total: 2,
-            "UNPROCESSED": 2,
-            "IS_OK": 0,
-            "IS_BUG": 0,
             updatedAt: '1970-01-01T00:00:00.000Z'
           }
         ]
@@ -377,19 +349,11 @@ describe('Application', function() {
           {
             id: 1,
             "revisionAt": "1970-01-01T00:00:01.000Z",
-            total: 2,
-            "UNPROCESSED": 2,
-            "IS_OK": 0,
-            "IS_BUG": 0,
             updatedAt: '1970-01-01T00:00:00.000Z'
           },
           {
             id: 2,
             "revisionAt": "1970-01-01T00:00:02.000Z",
-            total: 2,
-            "UNPROCESSED": 2,
-            "IS_OK": 0,
-            "IS_BUG": 0,
             updatedAt: '1970-01-01T00:00:00.000Z'
           }
         ]

@@ -107,27 +107,28 @@ function updateRevision(id, revisionAt) {
   var data = { id: id };
   if (revisionAt) data.revisionAt = revisionAt;
   if (isTesting) data['updatedAt'] = new Date('1970-01-01T00:00:00.000Z');
+
+  return Q.ninvoke(db.revisions, 'update', {id: id}, {$set: data}, {upsert: true})
+  .then(findRevision.bind(null, id));
+}
+
+function findRevision(id) {
   return Q.all([
+    Q.ninvoke(db.revisions, 'findOne', {id: id}, {_id: false}),
     Q.ninvoke(db.reports, 'count', { revision: id, checkedAs: 'UNPROCESSED' }),
     Q.ninvoke(db.reports, 'count', { revision: id, checkedAs: 'IS_OK' }),
     Q.ninvoke(db.reports, 'count', { revision: id, checkedAs: 'IS_BUG' })
   ])
-  .then(function(counts) {
-    data = _.extend(data, {
+  .then(function(result) {
+    var revision = result.shift();
+    var counts = result;
+    return _.extend(revision, {
       total: counts.reduce(function(total, c) { return total + c }, 0),
       'UNPROCESSED': counts[0],
       'IS_OK': counts[1],
       'IS_BUG': counts[2]
     });
-    return Q.ninvoke(db.revisions, 'update', {id: id}, {$set: data}, {upsert: true});
-  })
-  .then(function() {
-    return Q.ninvoke(db.revisions, 'findOne', {id: id});
   });
-}
-
-function findRevision(id) {
-  return Q.ninvoke(db.revisions, 'findOne', {id: id}, {_id: false});
 }
 
 function findRevisions(skip, limit, order) {
