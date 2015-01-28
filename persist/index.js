@@ -20,7 +20,7 @@ module.exports.findReports = findReports;
 module.exports.findReport = findReport;
 module.exports.findCaptures = findCaptures;
 module.exports.findOrCreateCapture = findOrCreateCapture;
-module.exports.updateRevision = updateRevision;
+module.exports.upsertRevision = upsertRevision;
 module.exports.updateReport = updateReport;
 module.exports.updateCapture = updateCapture;
 module.exports._destroy = _destroy;
@@ -103,7 +103,7 @@ function findReports(rid, skip, limit, order, status, checkedAs) {
   'toArray');
 }
 
-function updateRevision(id, revisionAt) {
+function upsertRevision(id, revisionAt) {
   var data = { id: id };
   if (revisionAt) data.revisionAt = revisionAt;
   if (isTesting) data['updatedAt'] = new Date('1970-01-01T00:00:00.000Z');

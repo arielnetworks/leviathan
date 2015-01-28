@@ -15,9 +15,15 @@ module.exports['post'] = PostTidalWave;
 PostTidalWave[':id'] = function(req, res) {
   var rid = req.param('id');
   var revisionAt = req.param('revisionAt');
-  collectCaptures(rid)
-  .then(function(tidalWaveReport) {
-    persist.updateRevision(rid, new Date(revisionAt)); // Without waiting.
+  Q().then(function() {
+    if (!revisionAt) throw new Error('Specify "revisionAt" which refers to a datetime of the commit');
+    return Q.all([
+      collectCaptures(rid),
+      persist.upsertRevision(rid, new Date(revisionAt))
+    ]);
+  })
+  .then(function(result) {
+    var tidalWaveReport = result[0];
     return tidalWaveReport;
   })
   .then(res.json.bind(res))

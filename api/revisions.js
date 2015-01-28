@@ -66,7 +66,7 @@ PostRevisions[':id/captures/:capture'] = function(req, res) {
   })
   .then(function(doc) {
     if (doc) {
-      persist.updateRevision(req.param('id')); // Without waiting.
+      persist.upsertRevision(req.param('id')); // Without waiting.
       return doc;
     }
     res.status(404);
