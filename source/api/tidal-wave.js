@@ -42,10 +42,10 @@ function collectCaptures(rid, revisionAt) {
   var t = TidalWave.create(targetDir, {
     getExpectedPath: function(shortPath) {
       var capture = generateHash(shortPath);
-      return persist.findOrCreateCapture(capture, rid)
+      return persist.findLastExpectedReport(capture, revisionAt)
       .then(function(capture) {
-        if (capture.expectedRevision != null && capture.expectedRevision.length) {
-          return Path.resolve(getRevisionDir(_.last(capture.expectedRevision)), shortPath);
+        if (capture && capture.checkedAs == 'IS_OK' && capture.revision) {
+          return Path.resolve(getRevisionDir(capture.revision), shortPath);
         }
         // Looks like it's the first time to run tidal-wave
         return Path.resolve(targetDir, shortPath);

@@ -8,7 +8,7 @@ var isTesting = process.env.NODE_ENV == 'test';
 
 
 // TODO: Use Global Configuration
-var collectionNames = ['revisions', 'reports', 'captures'];
+var collectionNames = ['revisions', 'reports'];
 var db = require('mongoskin').db('mongodb://127.0.0.1:27017/ttt', {native_parser: true, options: { w: 1 }});
 collectionNames.forEach(db.bind.bind(db));
 
@@ -19,11 +19,10 @@ module.exports.findRevision = findRevision;
 module.exports.findReports = findReports;
 module.exports.findReport = findReport;
 module.exports.findCaptures = findCaptures;
-module.exports.findOrCreateCapture = findOrCreateCapture;
+module.exports.findLastExpectedReport = findLastExpectedReport;
 module.exports.upsertRevision = upsertRevision;
 module.exports.updateReport = updateReport;
 module.exports.insertReport = insertReport;
-module.exports.updateCapture = updateCapture;
 module.exports._destroy = _destroy;
 
 
@@ -37,31 +36,10 @@ function _destroy() {
   }));
 }
 
-function findOrCreateCapture(capture, expectedRevisionIfInsert) {
-  var query = {capture: capture};
-  return Q.ninvoke(db.captures, 'findOne', query, {_id: false})
-  .then(function(doc) {
-    if (doc) return doc;
-    return Q.ninvoke(db.captures, 'update', query, {
-      expectedRevision: [expectedRevisionIfInsert],
-      capture: capture,
-      updatedAt: isTesting ? new Date('1970-01-01T00:00:00.000Z') : undefined,
-      updatedBy: 'system'
-    }, {upsert: true})
-    .then(function() {
-      return Q.ninvoke(db.captures, 'findOne', query, {_id: false});
-    });
-  });
-}
-
-function updateCapture(capture, expectedRevision) {
-  return Q.ninvoke(db.captures, 'update',
-      {capture: capture},
-      {$addToSet: {expectedRevision: expectedRevision}},
-      {upsert: false})
-  .then(function() {
-    return Q.ninvoke(db.captures, 'findOne', {capture: capture});
-  });
+function findLastExpectedReport(capture, revisionAt) {
+  return Q.ninvoke(db.reports.find({capture: capture, checkedAs: 'IS_OK', revisionAt: {$lt: revisionAt}}, {_id: false})
+      .sort('revisionAt', -1).limit(1),
+  'toArray').get(0);
 }
 
 function insertReport(rid, capture, data) {
@@ -103,11 +81,10 @@ function findCaptures(skip, limit, order) {
         .then(function(docs) {
           expectedRevision = docs.map(function(doc) { return doc.revision });
           return Q.ninvoke(db.reports.find({ capture: id, checkedAs: {$ne: 'UNPROCESSED'} }, {capture: true, updatedAt: true, updatedBy: true, _id: false})
-              .limit(1).sort('updatedAt', -1), 'toArray')
+              .limit(1).sort('updatedAt', -1), 'toArray').get(0)
         })
-        .then(function(docs) {
-          var doc = docs[0];
-          if (!docs.length) throw new Error('System is something wrong.');
+        .then(function(doc) {
+          if (!doc) throw new Error('System is something wrong.');
           doc.expectedRevision = expectedRevision;
           return doc;
         })

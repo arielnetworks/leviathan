@@ -56,9 +56,6 @@ PostRevisions[':id/captures/:capture'] = function(req, res) {
   Q().then(function() {
     if (checkedAs) {
       data['checkedAs'] = checkedAs;
-      if (checkedAs == 'IS_OK') {
-        return persist.updateCapture(req.param('capture'), req.param('id'));
-      }
     }
   })
   .then(function() {
