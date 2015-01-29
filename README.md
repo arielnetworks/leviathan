@@ -30,11 +30,11 @@ Leviathan
 JSON API
 -------------
 
-以下概要を説明します。詳細はtest/api.js を確認してください。
+詳細はtest/api.js を確認してください。
  
-### POST /api/tidal-wave/{rid} revisionAt={コミットのUNIX時間}
+### POST /api/tidal-wave/{rid}
 
-画像比較処理を実行します。Jenkins など CI からのキックを想定しています。それが最初の比較の場合、全キャプチャが expect（checkedAs=IS_OK）として登録されます。コミットのUNIX時間が必要ですので注意してください。
+画像比較処理を実行します。Jenkins など CI からのキックを想定しています。それが最初の比較の場合、全キャプチャが expect（checkedAs=IS_OK）として登録されます。revisionAt でコミットのUNIX時間の指定が必要ですので注意してください。
 
 ### GET /api/revisions
 
