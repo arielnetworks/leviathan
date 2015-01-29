@@ -1,5 +1,8 @@
 
 node_modules
 npm-debug.log
-_*
 yeah.js
+bower_components
+.sass-cache
+public/js
+public/css

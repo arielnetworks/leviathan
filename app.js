@@ -61,11 +61,11 @@ function launch(configure) {
   app.use(express.static(path.join(__dirname, 'public')));
   if ('development' == app.get('env')) {
     app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
+      res.status(err.status || 500);
+      res.render('error', {
+        message: err.message,
+        error: err
+      });
     });
   }
 

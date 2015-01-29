@@ -63,3 +63,11 @@ tidal-waveを実行したリビジョンの一覧を返します。たいした�
 ### GET /api/captures/{cid}
 
 まだありません。
+
+
+開発
+-------------
+
+`
+$ npm install
+`
