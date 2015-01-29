@@ -58,8 +58,8 @@ describe('Application', function() {
         id: 1,
         "revisionAt": "1970-01-01T00:00:01.000Z",
         total: 2,
-        "UNPROCESSED": 2,
-        "IS_OK": 0,
+        "UNPROCESSED": 0,
+        "IS_OK": 2,
         "IS_BUG": 0,
         updatedAt: '1970-01-01T00:00:00.000Z'
       }, done);
@@ -74,13 +74,13 @@ describe('Application', function() {
           id: '1',
           revisionAt: "1970-01-01T00:00:01.000Z",
           total: 2,
-          UNPROCESSED: 2,
-          IS_OK: 0,
+          UNPROCESSED: 0,
+          IS_OK: 2,
           IS_BUG: 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         captures: [{
-          checkedAs: 'UNPROCESSED',
+          checkedAs: 'IS_OK',
           capture: 'db38f7f3f5d7d765f97e45d185066cc9',
           captureName: 'scenario2/capture2.png',
           expect_image: 'revision1/scenario2/capture2.png',
@@ -95,7 +95,7 @@ describe('Application', function() {
           vector: []
         },
         {
-          checkedAs: 'UNPROCESSED',
+          checkedAs: 'IS_OK',
           capture: '9018988ae55e012e437aa24cbf9a400a',
           captureName: 'scenario1/capture1.jpg',
           expect_image: 'revision1/scenario1/capture1.jpg',
@@ -117,7 +117,7 @@ describe('Application', function() {
       .get('/api/revisions/1/captures/db38f7f3f5d7d765f97e45d185066cc9')
       .expect(200)
       .expect({
-        checkedAs: 'UNPROCESSED',
+        checkedAs: 'IS_OK',
         capture: 'db38f7f3f5d7d765f97e45d185066cc9',
         captureName: 'scenario2/capture2.png',
         expect_image: 'revision1/scenario2/capture2.png',
@@ -372,12 +372,12 @@ describe('Application', function() {
           id: 1,
           "revisionAt": "1970-01-01T00:00:01.000Z",
           total: 2,
-          "UNPROCESSED": 2,
-          "IS_OK": 0,
+          "UNPROCESSED": 0,
+          "IS_OK": 2,
           "IS_BUG": 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
-        captures: [{ checkedAs: 'UNPROCESSED',
+        captures: [{ checkedAs: 'IS_OK',
              revision: '1',
              capture: 'db38f7f3f5d7d765f97e45d185066cc9',
              captureName: 'scenario2/capture2.png',
@@ -390,7 +390,7 @@ describe('Application', function() {
              time: 0.1,
              target_image: 'revision1/scenario2/capture2.png',
              expect_image: 'revision1/scenario2/capture2.png' },
-           { checkedAs: 'UNPROCESSED',
+           { checkedAs: 'IS_OK',
              revision: '1',
              capture: '9018988ae55e012e437aa24cbf9a400a',
              captureName: 'scenario1/capture1.jpg',
@@ -413,13 +413,13 @@ describe('Application', function() {
           id: 1,
           "revisionAt": "1970-01-01T00:00:01.000Z",
           total: 2,
-          "UNPROCESSED": 2,
-          "IS_OK": 0,
+          "UNPROCESSED": 0,
+          "IS_OK": 2,
           "IS_BUG": 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         captures:
-         [{ checkedAs: 'UNPROCESSED',
+         [{ checkedAs: 'IS_OK',
              revision: '1',
              capture: 'db38f7f3f5d7d765f97e45d185066cc9',
              captureName: 'scenario2/capture2.png',
@@ -442,13 +442,13 @@ describe('Application', function() {
           id: 1,
           "revisionAt": "1970-01-01T00:00:01.000Z",
           total: 2,
-          "UNPROCESSED": 2,
-          "IS_OK": 0,
+          "UNPROCESSED": 0,
+          "IS_OK": 2,
           "IS_BUG": 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         captures:
-         [{ checkedAs: 'UNPROCESSED',
+         [{ checkedAs: 'IS_OK',
              revision: '1',
              capture: '9018988ae55e012e437aa24cbf9a400a',
              captureName: 'scenario1/capture1.jpg',
@@ -471,13 +471,13 @@ describe('Application', function() {
           id: 1,
           "revisionAt": "1970-01-01T00:00:01.000Z",
           total: 2,
-          "UNPROCESSED": 2,
-          "IS_OK": 0,
+          "UNPROCESSED": 0,
+          "IS_OK": 2,
           "IS_BUG": 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         captures:
-         [{ checkedAs: 'UNPROCESSED',
+         [{ checkedAs: 'IS_OK',
              revision: '1',
              capture: '9018988ae55e012e437aa24cbf9a400a',
              captureName: 'scenario1/capture1.jpg',
@@ -490,7 +490,7 @@ describe('Application', function() {
              time: 0.1,
              target_image: 'revision1/scenario1/capture1.jpg',
              expect_image: 'revision1/scenario1/capture1.jpg' },
-           { checkedAs: 'UNPROCESSED',
+           { checkedAs: 'IS_OK',
              revision: '1',
              capture: 'db38f7f3f5d7d765f97e45d185066cc9',
              captureName: 'scenario2/capture2.png',

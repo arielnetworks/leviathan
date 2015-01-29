@@ -22,6 +22,7 @@ module.exports.findCaptures = findCaptures;
 module.exports.findOrCreateCapture = findOrCreateCapture;
 module.exports.upsertRevision = upsertRevision;
 module.exports.updateReport = updateReport;
+module.exports.insertReport = insertReport;
 module.exports.updateCapture = updateCapture;
 module.exports._destroy = _destroy;
 
@@ -63,6 +64,15 @@ function updateCapture(capture, expectedRevision) {
   });
 }
 
+function insertReport(rid, capture, data) {
+  // TODO: Use "exists"
+  return Q.ninvoke(db.reports, 'findOne', {capture: capture}, {_id: false})
+  .then(function(exists) {
+    if (!exists) data.checkedAs = 'IS_OK';
+    return updateReport(rid, capture, data)
+  })
+}
+
 function updateReport(rid, capture, data) {
   var query = {revision: rid, capture: capture};
   if (isTesting) {
@@ -79,16 +89,20 @@ function updateReport(rid, capture, data) {
 }
 
 function findCaptures(skip, limit, order) {
+
   // // XXX
   // Q.ninvoke(db.reports, 'distinct', 'capture')
   // .then(function(captureIds) {
-  //   console.log(',,,,,,,,,', captureIds);
   //   // TODO: slice
   //   Q.all(
   //     captureIds.map(function(id) {
-  //       return Q.ninvoke(db.reports.find({capture: id, checkedAs: 'IS_OK'}, {_id: false})
+  //       return Q.ninvoke(db.reports.find({capture: id, checkedAs: 'IS_OK'}, {revision: true, _id: false})
   //           .sort('revisionAt', -1)
-  //       , 'toArray')
+  //       , 'toArray').then(function(docs) {
+  //         return docs.map(function(doc) {
+  //           return doc.revision;
+  //         })
+  //       })
   //     })
   //   )
   //   .then(function() {

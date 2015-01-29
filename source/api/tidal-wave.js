@@ -53,7 +53,7 @@ function collectCaptures(rid, revisionAt) {
     }
   });
 
-  t.on('data', updateReport.bind(null, rid, revisionAt));
+  t.on('data', insertReport.bind(null, rid, revisionAt));
   t.once('error', d.reject);
   t.once('finish', d.resolve);
   t.once('error', cleanup);
@@ -66,7 +66,7 @@ function collectCaptures(rid, revisionAt) {
   }
 }
 
-function updateReport(rid, revisionAt, data) {
+function insertReport(rid, revisionAt, data) {
   var captureName = Path.relative(getRevisionDir(rid), data['target_image']);
 
   // As a relative path from baseImageDir.
@@ -80,7 +80,7 @@ function updateReport(rid, revisionAt, data) {
   data['revision'] = rid;
   data['checkedAs'] = 'UNPROCESSED';
   data['revisionAt'] = revisionAt;
-  return persist.updateReport(rid, capture, data);
+  return persist.insertReport(rid, capture, data);
 }
 
 function generateHash(seed) {
