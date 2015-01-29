@@ -8,7 +8,7 @@ var isTesting = process.env.NODE_ENV == 'test';
 
 
 // TODO: Use Global Configuration
-var collectionNames = ['revisions', 'reports'];
+var collectionNames = ['revisions', 'captures'];
 var db = require('mongoskin').db('mongodb://127.0.0.1:27017/ttt', {native_parser: true, options: { w: 1 }});
 collectionNames.forEach(db.bind.bind(db));
 
@@ -16,13 +16,13 @@ collectionNames.forEach(db.bind.bind(db));
 
 module.exports.findRevisions = findRevisions;
 module.exports.findRevision = findRevision;
-module.exports.findReports = findReports;
-module.exports.findReport = findReport;
+module.exports.findRevisionCaptures = findRevisionCaptures;
+module.exports.findRevisionCapture = findRevisionCapture;
 module.exports.findCaptures = findCaptures;
-module.exports.findLastExpectedReport = findLastExpectedReport;
+module.exports.findLastExpectedCapture = findLastExpectedCapture;
 module.exports.upsertRevision = upsertRevision;
-module.exports.updateReport = updateReport;
-module.exports.insertReport = insertReport;
+module.exports.updateCapture = updateCapture;
+module.exports.insertCapture = insertCapture;
 module.exports._destroy = _destroy;
 
 
@@ -36,51 +36,51 @@ function _destroy() {
   }));
 }
 
-function findLastExpectedReport(capture, revisionAt) {
-  return Q.ninvoke(db.reports.find({capture: capture, checkedAs: 'IS_OK', revisionAt: {$lt: revisionAt}}, {_id: false})
+function findLastExpectedCapture(capture, revisionAt) {
+  return Q.ninvoke(db.captures.find({capture: capture, checkedAs: 'IS_OK', revisionAt: {$lt: revisionAt}}, {_id: false})
       .sort('revisionAt', -1).limit(1),
   'toArray').get(0);
 }
 
-function insertReport(rid, capture, data) {
+function insertCapture(rid, capture, data) {
   data.updatedBy = 'system';
   // TODO: Use "exists"
-  return Q.ninvoke(db.reports, 'findOne', {capture: capture}, {_id: false})
+  return Q.ninvoke(db.captures, 'findOne', {capture: capture}, {_id: false})
   .then(function(exists) {
     if (!exists) data.checkedAs = 'IS_OK';
-    return updateReport(rid, capture, data)
+    return updateCapture(rid, capture, data)
   })
 }
 
-function updateReport(rid, capture, data) {
+function updateCapture(rid, capture, data) {
   var query = {revision: rid, capture: capture};
   if (isTesting) {
     data['time'] = 0.1;
     data['updatedAt'] = new Date('1970-01-01T00:00:00.000Z');
   }
-  return Q.ninvoke(db.reports, 'update',
+  return Q.ninvoke(db.captures, 'update',
       query,
       {$set: data},
       {upsert: true})
   .then(function() {
-    return Q.ninvoke(db.reports, 'findOne', query, {_id: false});
+    return Q.ninvoke(db.captures, 'findOne', query, {_id: false});
   });
 }
 
 function findCaptures(skip, limit, order) {
-  return Q.ninvoke(db.reports, 'distinct', 'capture')
+  return Q.ninvoke(db.captures, 'distinct', 'capture')
   .then(function(captureIds) {
     // TODO: slice
     // TODO: use Q.consume
     return Q.all(
       captureIds.map(function(id) {
         var expectedRevision;
-        return Q.ninvoke(db.reports.find({capture: id, checkedAs: 'IS_OK'}, {revision: true, _id: false})
+        return Q.ninvoke(db.captures.find({capture: id, checkedAs: 'IS_OK'}, {revision: true, _id: false})
             .sort('revisionAt', 1)
         , 'toArray')
         .then(function(docs) {
           expectedRevision = docs.map(function(doc) { return doc.revision });
-          return Q.ninvoke(db.reports.find({ capture: id, checkedAs: {$ne: 'UNPROCESSED'} }, {capture: true, updatedAt: true, updatedBy: true, _id: false})
+          return Q.ninvoke(db.captures.find({ capture: id, checkedAs: {$ne: 'UNPROCESSED'} }, {capture: true, updatedAt: true, updatedBy: true, _id: false})
               .limit(1).sort('updatedAt', -1), 'toArray').get(0)
         })
         .then(function(doc) {
@@ -93,16 +93,16 @@ function findCaptures(skip, limit, order) {
   })
 }
 
-function findReport(rid, capture) {
-  return Q.ninvoke(db.reports, 'findOne', {revision: rid, capture: capture}, {_id: false});
+function findRevisionCapture(rid, capture) {
+  return Q.ninvoke(db.captures, 'findOne', {revision: rid, capture: capture}, {_id: false});
 }
 
-function findReports(rid, skip, limit, order, status, checkedAs) {
+function findRevisionCaptures(rid, skip, limit, order, status, checkedAs) {
   var where = { revision: rid };
   var order = parseOrderParam_(order);
   if (status) where.status = status;
   if (checkedAs) where.checkedAs = checkedAs;
-  return Q.ninvoke(db.reports.find(where, {_id: false})
+  return Q.ninvoke(db.captures.find(where, {_id: false})
       .skip(skip || 0)
       .limit(limit || 20)
       .sort(order.of || 'id', order.by || -1),
@@ -121,9 +121,9 @@ function upsertRevision(id, revisionAt) {
 function findRevision(id) {
   return Q.all([
     Q.ninvoke(db.revisions, 'findOne', {id: id}, {_id: false}),
-    Q.ninvoke(db.reports, 'count', { revision: id, checkedAs: 'UNPROCESSED' }),
-    Q.ninvoke(db.reports, 'count', { revision: id, checkedAs: 'IS_OK' }),
-    Q.ninvoke(db.reports, 'count', { revision: id, checkedAs: 'IS_BUG' })
+    Q.ninvoke(db.captures, 'count', { revision: id, checkedAs: 'UNPROCESSED' }),
+    Q.ninvoke(db.captures, 'count', { revision: id, checkedAs: 'IS_OK' }),
+    Q.ninvoke(db.captures, 'count', { revision: id, checkedAs: 'IS_BUG' })
   ])
   .then(function(result) {
     var revision = result.shift();

@@ -24,8 +24,8 @@ PostTidalWave[':id'] = function(req, res) {
     ]);
   })
   .then(function(result) {
-    var tidalWaveReport = result[0];
-    return tidalWaveReport;
+    var tidalWaveResult = result[0];
+    return tidalWaveResult;
   })
   .then(res.json.bind(res))
   .catch (function(error) {
@@ -42,7 +42,7 @@ function collectCaptures(rid, revisionAt) {
   var t = TidalWave.create(targetDir, {
     getExpectedPath: function(shortPath) {
       var capture = generateHash(shortPath);
-      return persist.findLastExpectedReport(capture, revisionAt)
+      return persist.findLastExpectedCapture(capture, revisionAt)
       .then(function(capture) {
         if (capture && capture.checkedAs == 'IS_OK' && capture.revision) {
           return Path.resolve(getRevisionDir(capture.revision), shortPath);
@@ -53,7 +53,7 @@ function collectCaptures(rid, revisionAt) {
     }
   });
 
-  t.on('data', insertReport.bind(null, rid, revisionAt));
+  t.on('data', insertCapture.bind(null, rid, revisionAt));
   t.once('error', d.reject);
   t.once('finish', d.resolve);
   t.once('error', cleanup);
@@ -66,7 +66,7 @@ function collectCaptures(rid, revisionAt) {
   }
 }
 
-function insertReport(rid, revisionAt, data) {
+function insertCapture(rid, revisionAt, data) {
   var captureName = Path.relative(getRevisionDir(rid), data['target_image']);
 
   // As a relative path from baseImageDir.
@@ -80,7 +80,7 @@ function insertReport(rid, revisionAt, data) {
   data['revision'] = rid;
   data['checkedAs'] = 'UNPROCESSED';
   data['revisionAt'] = revisionAt;
-  return persist.insertReport(rid, capture, data);
+  return persist.insertCapture(rid, capture, data);
 }
 
 function generateHash(seed) {

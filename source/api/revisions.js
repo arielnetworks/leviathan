@@ -31,7 +31,7 @@ GetRevisions[':id'] = function(req, res) {
 GetRevisions[':id/captures'] = function(req, res) {
   Q.all([
     persist.findRevision(req.param('id')),
-    persist.findReports(req.param('id'),
+    persist.findRevisionCaptures(req.param('id'),
         +req.param('skip'), +req.param('limit'), req.param('order'),
         req.param('status'), req.param('checkedAs'))
   ])
@@ -45,7 +45,7 @@ GetRevisions[':id/captures'] = function(req, res) {
 };
 
 GetRevisions[':id/captures/:capture'] = function(req, res) {
-  persist.findReport(req.param('id'), req.param('capture'))
+  persist.findRevisionCapture(req.param('id'), req.param('capture'))
   .then(res.json.bind(res))
   .catch (handleError.bind(null, res));
 };
@@ -59,7 +59,7 @@ PostRevisions[':id/captures/:capture'] = function(req, res) {
     }
   })
   .then(function() {
-    return persist.updateReport(req.param('id'), req.param('capture'), data);
+    return persist.updateCapture(req.param('id'), req.param('capture'), data);
   })
   .then(function(doc) {
     if (doc) {
