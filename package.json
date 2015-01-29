@@ -2,24 +2,49 @@
   "name": "application-name",
   "version": "0.0.1",
   "private": true,
+  "main": "ui/index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "./node_modules/mocha/bin/mocha"
+    "preinstall": "mkdir -p public/js; mkdir -p public/css",
+    "postinstall": "gulp",
+    "watchjs": "watchify -o public/js/bundle.js -v -d .",
+    "watchsass": "gulp watch",
+    "build": "NODE_ENV=production browserify . | uglifyjs -cm > public/js/bundle.min.js; gulp",
+    "test": "mocha"
   },
   "dependencies": {
     "body-parser": "^1.9.3",
     "cookie-parser": "^1.3.3",
+    "envify": "^3.2.0",
     "express": "^4.10.4",
-    "tidal-wave": "../tidal-wave"
+    "flux": "^2.0.1",
     "jade": "^1.7.0",
     "mongoskin": "^1.4.12",
     "morgan": "^1.5.1",
     "q": "^1.1.2",
+    "react": "^0.12.2",
+    "reactify": "^1.0.0",
     "static-favicon": "^2.0.0-alpha",
-    "underscore": "^1.7.0"
+    "tidal-wave": "../tidal-wave",
+    "underscore": "^1.7.0",
+    "watchify": "^2.2.1"
   },
   "devDependencies": {
-    "supertest": "^0.15.0",
-    "mocha": "^2.0.1"
+    "gulp": "^3.8.10",
+    "gulp-autoprefixer": "^2.1.0",
+    "gulp-bower": "0.0.10",
+    "gulp-notify": "^2.2.0",
+    "gulp-ruby-sass": "^1.0.0-alpha.2",
+    "mocha": "^2.0.1",
+    "supertest": "^0.15.0"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "reactify",
+        {
+          "es6": true
+        }
+      ]
+    ]
   }
 }

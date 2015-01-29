@@ -1,0 +1,20 @@
+{
+  "name": "leviathan",
+  "main": "index.js",
+  "version": "0.0.0",
+  "authors": [
+    "Takamura Soichi <takamura_s@ariel-networks.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass-official": "~3.3.3",
+    "fontawesome": "~4.2.0"
+  }
+}
