@@ -75,7 +75,7 @@ function launch(configure) {
     'captures',
     'tidal-wave'
   ], function(name) {
-    _.each(require('./api/' + name), function(actions, method) {
+    _.each(require('./source/api/' + name), function(actions, method) {
       _.each(actions, function(handler, action) {
         app[method]('/api/' + name + (action == 'index' ? '' : '/' + action), handler);
       });

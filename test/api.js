@@ -3,7 +3,7 @@ process.env.NODE_ENV = 'test';
 
 var Path = require('path');
 var request = require('supertest');
-var persist = require('../persist');
+var persist = require('../source/persist');
 
 describe('Application', function() {
 
