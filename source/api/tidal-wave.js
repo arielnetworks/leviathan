@@ -17,9 +17,10 @@ PostTidalWave[':id'] = function(req, res) {
   var revisionAt = req.param('revisionAt');
   Q().then(function() {
     if (!revisionAt) throw new Error('Specify "revisionAt" which refers to a datetime of the commit');
+    revisionAt = new Date(revisionAt);
     return Q.all([
-      collectCaptures(rid),
-      persist.upsertRevision(rid, new Date(revisionAt))
+      collectCaptures(rid, revisionAt),
+      persist.upsertRevision(rid, revisionAt)
     ]);
   })
   .then(function(result) {
@@ -34,7 +35,7 @@ PostTidalWave[':id'] = function(req, res) {
 
 
 
-function collectCaptures(rid) {
+function collectCaptures(rid, revisionAt) {
   var d = Q.defer();
 
   var targetDir = getRevisionDir(rid);
@@ -52,7 +53,7 @@ function collectCaptures(rid) {
     }
   });
 
-  t.on('data', updateReport.bind(null, rid));
+  t.on('data', updateReport.bind(null, rid, revisionAt));
   t.once('error', d.reject);
   t.once('finish', d.resolve);
   t.once('error', cleanup);
@@ -65,7 +66,7 @@ function collectCaptures(rid) {
   }
 }
 
-function updateReport(rid, data) {
+function updateReport(rid, revisionAt, data) {
   var captureName = Path.relative(getRevisionDir(rid), data['target_image']);
 
   // As a relative path from baseImageDir.
@@ -78,6 +79,7 @@ function updateReport(rid, data) {
   data['captureName'] = captureName;
   data['revision'] = rid;
   data['checkedAs'] = 'UNPROCESSED';
+  data['revisionAt'] = revisionAt;
   return persist.updateReport(rid, capture, data);
 }
 

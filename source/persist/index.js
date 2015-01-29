@@ -79,6 +79,23 @@ function updateReport(rid, capture, data) {
 }
 
 function findCaptures(skip, limit, order) {
+  // // XXX
+  // Q.ninvoke(db.reports, 'distinct', 'capture')
+  // .then(function(captureIds) {
+  //   console.log(',,,,,,,,,', captureIds);
+  //   // TODO: slice
+  //   Q.all(
+  //     captureIds.map(function(id) {
+  //       return Q.ninvoke(db.reports.find({capture: id, checkedAs: 'IS_OK'}, {_id: false})
+  //           .sort('revisionAt', -1)
+  //       , 'toArray')
+  //     })
+  //   )
+  //   .then(function() {
+  //     console.log('---------', arguments);
+  //   })
+  // })
+
   order = parseOrderParam_(order);
   return Q.ninvoke(db.captures.find({}, {_id: false})
       .skip(skip || 0)
