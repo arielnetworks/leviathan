@@ -87,11 +87,11 @@ function findRevisionCapture(rid, capture) {
 }
 
 function findRevisionCaptures(rid, skip, limit, order, status, checkedAs) {
-  var where = { revision: rid };
+  var query = { revision: rid };
   var order = parseOrderParam_(order);
-  if (status) where.status = status;
-  if (checkedAs) where.checkedAs = checkedAs;
-  return Q.ninvoke(db.captures.find(where, {_id: false})
+  if (status) query.status = status;
+  if (checkedAs) query.checkedAs = checkedAs;
+  return Q.ninvoke(db.captures.find(query, {_id: false})
       .skip(skip || 0)
       .limit(limit || DEFAULT_LIMIT)
       .sort(order.of || 'id', order.by || -1),
@@ -110,18 +110,25 @@ function upsertRevision(id, revisionAt) {
 function findRevision(id) {
   return Q.all([
     Q.ninvoke(db.revisions, 'findOne', {id: id}, {_id: false}),
-    Q.ninvoke(db.captures, 'count', { revision: id, checkedAs: 'UNPROCESSED' }),
-    Q.ninvoke(db.captures, 'count', { revision: id, checkedAs: 'IS_OK' }),
-    Q.ninvoke(db.captures, 'count', { revision: id, checkedAs: 'IS_BUG' })
+    Q.ninvoke(db.captures, 'aggregate', 
+      {$match: {revision: id}},
+      {$group: {
+        _id: "$checkedAs",
+        count: {$sum: 1} }}
+    )
   ])
   .then(function(result) {
-    var revision = result.shift();
-    var counts = result;
+    var revision = result[0];
+    var aggregated = result[1];
+    var checkedCounts = {};
+    checkedCounts.total = aggregated.reduce(function (sum, group) {
+      return sum + (checkedCounts[group._id] = group.count);
+    }, 0);
     return _.extend(revision, {
-      total: counts.reduce(function(total, c) { return total + c }, 0),
-      'UNPROCESSED': counts[0],
-      'IS_OK': counts[1],
-      'IS_BUG': counts[2]
+      total: checkedCounts.total,
+      'UNPROCESSED': checkedCounts.UNPROCESSED || 0,
+      'IS_OK': checkedCounts.IS_OK || 0,
+      'IS_BUG': checkedCounts.IS_BUG || 0
     });
   });
 }
