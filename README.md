@@ -9,7 +9,7 @@ Leviathan
 >  - **expect**: 期待値。正常なリビジョンにとられたキャプチャ、またはそのリビジョンをさします。
 >  - **チェック**: ユーザーがブラウザを通して、画像差異をバグ（リグレッションを起こした）なのか expect（開発者の意図的な仕様変更）なのかを判断することです。
 >  - **rid**: リビジョンID。git や svn のリビジョン番号です。例）2
->  - **capture**: キャプチャID。リビジョン情報を除いたキャプチャのファイルパスから生成したハッシュです。例）revision:2:capture:db38f7f3f5d7d765f97e45d185066cc9
+>  - **capture**: キャプチャID。リビジョン情報を除いたキャプチャのファイルパスから生成したハッシュです。例）db38f7f3f5d7d765f97e45d185066cc9
 
 
 概要
@@ -30,11 +30,11 @@ Leviathan
 JSON API
 -------------
 
-以下概要を説明します。詳細はtest/api.js を確認してください。
+詳細はtest/api.js を確認してください。
  
-### POST /api/tidal-wave/{rid} revisionAt={コミットのUNIX時間}
+### POST /api/tidal-wave/{rid}
 
-画像比較処理を実行します。Jenkins など CI からのキックを想定しています。それが最初の比較の場合、全キャプチャが expect（checkedAs=IS_OK）として登録されます。コミットのUNIX時間が必要ですので注意してください。
+画像比較処理を実行します。Jenkins など CI からのキックを想定しています。それが最初の比較の場合、全キャプチャが expect（checkedAs=IS_OK）として登録されます。revisionAt でコミットのUNIX時間の指定が必要ですので注意してください。
 
 ### GET /api/revisions
 
@@ -43,10 +43,6 @@ tidal-waveを実行したリビジョンの一覧を返します。たいした�
 ### GET /api/revisions/{rid}
 
 特定リビジョンの情報です。以下の情報を含みます。
- - total: そのリビジョンで何枚キャプチャがあったか
- - UNPROCESSED: TODO
- - IS_OK: TODO
- - IS_BUG: TODO
 
 ### GET /api/revisions/{rid}/captures
 
@@ -68,6 +64,28 @@ tidal-waveを実行したリビジョンの一覧を返します。たいした�
 開発
 -------------
 
+tidal-wave をモジュールとして使いますので、leviathan開発ディレクトリの隣にtidal-waveディレクトリを置いてください。
+
+ ├── leviathan
+ └── tidal-wave
+
 `
 $ npm install
+$ node run watchjs &  # ./ui/**/*.js 編集監視
+$ node run watchsass &  # ./ui/sass/** 編集監視
+$ node index.js &  # サーバ起動
+`
+
+テスト
+-------------
+
+`
+$ npm test
+`
+
+製品向けにビルド
+-------------
+
+`
+$ npm run build
 `
