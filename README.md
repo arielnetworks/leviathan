@@ -69,23 +69,23 @@ tidal-wave をモジュールとして使いますので、leviathan開発ディ
  ├── leviathan
  └── tidal-wave
 
-`
+```
 $ npm install
 $ node run watchjs &  # ./ui/**/*.js 編集監視
 $ node run watchsass &  # ./ui/sass/** 編集監視
 $ node index.js &  # サーバ起動
-`
+```
 
 テスト
 -------------
 
-`
+```
 $ npm test
-`
+```
 
 製品向けにビルド
 -------------
 
-`
+```
 $ npm run build
-`
+```
