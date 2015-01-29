@@ -472,50 +472,6 @@ describe('Application', function() {
              expect_image: 'revision1/scenario1/capture1.jpg' }] })
       .end(done);
     });
-    it('GET /api/revisions/1/captures?order=target_image%20ASC sorts docs by "target_image ASC" in' , function(done) {
-      request(app)
-      .get('/api/revisions/1/captures?order=target_image%20ASC')
-      .expect({
-        revision: {
-          id: 1,
-          "revisionAt": "1970-01-01T00:00:01.000Z",
-          total: 2,
-          "UNPROCESSED": 0,
-          "IS_OK": 2,
-          "IS_BUG": 0,
-          updatedAt: '1970-01-01T00:00:00.000Z'
-        },
-        captures:
-         [{ checkedAs: 'IS_OK',
-             revision: '1',
-             capture: '9018988ae55e012e437aa24cbf9a400a',
-             captureName: 'scenario1/capture1.jpg',
-             "revisionAt": "1970-01-01T00:00:01.000Z",
-             updatedBy: 'system',
-             updatedAt: '1970-01-01T00:00:00.000Z',
-             status: 'OK',
-             span: 10,
-             threshold: 5,
-             vector: [],
-             time: 0.1,
-             target_image: 'revision1/scenario1/capture1.jpg',
-             expect_image: 'revision1/scenario1/capture1.jpg' },
-           { checkedAs: 'IS_OK',
-             revision: '1',
-             capture: 'db38f7f3f5d7d765f97e45d185066cc9',
-             captureName: 'scenario2/capture2.png',
-             "revisionAt": "1970-01-01T00:00:01.000Z",
-             updatedBy: 'system',
-             updatedAt: '1970-01-01T00:00:00.000Z',
-             status: 'OK',
-             span: 10,
-             threshold: 5,
-             vector: [],
-             time: 0.1,
-             target_image: 'revision1/scenario2/capture2.png',
-             expect_image: 'revision1/scenario2/capture2.png' }] })
-      .end(done);
-    });
 
     // Test changing "checkedAs" status
 

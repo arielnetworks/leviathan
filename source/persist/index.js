@@ -11,6 +11,7 @@ var isTesting = process.env.NODE_ENV == 'test';
 var collectionNames = ['revisions', 'captures'];
 var db = require('mongoskin').db('mongodb://127.0.0.1:27017/ttt', {native_parser: true, options: { w: 1 }});
 collectionNames.forEach(db.bind.bind(db));
+var DEFAULT_MAX_LIMIT = 20;
 
 
 
@@ -67,13 +68,13 @@ function updateCapture(rid, capture, data) {
   });
 }
 
-function findCaptures(skip, limit, order) {
-  return Q.ninvoke(db.captures, 'distinct', 'capture')
+function findCaptures(skip, limit) {
+  skip = skip || 0;
+  return Q.ninvoke(db.captures, 'distinct', 'capture') // Any better idea?
   .then(function(captureIds) {
-    // TODO: slice
     // TODO: use Q.consume
     return Q.all(
-      captureIds.map(function(id) {
+      captureIds.slice(skip, skip + (limit || DEFAULT_MAX_LIMIT)).map(function(id) {
         var expectedRevision;
         return Q.ninvoke(db.captures.find({capture: id, checkedAs: 'IS_OK'}, {revision: true, _id: false})
             .sort('revisionAt', 1)
@@ -104,7 +105,7 @@ function findRevisionCaptures(rid, skip, limit, order, status, checkedAs) {
   if (checkedAs) where.checkedAs = checkedAs;
   return Q.ninvoke(db.captures.find(where, {_id: false})
       .skip(skip || 0)
-      .limit(limit || 20)
+      .limit(limit || DEFAULT_MAX_LIMIT)
       .sort(order.of || 'id', order.by || -1),
   'toArray');
 }
@@ -141,7 +142,7 @@ function findRevisions(skip, limit, order) {
   order = parseOrderParam_(order);
   return Q.ninvoke(db.revisions.find({}, {_id: false})
       .skip(skip)
-      .limit(limit)
+      .limit(limit || DEFAULT_MAX_LIMIT)
       .sort(order.of || 'revisionAt', order.by || -1),
   'toArray');
 }
