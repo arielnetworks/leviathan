@@ -70,4 +70,7 @@ tidal-waveを実行したリビジョンの一覧を返します。たいした�
 
 `
 $ npm install
+$ node index.js &  # サーバ起動
+$ node run watchify &  # ./ui/**/*.js 編集監視
+$ gulp && gulp watch &  # ./ui/sass/** 編集監視
 `
