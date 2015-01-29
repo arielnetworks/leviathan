@@ -90,43 +90,30 @@ function updateReport(rid, capture, data) {
 }
 
 function findCaptures(skip, limit, order) {
-  // // XXX
-  // Q.ninvoke(db.reports, 'distinct', 'capture')
-  // .then(function(captureIds) {
-  //   // TODO: slice
-  //   // TODO: use Q.consume
-  //   Q.all(
-  //     captureIds.map(function(id) {
-  //       var expectedRevision;
-  //       return Q.ninvoke(db.reports.find({capture: id, checkedAs: 'IS_OK'}, {revision: true, _id: false})
-  //           .sort('revisionAt', -1)
-  //       , 'toArray')
-  //       .then(function(docs) {
-  //         expectedRevision = docs.map(function(doc) { return doc.revision });
-  //         return Q.ninvoke(db.reports.find({ capture: id, checkedAs: {$ne: 'UNPROCESSED'} }, {capture: true, updatedAt: true, updatedBy: true, _id: false})
-  //             .limit(1).sort('updatedAt', -1), 'toArray')
-  //       })
-  //       .then(function(docs) {
-  //         var doc = docs[0];
-  //         // if (!docs.length) throw new Error;
-  //         // console.log(',,,,,,,,,', doc);
-  //         doc.expectedRevision = expectedRevision;
-  //         return doc;
-  //       })
-  //     })
-  //   )
-  //   .then(function(results) {
-  //     console.log('---------');
-  //     console.log(results);
-  //   })
-  // })
-
-  order = parseOrderParam_(order);
-  return Q.ninvoke(db.captures.find({}, {_id: false})
-      .skip(skip || 0)
-      .limit(limit || 20)
-      .sort(order.of || 'updatedAt', order.by || -1),
-  'toArray');
+  return Q.ninvoke(db.reports, 'distinct', 'capture')
+  .then(function(captureIds) {
+    // TODO: slice
+    // TODO: use Q.consume
+    return Q.all(
+      captureIds.map(function(id) {
+        var expectedRevision;
+        return Q.ninvoke(db.reports.find({capture: id, checkedAs: 'IS_OK'}, {revision: true, _id: false})
+            .sort('revisionAt', 1)
+        , 'toArray')
+        .then(function(docs) {
+          expectedRevision = docs.map(function(doc) { return doc.revision });
+          return Q.ninvoke(db.reports.find({ capture: id, checkedAs: {$ne: 'UNPROCESSED'} }, {capture: true, updatedAt: true, updatedBy: true, _id: false})
+              .limit(1).sort('updatedAt', -1), 'toArray')
+        })
+        .then(function(docs) {
+          var doc = docs[0];
+          if (!docs.length) throw new Error('System is something wrong.');
+          doc.expectedRevision = expectedRevision;
+          return doc;
+        })
+      })
+    )
+  })
 }
 
 function findReport(rid, capture) {
