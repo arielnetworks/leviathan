@@ -69,29 +69,17 @@ function updateCapture(rid, capture, data) {
 }
 
 function findCaptures(skip, limit) {
-  skip = skip || 0;
-  return Q.ninvoke(db.captures, 'distinct', 'capture') // Any better idea?
-  .then(function(captureIds) {
-    // TODO: use Q.consume
-    return Q.all(
-      captureIds.slice(skip, skip + (limit || DEFAULT_LIMIT)).map(function(id) {
-        var expectedRevision;
-        return Q.ninvoke(db.captures.find({capture: id, checkedAs: 'IS_OK'}, {revision: true, _id: false})
-            .sort('revisionAt', 1)
-        , 'toArray')
-        .then(function(docs) {
-          expectedRevision = docs.map(function(doc) { return doc.revision });
-          return Q.ninvoke(db.captures.find({ capture: id, checkedAs: {$ne: 'UNPROCESSED'} }, {capture: true, updatedAt: true, updatedBy: true, _id: false})
-              .limit(1).sort('updatedAt', -1), 'toArray').get(0)
-        })
-        .then(function(doc) {
-          if (!doc) throw new Error('System is something wrong.');
-          doc.expectedRevision = expectedRevision;
-          return doc;
-        })
-      })
-    )
-  })
+  return Q.ninvoke(db.captures, 'aggregate', [
+    {$match: {checkedAs: "IS_OK"}},
+    {$group: {
+      _id: "$capture",
+      updatedAt: {$max:"$updatedAt"},
+      updatedBy: {$last: "$updatedBy"},
+      expectedRevisions: { $push: "$revision" } } },
+    {$sort: {_id: -1}},
+    {$skip: skip || 0},
+    {$limit: limit || DEFAULT_LIMIT}   
+  ]);
 }
 
 function findRevisionCapture(rid, capture) {
