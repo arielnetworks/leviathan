@@ -5,8 +5,10 @@
   "main": "ui/index.js",
   "scripts": {
     "preinstall": "mkdir -p public/js; mkdir -p public/css",
-    "watchify": "watchify -o public/js/bundle.js -v -d .",
-    "build": "NODE_ENV=production browserify . | uglifyjs -cm > public/js/bundle.min.js",
+    "postinstall": "gulp",
+    "watchjs": "watchify -o public/js/bundle.js -v -d .",
+    "watchsass": "gulp watch",
+    "build": "NODE_ENV=production browserify . | uglifyjs -cm > public/js/bundle.min.js; gulp",
     "test": "mocha"
   },
   "dependencies": {
