@@ -91,6 +91,7 @@ describe('Application', function() {
           threshold: 5,
           time: 0.1,
           revisionAt: "1970-01-01T00:00:01.000Z",
+          updatedBy: 'system',
           updatedAt: '1970-01-01T00:00:00.000Z',
           vector: []
         },
@@ -106,6 +107,7 @@ describe('Application', function() {
           threshold: 5,
           time: 0.1,
           revisionAt: "1970-01-01T00:00:01.000Z",
+          updatedBy: 'system',
           updatedAt: '1970-01-01T00:00:00.000Z',
           vector: []
         }]
@@ -128,6 +130,7 @@ describe('Application', function() {
         threshold: 5,
         time: 0.1,
         revisionAt: "1970-01-01T00:00:01.000Z",
+        updatedBy: 'system',
         updatedAt: '1970-01-01T00:00:00.000Z',
         vector: []
       }, done);
@@ -248,6 +251,7 @@ describe('Application', function() {
             threshold: 5,
             time: 0.1,
             "revisionAt": "1970-01-01T00:00:02.000Z",
+            updatedBy: 'system',
             updatedAt: "1970-01-01T00:00:00.000Z",
             vector: [
               { dx: -5.360568046569824, dy: -0.0551748163998127, x: 80, y: 70 },
@@ -288,6 +292,7 @@ describe('Application', function() {
             threshold: 5,
             time: 0.1,
             "revisionAt": "1970-01-01T00:00:02.000Z",
+            updatedBy: 'system',
             updatedAt: "1970-01-01T00:00:00.000Z",
             vector: []
           }
@@ -382,6 +387,7 @@ describe('Application', function() {
              capture: 'db38f7f3f5d7d765f97e45d185066cc9',
              captureName: 'scenario2/capture2.png',
              "revisionAt": "1970-01-01T00:00:01.000Z",
+             updatedBy: 'system',
              updatedAt: '1970-01-01T00:00:00.000Z',
              status: 'OK',
              span: 10,
@@ -395,6 +401,7 @@ describe('Application', function() {
              capture: '9018988ae55e012e437aa24cbf9a400a',
              captureName: 'scenario1/capture1.jpg',
              "revisionAt": "1970-01-01T00:00:01.000Z",
+             updatedBy: 'system',
              updatedAt: '1970-01-01T00:00:00.000Z',
              status: 'OK',
              span: 10,
@@ -424,6 +431,7 @@ describe('Application', function() {
              capture: 'db38f7f3f5d7d765f97e45d185066cc9',
              captureName: 'scenario2/capture2.png',
              "revisionAt": "1970-01-01T00:00:01.000Z",
+             updatedBy: 'system',
              updatedAt: '1970-01-01T00:00:00.000Z',
              status: 'OK',
              span: 10,
@@ -453,6 +461,7 @@ describe('Application', function() {
              capture: '9018988ae55e012e437aa24cbf9a400a',
              captureName: 'scenario1/capture1.jpg',
              "revisionAt": "1970-01-01T00:00:01.000Z",
+             updatedBy: 'system',
              updatedAt: '1970-01-01T00:00:00.000Z',
              status: 'OK',
              span: 10,
@@ -482,6 +491,7 @@ describe('Application', function() {
              capture: '9018988ae55e012e437aa24cbf9a400a',
              captureName: 'scenario1/capture1.jpg',
              "revisionAt": "1970-01-01T00:00:01.000Z",
+             updatedBy: 'system',
              updatedAt: '1970-01-01T00:00:00.000Z',
              status: 'OK',
              span: 10,
@@ -495,6 +505,7 @@ describe('Application', function() {
              capture: 'db38f7f3f5d7d765f97e45d185066cc9',
              captureName: 'scenario2/capture2.png',
              "revisionAt": "1970-01-01T00:00:01.000Z",
+             updatedBy: 'system',
              updatedAt: '1970-01-01T00:00:00.000Z',
              status: 'OK',
              span: 10,
@@ -526,6 +537,7 @@ describe('Application', function() {
         threshold: 5,
         time: 0.1,
         "revisionAt": "1970-01-01T00:00:02.000Z",
+        updatedBy: 'system',
         updatedAt: '1970-01-01T00:00:00.000Z',
         vector: [
           { dx: -5.360568046569824, dy: -0.0551748163998127, x: 80, y: 70 },
@@ -611,6 +623,7 @@ describe('Application', function() {
         threshold: 5,
         time: 0.1,
         "revisionAt": "1970-01-01T00:00:02.000Z",
+        updatedBy: 'system',
         updatedAt: '1970-01-01T00:00:00.000Z',
         vector: [
           { dx: -5.360568046569824, dy: -0.0551748163998127, x: 80, y: 70 },
@@ -697,6 +710,7 @@ describe('Application', function() {
              captureName: 'scenario2/capture2.png',
              checkedAs: 'IS_OK',
              "revisionAt": "1970-01-01T00:00:02.000Z",
+             updatedBy: 'system',
              updatedAt: '1970-01-01T00:00:00.000Z',
              status: 'SUSPICIOUS',
              span: 10,
@@ -751,6 +765,7 @@ describe('Application', function() {
              captureName: 'scenario1/capture1.jpg',
              checkedAs: 'UNPROCESSED',
              "revisionAt": "1970-01-01T00:00:02.000Z",
+             updatedBy: 'system',
              updatedAt: '1970-01-01T00:00:00.000Z',
              status: 'OK',
              span: 10,

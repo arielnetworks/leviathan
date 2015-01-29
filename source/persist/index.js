@@ -65,6 +65,7 @@ function updateCapture(capture, expectedRevision) {
 }
 
 function insertReport(rid, capture, data) {
+  data.updatedBy = 'system';
   // TODO: Use "exists"
   return Q.ninvoke(db.reports, 'findOne', {capture: capture}, {_id: false})
   .then(function(exists) {
@@ -89,24 +90,34 @@ function updateReport(rid, capture, data) {
 }
 
 function findCaptures(skip, limit, order) {
-
   // // XXX
   // Q.ninvoke(db.reports, 'distinct', 'capture')
   // .then(function(captureIds) {
   //   // TODO: slice
+  //   // TODO: use Q.consume
   //   Q.all(
   //     captureIds.map(function(id) {
+  //       var expectedRevision;
   //       return Q.ninvoke(db.reports.find({capture: id, checkedAs: 'IS_OK'}, {revision: true, _id: false})
   //           .sort('revisionAt', -1)
-  //       , 'toArray').then(function(docs) {
-  //         return docs.map(function(doc) {
-  //           return doc.revision;
-  //         })
+  //       , 'toArray')
+  //       .then(function(docs) {
+  //         expectedRevision = docs.map(function(doc) { return doc.revision });
+  //         return Q.ninvoke(db.reports.find({ capture: id, checkedAs: {$ne: 'UNPROCESSED'} }, {capture: true, updatedAt: true, updatedBy: true, _id: false})
+  //             .limit(1).sort('updatedAt', -1), 'toArray')
+  //       })
+  //       .then(function(docs) {
+  //         var doc = docs[0];
+  //         // if (!docs.length) throw new Error;
+  //         // console.log(',,,,,,,,,', doc);
+  //         doc.expectedRevision = expectedRevision;
+  //         return doc;
   //       })
   //     })
   //   )
-  //   .then(function() {
-  //     console.log('---------', arguments);
+  //   .then(function(results) {
+  //     console.log('---------');
+  //     console.log(results);
   //   })
   // })
 
