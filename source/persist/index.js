@@ -102,7 +102,6 @@ function upsertRevision(id, revisionAt) {
   var data = { id: id };
   if (revisionAt) data.revisionAt = revisionAt;
   if (isTesting) data['updatedAt'] = new Date('1970-01-01T00:00:00.000Z');
-
   return Q.ninvoke(db.revisions, 'update', {id: id}, {$set: data}, {upsert: true})
   .then(findRevision.bind(null, id));
 }
@@ -160,3 +159,4 @@ function parseOrderParam_(order) {
   assert.equal(order2.of, 'updatedAt');
   assert.equal(order2.by, -1);
 })();
+
