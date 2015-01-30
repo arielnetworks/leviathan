@@ -8,6 +8,7 @@ Q.longStackSupport = true;
 var xhr = require('../xhr');
 var _ = require('underscore');
 var assert = require('assert');
+var Path = require('path');
 
 var CHANGE_EVENT = 'change';
 
@@ -41,6 +42,17 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     .then((json) => {
       _.extend(_store.revisions, json.revisions)
       this.emit(CHANGE_EVENT);
+    })
+    .catch((err) => console.error(err.stack));
+  },
+
+  fetchSingle(revision) {
+    if (_store.revisions[revision]) return;
+    xhr(Path.join('/api/revisions', revision))
+    .then((json) => {
+      console.log(json);
+      // _.extend(_store.revisions, json.revisions)
+      // this.emit(CHANGE_EVENT);
     })
     .catch((err) => console.error(err.stack));
   }

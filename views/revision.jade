@@ -5,8 +5,7 @@ block bootstrapScript
     (function() {
       var React = require('react');
       React.render(
-        new React.createElement(require('app.revision')),
+        new React.createElement(require('app.revision'), {revision: '#{revision}'}),
         document.querySelector('.container-for-react')
       );
     })()
-
