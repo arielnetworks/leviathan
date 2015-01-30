@@ -14,8 +14,7 @@ var CHANGE_EVENT = 'change';
 
 // _revisions[revision][capture]
 var _store = {
-  revisions: [],
-  captures: []
+  revisions: []
 };
 
 
@@ -47,14 +46,17 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
   },
 
   fetchSingle(revision) {
-    if (_store.revisions[revision]) return;
-    xhr(Path.join('/api/revisions', revision))
-    .then((json) => {
-      console.log(json);
-      // _.extend(_store.revisions, json.revisions)
-      // this.emit(CHANGE_EVENT);
-    })
-    .catch((err) => console.error(err.stack));
+    // if (_store.revisions[revision] && _store.revisions[revision].revision) return;
+    // xhr(Path.join('/api/revisions', revision))
+    // .then((json) => {
+    //   _store.revisions[revision] = json;
+    //   this.emit(CHANGE_EVENT);
+    // })
+    // .catch((err) => console.error(err.stack));
+  },
+
+  fetchCaptures(revision) {
+    if (_store.revisions[revision] && _store.revisions[revision].revision) return;
   }
 
 });

@@ -6,7 +6,7 @@
   "scripts": {
     "preinstall": "mkdir -p public/js; mkdir -p public/css",
     "postinstall": "gulp",
-    "watchjs": "watchify -o public/js/bundle.js -r react -r ./ui/app/index.js:app.index -r ./ui/app/revision.js:app.revision -v -d .",
+    "watchjs": "watchify -o public/js/bundle.js -v -d .",
     "watchsass": "gulp watch",
     "build": "NODE_ENV=production browserify . | uglifyjs -cm > public/js/bundle.min.js; gulp",
     "test": "mocha"
@@ -27,7 +27,7 @@
     "static-favicon": "^2.0.0-alpha",
     "tidal-wave": "../tidal-wave",
     "underscore": "^1.7.0",
-    "watchify": "^2.2.1",
+    "watchify": "substack/watchify",
     "xhr": "^2.0.1"
   },
   "devDependencies": {

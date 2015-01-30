@@ -1,11 +1,4 @@
 extends layout
 
-block bootstrapScript
-  script.
-    (function() {
-      var React = require('react');
-      React.render(
-        new React.createElement(require('app.index')),
-        document.querySelector('.container-for-react')
-      );
-    })()
+block content
+  .container.container-index
