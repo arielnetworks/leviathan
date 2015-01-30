@@ -64,6 +64,9 @@ function launch(configure) {
   app.get('/revisions/:revision', function(req, res) {
     res.render('revision', {revision: req.params.revision}) 
   });
+  app.get('/revisions/:revision/captures/:capture', function(req, res) {
+    res.render('revisioncapture', {revision: req.params.revision, capture: req.params.capture }) 
+  });
 
   if ('development' == app.get('env')) {
     app.use(function(err, req, res, next) {

@@ -113,25 +113,21 @@ function findRevision(id) {
       {$match: {revision: id}},
       {$group: {
         _id: "$checkedAs",
-        count: {$sum: 1},
-        captures: {$addToSet: "$capture"} }}
+        count: {$sum: 1} }}
     )
   ])
   .then(function(result) {
     var revision = result[0];
     var aggregated = result[1];
     var checkedCounts = {};
-    var captureIds = [];
     checkedCounts.total = aggregated.reduce(function (sum, group) {
-      captureIds = group.captures.concat(captureIds);
       return sum + (checkedCounts[group._id] = group.count);
     }, 0);
     return _.extend(revision, {
       total: checkedCounts.total,
       'UNPROCESSED': checkedCounts.UNPROCESSED || 0,
       'IS_OK': checkedCounts.IS_OK || 0,
-      'IS_BUG': checkedCounts.IS_BUG || 0,
-      'captureIds': captureIds
+      'IS_BUG': checkedCounts.IS_BUG || 0
     });
   });
 }
