@@ -1,5 +1,11 @@
 extends layout
 
-block content
-  h1= title
-  p Welcome to #{title}
+block bootstrapScript
+  script.
+    (function() {
+      var React = require('react');
+      React.render(
+        new React.createElement(require('app.index')),
+        document.querySelector('.container-for-react')
+      );
+    })()

@@ -1,7 +1,14 @@
-doctype 5
+doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='./css/main.css')
   body
     block content
+    nav.navbar
+      .container
+        .navbar-header
+          a.navbar-brand(href="#") Leviathan
+    .container.container-for-react
+    script(src="/js/bundle.js")
+    block bootstrapScript

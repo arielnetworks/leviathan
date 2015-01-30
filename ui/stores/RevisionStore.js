@@ -34,7 +34,9 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
   },
 
   fetchRevisions(skip, limit) {
-    if (hasAll(_store.revisions, skip, skip + limit)) return;
+    // TODO: Pagination
+    // if (hasAll(_store.revisions, skip, skip + limit)) return;
+    if (_store.revisions.length) return;
     xhr('/api/revisions')
     .then((json) => {
       _.extend(_store.revisions, json.revisions)

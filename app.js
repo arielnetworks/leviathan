@@ -49,6 +49,7 @@ function launch(configure) {
   var app = express();
   app.set('port', global.configure.port);
   app.set('views', path.join(__dirname, 'views'));
+  app.set('view engine', 'jade');
 
   app.use(logger('dev'));
   app.use(bodyParser.json());
@@ -57,8 +58,10 @@ function launch(configure) {
 
   // Expose captures
   app.use(global.configure.publicCaptureDir || '/captures', express.static(global.configure.baseImageDir));
-
   app.use(express.static(path.join(__dirname, 'public')));
+
+  app.get('/', function(req, res) { res.render('index') });
+
   if ('development' == app.get('env')) {
     app.use(function(err, req, res, next) {
       res.status(err.status || 500);
@@ -105,5 +108,4 @@ function launch(configure) {
     server: server,
     promiseLaunch: promiseLaunch
   };
-
 }

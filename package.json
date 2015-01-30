@@ -6,7 +6,7 @@
   "scripts": {
     "preinstall": "mkdir -p public/js; mkdir -p public/css",
     "postinstall": "gulp",
-    "watchjs": "watchify -o public/js/bundle.js -v -d .",
+    "watchjs": "watchify -o public/js/bundle.js -r react -r ./ui/index.js:app.index -v -d .",
     "watchsass": "gulp watch",
     "build": "NODE_ENV=production browserify . | uglifyjs -cm > public/js/bundle.min.js; gulp",
     "test": "mocha"
@@ -17,7 +17,7 @@
     "envify": "^3.2.0",
     "express": "^4.10.4",
     "flux": "^2.0.1",
-    "jade": "^1.7.0",
+    "jade": "^1.9.1",
     "mongoskin": "^1.4.12",
     "morgan": "^1.5.1",
     "object-assign": "^2.0.0",
