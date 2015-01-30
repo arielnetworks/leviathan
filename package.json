@@ -2,11 +2,11 @@
   "name": "application-name",
   "version": "0.0.1",
   "private": true,
-  "main": "ui/index.js",
+  "main": "ui/require.js",
   "scripts": {
     "preinstall": "mkdir -p public/js; mkdir -p public/css",
     "postinstall": "gulp",
-    "watchjs": "watchify -o public/js/bundle.js -r react -r ./ui/index.js:app.index -v -d .",
+    "watchjs": "watchify -o public/js/bundle.js -r react -r ./ui/app/index.js:app.index -v -d .",
     "watchsass": "gulp watch",
     "build": "NODE_ENV=production browserify . | uglifyjs -cm > public/js/bundle.min.js; gulp",
     "test": "mocha"
