@@ -1,0 +1,12 @@
+extends layout
+
+block bootstrapScript
+  script.
+    (function() {
+      var React = require('react');
+      React.render(
+        new React.createElement(require('app.revision')),
+        document.querySelector('.container-for-react')
+      );
+    })()
+

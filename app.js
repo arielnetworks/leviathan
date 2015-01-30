@@ -61,6 +61,9 @@ function launch(configure) {
   app.use(express.static(path.join(__dirname, 'public')));
 
   app.get('/', function(req, res) { res.render('index') });
+  app.get('/revisions/:revision', function(req, res) {
+    res.render('revision', {revision: req.params.revision}) 
+  });
 
   if ('development' == app.get('env')) {
     app.use(function(err, req, res, next) {
