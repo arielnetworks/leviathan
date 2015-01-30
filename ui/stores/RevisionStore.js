@@ -14,7 +14,8 @@ var CHANGE_EVENT = 'change';
 
 // _revisions[revision][capture]
 var _store = {
-  revisions: []
+  revisions: [],
+  captures: []
 };
 
 
@@ -57,6 +58,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
   },
 
   fetchCaptures(revision) {
+    if (!_store.revisions[revision]) return;
     if (_store.revisions[revision] && _store.revisions[revision].revision) return;
   }
 
