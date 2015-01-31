@@ -57,7 +57,7 @@ function launch(configure) {
   app.use(cookieParser());
 
   // Expose captures
-  app.use(global.configure.publicCaptureDir || '/captures', express.static(global.configure.baseImageDir));
+  app.use(global.configure.publicCaptureDir, express.static(global.configure.baseImageDir));
   app.use(express.static(path.join(__dirname, 'public')));
 
   app.get('/', function(req, res) { res.render('index') });

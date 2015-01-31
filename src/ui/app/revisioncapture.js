@@ -3,6 +3,13 @@ var _mixins = require('./_mixins');
 var _ = require('underscore');
 var React = require('react');
 var RevisionStore = require('../stores/RevisionStore')
+var Path = require('path');
+
+var StatusClassNameMap = {
+  'OK': 'info',
+  'SUSPICIOUS': 'warning',
+  'ERROR': 'danger'
+};
 
 var Revision = React.createClass({
 
@@ -12,28 +19,54 @@ var Revision = React.createClass({
     RevisionStore.fetchCapture(this.props.revision, this.props.capture);
   },
 
+  // TODO: "/captures" must come from global.configure
   render() {
+    var current = this.state.current;
+    if (!current) return <span>...</span>;
+    var canvasSize = this.getCanvasSize();
     return (
       <div>
-        <h1>Revision {this.props.revision}、{this.state.current && this.state.current.captureName} の報告です！</h1>
-        <table className="table table-hover">
-          <tbody>
-            {this.state.current && _.map(this.state.current, (v, k) =>
-              <tr>
-                <th>{k}</th>
-                <td>{v}</td>
-              </tr>
+        <ol className="breadcrumb">
+          <li><a href="/">Leviathan</a></li>
+          <li><a href={Path.join('/revisions', this.props.revision)}>{this.props.revision}</a></li>
+          <li className="active">{current.captureName}</li>
+        </ol>
+        <h1>Revision {this.props.revision}、{current.captureName} の報告です！</h1>
+        <p className={'text-' + StatusClassNameMap[current.status]}>
+          機械は<span className={'label label-' + StatusClassNameMap[current.status]}>{current.status}</span>と報告しています</p>
+        <div className="image-and-svg" style={{width: canvasSize.w, height: canvasSize.h}}>
+          <img onLoad={this.onImageLoad} src={Path.join('/captures/', current.expect_image)} />
+          <img onLoad={this.onImageLoad} src={Path.join('/captures/', current.target_image)} />
+          <svg className="revisioncapture" style={{width: canvasSize.w, height: canvasSize.h}}>
+            {current.vector.map((v) =>
+              <line x1={v.x} y1={v.y} x2={v.dx} y2={v.dy} /> 
             )}
-          </tbody>
-        </table>
+          </svg>
+        </div>
+
       </div>
     )
+  },
+
+  onImageLoad(e) {
+    var currentSize = this.state.canvalSize;
+    this.setState({
+      canvalSize: {
+        w: currentSize ? Math.max(currentSize.w, e.target.naturalWidth) : e.target.naturalWidth,
+        h: currentSize ? Math.max(currentSize.h, e.target.naturalHeight) : e.target.naturalHeight
+      }
+    })
+  },
+
+  getCanvasSize() {
+    var currentSize = this.state.canvalSize;
+    return currentSize || { w: 0, h: 0 };
   },
 
   getRevision() {
     return this.state.revisions[this.props.revision];
   }
-})
-module.exports = Revision;
 
+});
+module.exports = Revision;
 

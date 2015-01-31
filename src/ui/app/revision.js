@@ -20,13 +20,17 @@ var Revision = React.createClass({
       capturesHTML = (
         <ul>
         {this.state.captures.map((capture) =>
-          <li><a href={'/revisions/' + this.props.revision + '/captures/' + capture.capture}>{capture.capture}</a></li>
+          <li><a href={'/revisions/' + this.props.revision + '/captures/' + capture.capture}>{capture.captureName}</a></li>
         )}
         </ul>
       );
     }
     return (
       <div>
+        <ol className="breadcrumb">
+          <li><a href="/">Leviathan</a></li>
+          <li className="active">{this.props.revision}</li>
+        </ol>
         <h1>Revision {this.props.revision} の報告です！</h1>
         {statusHTML}
         {capturesHTML}
