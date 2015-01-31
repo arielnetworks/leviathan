@@ -12,10 +12,10 @@ var Revision = React.createClass({
     RevisionStore.fetchCapture(this.props.revision, this.props.capture);
     return (
       <div>
-        <h1>Revision {this.props.revision}、{this.state.currentCapture && this.state.currentCapture.captureName} の報告です！</h1>
+        <h1>Revision {this.props.revision}、{this.state.current && this.state.current.captureName} の報告です！</h1>
         <table className="table table-hover">
           <tbody>
-            {this.state.currentCapture && _.map(this.state.currentCapture, (v, k) =>
+            {this.state.current && _.map(this.state.current, (v, k) =>
               <tr>
                 <th>{k}</th>
                 <td>{v}</td>

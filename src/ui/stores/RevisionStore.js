@@ -15,10 +15,9 @@ var CHANGE_EVENT = 'change';
 // _revisions[revision][capture]
 // TODO: We have to have two conatainers: [] (skip, limit) and {} (id dictionary)
 var _store = {
-  currentRevision: undefined,
+  current: undefined,
   revisions: [],
   revisionsTable: {},
-  currentCapture: undefined,
   captures: [],
   capturesTable: {}
 };
@@ -53,10 +52,10 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
 
   fetchCaptures(revision) {
     // TODO: Pagination
-    if (_store.currentRevision) return;
+    if (_store.current) return;
     xhr(Path.join('/api/revisions', revision, 'captures'))
     .then((json) => {
-      _store.currentRevision = json.revision;
+      _store.current = json.revision;
       _.each(json.captures, (capture) => {
         _store.capturesTable[capture.capture] = capture;
       });
@@ -67,10 +66,10 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
   },
 
   fetchCapture(revision, capture) {
-    if (_store.currentCapture) return;
+    if (_store.current) return;
     xhr(Path.join('/api/revisions', revision, 'captures', capture))
     .then((json) => {
-      _store.currentCapture = json;
+      _store.current = json;
       this.emit(CHANGE_EVENT);
     })
     .catch((err) => console.error(err.stack));
