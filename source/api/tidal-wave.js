@@ -13,7 +13,7 @@ module.exports['post'] = PostTidalWave;
 
 
 PostTidalWave[':id'] = function(req, res) {
-  var rid = req.param('id');
+  var rid = req.params.id;
   var revisionAt = req.param('revisionAt');
   Q().then(function() {
     if (!revisionAt) throw new Error('Specify "revisionAt" which refers to a datetime of the commit');

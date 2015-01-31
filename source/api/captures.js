@@ -8,7 +8,8 @@ var GetRevisions = module.exports['get'] = {};
 
 
 GetRevisions['index'] = function(req, res) {
-  persist.findCaptures(+req.param('skip'), +req.param('limit'))
+  var query = req.query || {};
+  persist.findCaptures(+query.skip, +query.limit)
   .then(function(docs) {
     res.json({
       captures: docs || []
