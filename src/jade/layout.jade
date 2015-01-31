@@ -3,11 +3,10 @@ html
   head
     title= title
     link(rel='stylesheet', href='/css/main.css')
-  body
+  body(data-revision='#{revision}', data-capture='#{capture}')
     nav.navbar
       .container
         .navbar-header
           a.navbar-brand(href="/") Leviathan
     block content
     script(src="/js/bundle.js")
-    // block bootstrapScript

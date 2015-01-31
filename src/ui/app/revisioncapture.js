@@ -10,7 +10,6 @@ var Revision = React.createClass({
 
   render() {
     RevisionStore.fetchCapture(this.props.revision, this.props.capture);
-    console.log('x');
     return (
       <div>
         <h1>Revision {this.props.revision}、{this.state.currentCapture && this.state.currentCapture.captureName} の報告です！</h1>

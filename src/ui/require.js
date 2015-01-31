@@ -7,13 +7,10 @@ require('./app/index');
 require('./app/revision');
 require('./app/revisioncapture');
 
-/* はやくやめたい jade から渡したい */
 var data = {};
-try {
-  data.revision = window.location.pathname.match(/^\/revisions\/(.+?)\/?/)[1];
-  data.capture = window.location.pathname.match(/^\/revisions\/.+?\/captures\/(.+)/)[1] ||
-                 window.location.pathname.match(/^\/captures\/(.+)/)[1];
-} catch (e) {}
+var dataset = document.body.dataset;
+if (dataset.revision) data.revision = dataset.revision;
+if (dataset.capture) data.capture = dataset.capture;
 
 /* watchify -r の調子が悪いのでこうするしかない */
 ['index', 'revision', 'revisioncapture'].some(pagename => {
