@@ -25,7 +25,7 @@ var _store = {
 
 
 var RevisionStore = assign({}, EventEmitter.prototype, {
-  
+
   get() {
     return _store;
   },

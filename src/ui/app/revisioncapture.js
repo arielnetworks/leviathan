@@ -8,8 +8,11 @@ var Revision = React.createClass({
 
   mixins: [_mixins],
 
-  render() {
+  componentDidMount() {
     RevisionStore.fetchCapture(this.props.revision, this.props.capture);
+  },
+
+  render() {
     return (
       <div>
         <h1>Revision {this.props.revision}、{this.state.current && this.state.current.captureName} の報告です！</h1>

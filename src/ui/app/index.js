@@ -9,8 +9,11 @@ var Index = React.createClass({
 
   mixins: [_mixins],
 
-  render() {
+  componentDidMount() {
     RevisionStore.fetchRevisions(0, 20);
+  },
+
+  render() {
     return <BidimentionalTable
               revisions={this.state.revisions}
               captures={this.state.captures} />

@@ -7,8 +7,11 @@ var Revision = React.createClass({
 
   mixins: [_mixins],
 
-  render() {
+  componentDidMount() {
     RevisionStore.fetchCaptures(this.props.revision);
+  },
+
+  render() {
     var revision = this.getRevision();
     var statusHTML = revision ?
         <p>全体：{revision.total}, 未処理：{revision.UNPROCESSED}, OK：{revision.IS_OK}, BUG：{revision.IS_BUG}</p> : undefined;
