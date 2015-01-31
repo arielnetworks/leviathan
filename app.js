@@ -48,7 +48,7 @@ function launch(configure) {
   // Express environments
   var app = express();
   app.set('port', global.configure.port);
-  app.set('views', path.join(__dirname, 'views'));
+  app.set('views', path.join(__dirname, 'src/jade'));
   app.set('view engine', 'jade');
 
   app.use(logger('dev'));
@@ -62,10 +62,10 @@ function launch(configure) {
 
   app.get('/', function(req, res) { res.render('index') });
   app.get('/revisions/:revision', function(req, res) {
-    res.render('revision', {revision: req.params.revision}) 
+    res.render('revision', {revision: req.params.revision});
   });
   app.get('/revisions/:revision/captures/:capture', function(req, res) {
-    res.render('revisioncapture', {revision: req.params.revision, capture: req.params.capture }) 
+    res.render('revisioncapture', {revision: req.params.revision, capture: req.params.capture });
   });
 
   if ('development' == app.get('env')) {
@@ -84,7 +84,7 @@ function launch(configure) {
     'captures',
     'tidal-wave'
   ], function(name) {
-    _.each(require('./source/api/' + name), function(actions, method) {
+    _.each(require('./src/api/' + name), function(actions, method) {
       _.each(actions, function(handler, action) {
         app[method]('/api/' + name + (action == 'index' ? '' : '/' + action), handler);
       });

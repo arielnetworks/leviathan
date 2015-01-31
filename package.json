@@ -2,13 +2,12 @@
   "name": "application-name",
   "version": "0.0.1",
   "private": true,
-  "main": "ui/require.js",
+  "main": "./src/ui/require.js",
   "scripts": {
     "preinstall": "mkdir -p public/js; mkdir -p public/css",
     "postinstall": "gulp",
     "watchjs": "watchify -o public/js/bundle.js -v -d .",
     "watchsass": "gulp watch",
-    "build": "NODE_ENV=production browserify . | uglifyjs -cm > public/js/bundle.min.js; gulp",
     "test": "mocha"
   },
   "dependencies": {

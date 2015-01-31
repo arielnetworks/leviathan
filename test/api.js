@@ -3,11 +3,11 @@ process.env.NODE_ENV = 'test';
 
 var Path = require('path');
 var request = require('supertest');
-var persist = require('../source/persist');
+var persist = require('../src/persist');
 
 describe('Application', function() {
 
-  describe('should work in '  + ' storage', function() {
+  describe('should work in ' + ' storage', function() {
 
     var tmp = require('../app').launch({
       port: 3000,
@@ -43,7 +43,7 @@ describe('Application', function() {
         revisions: [
           {
             id: 1,
-            "revisionAt": "1970-01-01T00:00:01.000Z",
+            'revisionAt': '1970-01-01T00:00:01.000Z',
             updatedAt: '1970-01-01T00:00:00.000Z'
           }
         ]
@@ -56,11 +56,11 @@ describe('Application', function() {
       .expect(200)
       .expect({
         id: 1,
-        "revisionAt": "1970-01-01T00:00:01.000Z",
+        'revisionAt': '1970-01-01T00:00:01.000Z',
         total: 2,
-        "UNPROCESSED": 0,
-        "IS_OK": 2,
-        "IS_BUG": 0,
+        'UNPROCESSED': 0,
+        'IS_OK': 2,
+        'IS_BUG': 0,
         updatedAt: '1970-01-01T00:00:00.000Z'
       }, done);
     });
@@ -72,7 +72,7 @@ describe('Application', function() {
       .expect({
         revision: {
           id: '1',
-          revisionAt: "1970-01-01T00:00:01.000Z",
+          revisionAt: '1970-01-01T00:00:01.000Z',
           total: 2,
           UNPROCESSED: 0,
           IS_OK: 2,
@@ -90,7 +90,7 @@ describe('Application', function() {
           target_image: 'revision1/scenario2/capture2.png',
           threshold: 5,
           time: 0.1,
-          revisionAt: "1970-01-01T00:00:01.000Z",
+          revisionAt: '1970-01-01T00:00:01.000Z',
           updatedBy: 'system',
           updatedAt: '1970-01-01T00:00:00.000Z',
           vector: []
@@ -106,7 +106,7 @@ describe('Application', function() {
           target_image: 'revision1/scenario1/capture1.jpg',
           threshold: 5,
           time: 0.1,
-          revisionAt: "1970-01-01T00:00:01.000Z",
+          revisionAt: '1970-01-01T00:00:01.000Z',
           updatedBy: 'system',
           updatedAt: '1970-01-01T00:00:00.000Z',
           vector: []
@@ -129,7 +129,7 @@ describe('Application', function() {
         target_image: 'revision1/scenario2/capture2.png',
         threshold: 5,
         time: 0.1,
-        revisionAt: "1970-01-01T00:00:01.000Z",
+        revisionAt: '1970-01-01T00:00:01.000Z',
         updatedBy: 'system',
         updatedAt: '1970-01-01T00:00:00.000Z',
         vector: []
@@ -141,18 +141,18 @@ describe('Application', function() {
       .get('/api/captures')
       .expect(200)
       .expect({
-        "captures": [
+        'captures': [
           {
-            "_id": "db38f7f3f5d7d765f97e45d185066cc9",
-            "expectedRevisions": ["1"],
-            "updatedAt": "1970-01-01T00:00:00.000Z",
-            "updatedBy": "system"
+            '_id': 'db38f7f3f5d7d765f97e45d185066cc9',
+            'expectedRevisions': ['1'],
+            'updatedAt': '1970-01-01T00:00:00.000Z',
+            'updatedBy': 'system'
           },
           {
-            "_id": "9018988ae55e012e437aa24cbf9a400a",
-            "expectedRevisions": ["1"],
-            "updatedAt": "1970-01-01T00:00:00.000Z",
-            "updatedBy": "system"
+            '_id': '9018988ae55e012e437aa24cbf9a400a',
+            'expectedRevisions': ['1'],
+            'updatedAt': '1970-01-01T00:00:00.000Z',
+            'updatedBy': 'system'
           }
         ]
       }, done);
@@ -173,18 +173,18 @@ describe('Application', function() {
       .get('/api/captures')
       .expect(200)
       .expect({
-        "captures": [
+        'captures': [
           {
-            "_id": "db38f7f3f5d7d765f97e45d185066cc9",
-            "expectedRevisions": ["1"],
-            "updatedAt": "1970-01-01T00:00:00.000Z",
-            "updatedBy": "system"
+            '_id': 'db38f7f3f5d7d765f97e45d185066cc9',
+            'expectedRevisions': ['1'],
+            'updatedAt': '1970-01-01T00:00:00.000Z',
+            'updatedBy': 'system'
           },
           {
-            "_id": "9018988ae55e012e437aa24cbf9a400a",
-            "expectedRevisions": ["1"],
-            "updatedAt": "1970-01-01T00:00:00.000Z",
-            "updatedBy": "system"
+            '_id': '9018988ae55e012e437aa24cbf9a400a',
+            'expectedRevisions': ['1'],
+            'updatedAt': '1970-01-01T00:00:00.000Z',
+            'updatedBy': 'system'
           }
         ]
       }, done);
@@ -198,12 +198,12 @@ describe('Application', function() {
         revisions: [
           {
             id: 2,
-            "revisionAt": "1970-01-01T00:00:02.000Z",
-            updatedAt: '1970-01-01T00:00:00.000Z' 
+            'revisionAt': '1970-01-01T00:00:02.000Z',
+            updatedAt: '1970-01-01T00:00:00.000Z'
           },
           {
             id: 1,
-            "revisionAt": "1970-01-01T00:00:01.000Z",
+            'revisionAt': '1970-01-01T00:00:01.000Z',
             updatedAt: '1970-01-01T00:00:00.000Z'
           }
         ]
@@ -216,11 +216,11 @@ describe('Application', function() {
       .expect(200)
       .expect({
         id: 2,
-        "revisionAt": "1970-01-01T00:00:02.000Z",
+        'revisionAt': '1970-01-01T00:00:02.000Z',
         total: 2,
-        "UNPROCESSED": 2,
-        "IS_OK": 0,
-        "IS_BUG": 0,
+        'UNPROCESSED': 2,
+        'IS_OK': 0,
+        'IS_BUG': 0,
         updatedAt: '1970-01-01T00:00:00.000Z'
       }, done);
     });
@@ -230,29 +230,29 @@ describe('Application', function() {
       .get('/api/revisions/2/captures')
       .expect({
         revision: {
-          id: "2",
-          "revisionAt": "1970-01-01T00:00:02.000Z",
+          id: '2',
+          'revisionAt': '1970-01-01T00:00:02.000Z',
           total: 2,
-          "UNPROCESSED": 2,
-          "IS_OK": 0,
-          "IS_BUG": 0,
-          updatedAt: "1970-01-01T00:00:00.000Z"
+          'UNPROCESSED': 2,
+          'IS_OK': 0,
+          'IS_BUG': 0,
+          updatedAt: '1970-01-01T00:00:00.000Z'
         },
         captures: [
           {
-            capture: "db38f7f3f5d7d765f97e45d185066cc9",
-            captureName: "scenario2/capture2.png",
-            checkedAs: "UNPROCESSED",
-            expect_image: "revision1/scenario2/capture2.png",
-            revision: "2",
+            capture: 'db38f7f3f5d7d765f97e45d185066cc9',
+            captureName: 'scenario2/capture2.png',
+            checkedAs: 'UNPROCESSED',
+            expect_image: 'revision1/scenario2/capture2.png',
+            revision: '2',
             span: 10,
-            status: "SUSPICIOUS",
-            target_image: "revision2/scenario2/capture2.png",
+            status: 'SUSPICIOUS',
+            target_image: 'revision2/scenario2/capture2.png',
             threshold: 5,
             time: 0.1,
-            "revisionAt": "1970-01-01T00:00:02.000Z",
+            'revisionAt': '1970-01-01T00:00:02.000Z',
             updatedBy: 'system',
-            updatedAt: "1970-01-01T00:00:00.000Z",
+            updatedAt: '1970-01-01T00:00:00.000Z',
             vector: [
               { dx: -5.360568046569824, dy: -0.0551748163998127, x: 80, y: 70 },
               { dx: -6.001735687255859, dy: -1.3181204795837402, x: 130, y: 70 },
@@ -281,19 +281,19 @@ describe('Application', function() {
             ]
           },
           {
-            capture: "9018988ae55e012e437aa24cbf9a400a",
-            captureName: "scenario1/capture1.jpg",
-            checkedAs: "UNPROCESSED",
-            expect_image: "revision1/scenario1/capture1.jpg",
-            revision: "2",
+            capture: '9018988ae55e012e437aa24cbf9a400a',
+            captureName: 'scenario1/capture1.jpg',
+            checkedAs: 'UNPROCESSED',
+            expect_image: 'revision1/scenario1/capture1.jpg',
+            revision: '2',
             span: 10,
-            status: "OK",
-            target_image: "revision2/scenario1/capture1.jpg",
+            status: 'OK',
+            target_image: 'revision2/scenario1/capture1.jpg',
             threshold: 5,
             time: 0.1,
-            "revisionAt": "1970-01-01T00:00:02.000Z",
+            'revisionAt': '1970-01-01T00:00:02.000Z',
             updatedBy: 'system',
-            updatedAt: "1970-01-01T00:00:00.000Z",
+            updatedAt: '1970-01-01T00:00:00.000Z',
             vector: []
           }
         ]
@@ -314,12 +314,12 @@ describe('Application', function() {
         revisions: [
           {
             id: 2,
-            "revisionAt": "1970-01-01T00:00:02.000Z",
+            'revisionAt': '1970-01-01T00:00:02.000Z',
             updatedAt: '1970-01-01T00:00:00.000Z'
           },
           {
             id: 1,
-            "revisionAt": "1970-01-01T00:00:01.000Z",
+            'revisionAt': '1970-01-01T00:00:01.000Z',
             updatedAt: '1970-01-01T00:00:00.000Z'
           }
         ]
@@ -332,7 +332,7 @@ describe('Application', function() {
         revisions: [
           {
             id: 2,
-            "revisionAt": "1970-01-01T00:00:02.000Z",
+            'revisionAt': '1970-01-01T00:00:02.000Z',
             updatedAt: '1970-01-01T00:00:00.000Z'
           }
         ]
@@ -345,7 +345,7 @@ describe('Application', function() {
         revisions: [
           {
             id: 1,
-            "revisionAt": "1970-01-01T00:00:01.000Z",
+            'revisionAt': '1970-01-01T00:00:01.000Z',
             updatedAt: '1970-01-01T00:00:00.000Z'
           }
         ]
@@ -358,12 +358,12 @@ describe('Application', function() {
         revisions: [
           {
             id: 1,
-            "revisionAt": "1970-01-01T00:00:01.000Z",
+            'revisionAt': '1970-01-01T00:00:01.000Z',
             updatedAt: '1970-01-01T00:00:00.000Z'
           },
           {
             id: 2,
-            "revisionAt": "1970-01-01T00:00:02.000Z",
+            'revisionAt': '1970-01-01T00:00:02.000Z',
             updatedAt: '1970-01-01T00:00:00.000Z'
           }
         ]
@@ -375,18 +375,18 @@ describe('Application', function() {
       .expect({
         revision: {
           id: 1,
-          "revisionAt": "1970-01-01T00:00:01.000Z",
+          'revisionAt': '1970-01-01T00:00:01.000Z',
           total: 2,
-          "UNPROCESSED": 0,
-          "IS_OK": 2,
-          "IS_BUG": 0,
+          'UNPROCESSED': 0,
+          'IS_OK': 2,
+          'IS_BUG': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         captures: [{ checkedAs: 'IS_OK',
              revision: '1',
              capture: 'db38f7f3f5d7d765f97e45d185066cc9',
              captureName: 'scenario2/capture2.png',
-             "revisionAt": "1970-01-01T00:00:01.000Z",
+             'revisionAt': '1970-01-01T00:00:01.000Z',
              updatedBy: 'system',
              updatedAt: '1970-01-01T00:00:00.000Z',
              status: 'OK',
@@ -400,7 +400,7 @@ describe('Application', function() {
              revision: '1',
              capture: '9018988ae55e012e437aa24cbf9a400a',
              captureName: 'scenario1/capture1.jpg',
-             "revisionAt": "1970-01-01T00:00:01.000Z",
+             'revisionAt': '1970-01-01T00:00:01.000Z',
              updatedBy: 'system',
              updatedAt: '1970-01-01T00:00:00.000Z',
              status: 'OK',
@@ -418,11 +418,11 @@ describe('Application', function() {
       .expect({
         revision: {
           id: 1,
-          "revisionAt": "1970-01-01T00:00:01.000Z",
+          'revisionAt': '1970-01-01T00:00:01.000Z',
           total: 2,
-          "UNPROCESSED": 0,
-          "IS_OK": 2,
-          "IS_BUG": 0,
+          'UNPROCESSED': 0,
+          'IS_OK': 2,
+          'IS_BUG': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         captures:
@@ -430,7 +430,7 @@ describe('Application', function() {
              revision: '1',
              capture: 'db38f7f3f5d7d765f97e45d185066cc9',
              captureName: 'scenario2/capture2.png',
-             "revisionAt": "1970-01-01T00:00:01.000Z",
+             'revisionAt': '1970-01-01T00:00:01.000Z',
              updatedBy: 'system',
              updatedAt: '1970-01-01T00:00:00.000Z',
              status: 'OK',
@@ -448,11 +448,11 @@ describe('Application', function() {
       .expect({
         revision: {
           id: 1,
-          "revisionAt": "1970-01-01T00:00:01.000Z",
+          'revisionAt': '1970-01-01T00:00:01.000Z',
           total: 2,
-          "UNPROCESSED": 0,
-          "IS_OK": 2,
-          "IS_BUG": 0,
+          'UNPROCESSED': 0,
+          'IS_OK': 2,
+          'IS_BUG': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         captures:
@@ -460,7 +460,7 @@ describe('Application', function() {
              revision: '1',
              capture: '9018988ae55e012e437aa24cbf9a400a',
              captureName: 'scenario1/capture1.jpg',
-             "revisionAt": "1970-01-01T00:00:01.000Z",
+             'revisionAt': '1970-01-01T00:00:01.000Z',
              updatedBy: 'system',
              updatedAt: '1970-01-01T00:00:00.000Z',
              status: 'OK',
@@ -481,18 +481,18 @@ describe('Application', function() {
       .send({ checkedAs: 'IS_BUG' })
       .expect({
 
-        checkedAs: "IS_BUG", // <== Changed
+        checkedAs: 'IS_BUG', // <== Changed
 
         capture: 'db38f7f3f5d7d765f97e45d185066cc9',
         captureName: 'scenario2/capture2.png',
         expect_image: 'revision1/scenario2/capture2.png',
-        revision: "2",
+        revision: '2',
         span: 10,
         status: 'SUSPICIOUS',
         target_image: 'revision2/scenario2/capture2.png',
         threshold: 5,
         time: 0.1,
-        "revisionAt": "1970-01-01T00:00:02.000Z",
+        'revisionAt': '1970-01-01T00:00:02.000Z',
         updatedBy: 'system',
         updatedAt: '1970-01-01T00:00:00.000Z',
         vector: [
@@ -530,11 +530,11 @@ describe('Application', function() {
       .expect(200)
       .expect({
         id: 2,
-        "revisionAt": "1970-01-01T00:00:02.000Z",
+        'revisionAt': '1970-01-01T00:00:02.000Z',
         total: 2,
-        "UNPROCESSED": 1,
-        "IS_OK": 0,
-        "IS_BUG": 1,
+        'UNPROCESSED': 1,
+        'IS_OK': 0,
+        'IS_BUG': 1,
         updatedAt: '1970-01-01T00:00:00.000Z'
       }, done);
     });
@@ -544,18 +544,18 @@ describe('Application', function() {
       .get('/api/captures')
       .expect(200)
       .expect({
-        "captures": [
+        'captures': [
           {
-            "_id": "db38f7f3f5d7d765f97e45d185066cc9",
-            "expectedRevisions": ["1"],
-            "updatedAt": "1970-01-01T00:00:00.000Z",
-            "updatedBy": "system"
+            '_id': 'db38f7f3f5d7d765f97e45d185066cc9',
+            'expectedRevisions': ['1'],
+            'updatedAt': '1970-01-01T00:00:00.000Z',
+            'updatedBy': 'system'
           },
           {
-            "_id": "9018988ae55e012e437aa24cbf9a400a",
-            "expectedRevisions": ["1"],
-            "updatedAt": "1970-01-01T00:00:00.000Z",
-            "updatedBy": "system"
+            '_id': '9018988ae55e012e437aa24cbf9a400a',
+            'expectedRevisions': ['1'],
+            'updatedAt': '1970-01-01T00:00:00.000Z',
+            'updatedBy': 'system'
           }
         ]
       }, done);
@@ -578,7 +578,7 @@ describe('Application', function() {
         target_image: 'revision2/scenario2/capture2.png',
         threshold: 5,
         time: 0.1,
-        "revisionAt": "1970-01-01T00:00:02.000Z",
+        'revisionAt': '1970-01-01T00:00:02.000Z',
         updatedBy: 'system',
         updatedAt: '1970-01-01T00:00:00.000Z',
         vector: [
@@ -616,11 +616,11 @@ describe('Application', function() {
       .expect(200)
       .expect({
         id: 2,
-        "revisionAt": "1970-01-01T00:00:02.000Z",
+        'revisionAt': '1970-01-01T00:00:02.000Z',
         total: 2,
-        "UNPROCESSED": 1,
-        "IS_OK": 1,
-        "IS_BUG": 0,
+        'UNPROCESSED': 1,
+        'IS_OK': 1,
+        'IS_BUG': 0,
         updatedAt: '1970-01-01T00:00:00.000Z'
       }, done);
     });
@@ -630,18 +630,18 @@ describe('Application', function() {
       .get('/api/captures')
       .expect(200)
       .expect({
-        "captures": [
+        'captures': [
           {
-            "_id": "db38f7f3f5d7d765f97e45d185066cc9",
-            "expectedRevisions": ["1", "2"],
-            "updatedAt": "1970-01-01T00:00:00.000Z",
-            "updatedBy": "system"
+            '_id': 'db38f7f3f5d7d765f97e45d185066cc9',
+            'expectedRevisions': ['1', '2'],
+            'updatedAt': '1970-01-01T00:00:00.000Z',
+            'updatedBy': 'system'
           },
           {
-            "_id": "9018988ae55e012e437aa24cbf9a400a",
-            "expectedRevisions": ["1"],
-            "updatedAt": "1970-01-01T00:00:00.000Z",
-            "updatedBy": "system"
+            '_id': '9018988ae55e012e437aa24cbf9a400a',
+            'expectedRevisions': ['1'],
+            'updatedAt': '1970-01-01T00:00:00.000Z',
+            'updatedBy': 'system'
           }
         ]
       }, done);
@@ -653,11 +653,11 @@ describe('Application', function() {
       .expect({
         revision: {
           id: 2,
-          "revisionAt": "1970-01-01T00:00:02.000Z",
+          'revisionAt': '1970-01-01T00:00:02.000Z',
           total: 2,
-          "UNPROCESSED": 1,
-          "IS_OK": 1,
-          "IS_BUG": 0,
+          'UNPROCESSED': 1,
+          'IS_OK': 1,
+          'IS_BUG': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         captures:
@@ -665,7 +665,7 @@ describe('Application', function() {
              capture: 'db38f7f3f5d7d765f97e45d185066cc9',
              captureName: 'scenario2/capture2.png',
              checkedAs: 'IS_OK',
-             "revisionAt": "1970-01-01T00:00:02.000Z",
+             'revisionAt': '1970-01-01T00:00:02.000Z',
              updatedBy: 'system',
              updatedAt: '1970-01-01T00:00:00.000Z',
              status: 'SUSPICIOUS',
@@ -708,11 +708,11 @@ describe('Application', function() {
       .expect({
         revision: {
           id: 2,
-          "revisionAt": "1970-01-01T00:00:02.000Z",
+          'revisionAt': '1970-01-01T00:00:02.000Z',
           total: 2,
-          "UNPROCESSED": 1,
-          "IS_OK": 1,
-          "IS_BUG": 0,
+          'UNPROCESSED': 1,
+          'IS_OK': 1,
+          'IS_BUG': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         captures:
@@ -720,7 +720,7 @@ describe('Application', function() {
              capture: '9018988ae55e012e437aa24cbf9a400a',
              captureName: 'scenario1/capture1.jpg',
              checkedAs: 'UNPROCESSED',
-             "revisionAt": "1970-01-01T00:00:02.000Z",
+             'revisionAt': '1970-01-01T00:00:02.000Z',
              updatedBy: 'system',
              updatedAt: '1970-01-01T00:00:00.000Z',
              status: 'OK',

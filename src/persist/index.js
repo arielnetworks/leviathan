@@ -49,8 +49,8 @@ function insertCapture(rid, capture, data) {
   return Q.ninvoke(db.captures, 'findOne', {capture: capture}, {_id: false})
   .then(function(exists) {
     if (!exists) data.checkedAs = 'IS_OK';
-    return updateCapture(rid, capture, data)
-  })
+    return updateCapture(rid, capture, data);
+  });
 }
 
 function updateCapture(rid, capture, data) {
@@ -70,15 +70,15 @@ function updateCapture(rid, capture, data) {
 
 function findCaptures(skip, limit) {
   return Q.ninvoke(db.captures, 'aggregate', [
-    {$match: {checkedAs: "IS_OK"}},
+    {$match: {checkedAs: 'IS_OK'}},
     {$group: {
-      _id: "$capture",
-      updatedAt: {$max:"$updatedAt"},
-      updatedBy: {$last: "$updatedBy"},
-      expectedRevisions: { $push: "$revision" } } },
+      _id: '$capture',
+      updatedAt: {$max: '$updatedAt'},
+      updatedBy: {$last: '$updatedBy'},
+      expectedRevisions: { $push: '$revision' } } },
     {$sort: {_id: -1}},
     {$skip: skip || 0},
-    {$limit: limit || DEFAULT_LIMIT}   
+    {$limit: limit || DEFAULT_LIMIT}
   ]);
 }
 
@@ -109,10 +109,10 @@ function upsertRevision(id, revisionAt) {
 function findRevision(id) {
   return Q.all([
     Q.ninvoke(db.revisions, 'findOne', {id: id}, {_id: false}),
-    Q.ninvoke(db.captures, 'aggregate', 
+    Q.ninvoke(db.captures, 'aggregate',
       {$match: {revision: id}},
       {$group: {
-        _id: "$checkedAs",
+        _id: '$checkedAs',
         count: {$sum: 1} }}
     )
   ])
@@ -120,7 +120,7 @@ function findRevision(id) {
     var revision = result[0];
     var aggregated = result[1];
     var checkedCounts = {};
-    checkedCounts.total = aggregated.reduce(function (sum, group) {
+    checkedCounts.total = aggregated.reduce(function(sum, group) {
       return sum + (checkedCounts[group._id] = group.count);
     }, 0);
     return _.extend(revision, {

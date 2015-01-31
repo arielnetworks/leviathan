@@ -4,29 +4,29 @@
 var gulp = require('gulp');
 var sass = require('gulp-ruby-sass') ;
 var autoprefix = require('gulp-autoprefixer') ;
-var notify = require("gulp-notify") ;
+var notify = require('gulp-notify') ;
 var bower = require('gulp-bower');
 var Path = require('path');
 
 
 
 var config = {
-    sassPath: './ui/sass',
-    bowerPath: './bower_components' 
+  sassPath: './src/ui/sass',
+  bowerPath: './bower_components' 
 };
 
 
 
-gulp.task('bower', function() { 
-    return bower().pipe(gulp.dest(config.bowerPath)) 
+gulp.task('bower', function() { ;
+    return bower().pipe(gulp.dest(config.bowerPath)) ;
 });
 
-gulp.task('icons', function() { 
+gulp.task('icons', function() { ;
     return gulp.src(config.bowerPath + '/fontawesome/fonts/**.*') 
-        .pipe(gulp.dest('./public/css/fonts')); 
+        .pipe(gulp.dest('./public/css/fonts')); ;
 });
 
-gulp.task('css', function() { 
+gulp.task('css', function() { ;
     return sass(Path.join(config.sassPath, 'main.sass'), {
         style: 'compressed',
         loadPath: [
@@ -35,16 +35,16 @@ gulp.task('css', function() { 
         ],
         'sourcemap=none': true
     })
-    .on("error", notify.onError(function (error) {
-      return "Error: " + error.message;
+    .on('error', notify.onError(function(error) {
+      return 'Error: ' + error.message;
     })) 
     .pipe(autoprefix('last 2 version'))
-    .pipe(gulp.dest('./public/css')); 
+    .pipe(gulp.dest('./public/css')); ;
 });
 
 // Rerun the task when a file changes
 gulp.task('watch', function() {
-     gulp.watch(config.sassPath + '/**/*.sass', ['css']); 
+  gulp.watch(config.sassPath + '/**/*.sass', ['css']); ;
 });
 
 gulp.task('default', ['bower', 'icons', 'css']);
