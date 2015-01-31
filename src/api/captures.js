@@ -12,7 +12,7 @@ GetRevisions['index'] = function(req, res) {
   persist.findCaptures(+query.skip, +query.limit)
   .then(function(docs) {
     res.json({
-      captures: docs || []
+      items: docs || []
     });
   })
   .catch (handleError.bind(null, res));

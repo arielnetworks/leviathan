@@ -17,7 +17,7 @@ GetRevisions['index'] = function(req, res) {
   persist.findRevisions(+query.skip, +query.limit, query.order)
   .then(function(docs) {
     res.json({
-      revisions: docs || []
+      items: docs || []
     });
   })
   .catch (handleError.bind(null, res));
@@ -25,6 +25,9 @@ GetRevisions['index'] = function(req, res) {
 
 GetRevisions[':id'] = function(req, res) {
   persist.findRevision(req.params.id)
+  .then(function(current) {
+    return { current: current };
+  })
   .then(res.json.bind(res))
   .catch (handleError.bind(null, res));
 };
@@ -39,8 +42,8 @@ GetRevisions[':id/captures'] = function(req, res) {
   ])
   .then(function(results) {
     res.json({
-      revision: results[0],
-      captures: results[1]
+      current: results[0],
+      items: results[1]
     });
   })
   .catch (handleError.bind(null, res));
@@ -48,6 +51,9 @@ GetRevisions[':id/captures'] = function(req, res) {
 
 GetRevisions[':id/captures/:capture'] = function(req, res) {
   persist.findRevisionCapture(req.params.id, req.params.capture)
+  .then(function(current) {
+    return {current: current}
+  })
   .then(res.json.bind(res))
   .catch (handleError.bind(null, res));
 };
@@ -66,7 +72,7 @@ PostRevisions[':id/captures/:capture'] = function(req, res) {
   .then(function(doc) {
     if (doc) {
       persist.upsertRevision(req.params.id); // Without waiting.
-      return doc;
+      return {current: doc};
     }
     res.status(404);
     return {

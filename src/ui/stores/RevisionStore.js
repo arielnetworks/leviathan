@@ -44,7 +44,10 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     if (_store.revisions.length) return;
     xhr('/api/revisions')
     .then((json) => {
-      _.extend(_store.revisions, json.revisions)
+      _.each(json.items, (revision) => {
+        _store.revisions.push(revision);
+        _store.revisionsTable[revision.id] = revision;
+      });
       this.emit(CHANGE_EVENT);
     })
     .catch((err) => console.error(err.stack));
@@ -55,11 +58,11 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     if (_store.current) return;
     xhr(Path.join('/api/revisions', revision, 'captures'))
     .then((json) => {
-      _store.current = json.revision;
-      _.each(json.captures, (capture) => {
+      _store.current = json.current;
+      _.each(json.items, (capture) => {
+        _store.captures.push(capture);
         _store.capturesTable[capture.capture] = capture;
       });
-      _.extend(_store.captures, json.captures)
       this.emit(CHANGE_EVENT);
     })
     .catch((err) => console.error(err.stack));
@@ -69,7 +72,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     if (_store.current) return;
     xhr(Path.join('/api/revisions', revision, 'captures', capture))
     .then((json) => {
-      _store.current = json;
+      _store.current = json.current;
       this.emit(CHANGE_EVENT);
     })
     .catch((err) => console.error(err.stack));
