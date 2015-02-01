@@ -4,6 +4,7 @@ var _ = require('underscore');
 var React = require('react');
 var RevisionStore = require('../stores/RevisionStore')
 var Path = require('path');
+var ReactKeyboardShortcut = require('react-keyboardshortcut');
 
 var StatusClassNameMap = {
   'OK': 'info',
@@ -13,10 +14,15 @@ var StatusClassNameMap = {
 
 var Revision = React.createClass({
 
-  mixins: [_mixins],
+  mixins: [_mixins, ReactKeyboardShortcut('onKeyboardShortcut')],
+
+  onKeyboardShortcut(e) {
+    console.log(e.identifier);
+  },
 
   componentDidMount() {
     RevisionStore.fetchCapture(this.props.revision, this.props.capture);
+    ReactKeyboardShortcut.register('A', 'a');
   },
 
   // TODO: "/captures" must come from global.configure

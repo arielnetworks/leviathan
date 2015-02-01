@@ -22,6 +22,7 @@
     "object-assign": "^2.0.0",
     "q": "^1.1.2",
     "react": "^0.12.2",
+    "react-keyboardshortcut": "git://github.com/piglovesyou/react-keyboardshortcut",
     "reactify": "^1.0.0",
     "static-favicon": "^2.0.0-alpha",
     "tidal-wave": "../tidal-wave",
