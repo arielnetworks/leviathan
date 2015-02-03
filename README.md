@@ -64,10 +64,7 @@ tidal-waveを実行したリビジョンの一覧を返します。たいした�
 開発
 -------------
 
-tidal-wave をモジュールとして使いますので、leviathan開発ディレクトリの隣にtidal-waveディレクトリを置いてください。
-
- ├── leviathan
- └── tidal-wave
+OpenCVが必要です。
 
 ```
 $ npm install

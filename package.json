@@ -25,12 +25,13 @@
     "react-keyboardshortcut": "git://github.com/piglovesyou/react-keyboardshortcut",
     "reactify": "^1.0.0",
     "static-favicon": "^2.0.0-alpha",
-    "tidal-wave": "../tidal-wave",
+    "tidal-wave": "arielnetworks/tidal-wave",
     "underscore": "^1.7.0",
     "watchify": "substack/watchify",
     "xhr": "^2.0.1"
   },
   "devDependencies": {
+    "coffee-script": "^1.9.0",
     "gulp": "^3.8.10",
     "gulp-autoprefixer": "^2.1.0",
     "gulp-bower": "0.0.10",
