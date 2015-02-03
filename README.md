@@ -1,4 +1,4 @@
-Leviathan
+Leviathan [![Build Status](https://travis-ci.org/arielnetworks/leviathan.svg?branch=master)](https://travis-ci.org/arielnetworks/leviathan)
 ===================
 
 たくさんの画面キャプチャをリビジョン間で比較し、報告を確認したり期待リビジョンを設定したりするサービス。
