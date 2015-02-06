@@ -68,10 +68,10 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
   },
 
   fetchCapture(revision, capture) {
-    if (_store.current) return;
+    if (_store.capturesTable[capture]) return;
     xhr(Path.join('/api/revisions', revision, 'captures', capture))
     .then((json) => {
-      _store.current = json.current;
+      _store.capturesTable[capture] = json.current;
       this.emit(CHANGE_EVENT);
     })
     .catch((err) => console.error(err.stack));

@@ -13,6 +13,12 @@ var StatusClassNameMap = {
   'ERROR': 'danger'
 };
 
+var CheckedAsClassNameMap = {
+  'UNPROCESSED': 'info',
+  'IS_OK': 'success',
+  'IS_BUG': 'danger'
+};
+
 var RevisionCapture = React.createClass({
 
   mixins: [_mixins, ReactKeyboardShortcut('onKeyboardShortcut', { 'A': 'a' }), Router.State],
@@ -27,7 +33,7 @@ var RevisionCapture = React.createClass({
 
   // TODO: "/captures" must come from global.configure
   render() {
-    var current = this.state.current;
+    var current = this.state.capturesTable[this.getParams().capture];
     if (!current) return <span>...</span>;
     var canvasSize = this.getCanvasSize();
     return (
@@ -40,6 +46,8 @@ var RevisionCapture = React.createClass({
         <h1>Revision {this.getParams().revision}、{current.captureName} の報告です！</h1>
         <p className={'text-' + StatusClassNameMap[current.status]}>
           機械は<span className={'label label-' + StatusClassNameMap[current.status]}>{current.status}</span>と報告しています</p>
+        <p className={'text-' + CheckedAsClassNameMap[current.status]}>
+          現在のステータスは<span className={'label label-' + CheckedAsClassNameMap[current.checkedAs]}>{current.checkedAs}</span>です</p>
         <div className="image-and-svg" style={{width: canvasSize.w, height: canvasSize.h}}>
           <img onLoad={this.onImageLoad} src={Path.join('/captures/', current.expect_image)} />
           <img onLoad={this.onImageLoad} src={Path.join('/captures/', current.target_image)} />
