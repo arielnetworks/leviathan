@@ -50,9 +50,18 @@ GetRevisions[':id/captures'] = function(req, res) {
 };
 
 GetRevisions[':id/captures/:capture'] = function(req, res) {
-  persist.findRevisionCapture(req.params.id, req.params.capture)
-  .then(function(current) {
-    return {current: current}
+  Q.all([
+    persist.findRevisionCapture(req.params.id, req.params.capture),
+    persist.findSiblingRevisionCaptureOf(req.params.id, req.params.capture, 1),
+    persist.findSiblingRevisionCaptureOf(req.params.id, req.params.capture, -1)
+  ])
+  .then(function(results) {
+    var current = results[0];
+    var previous = results[1];
+    var next = results[2];
+    current.previous = previous;
+    current.next = next;
+    return { current: current };
   })
   .then(res.json.bind(res))
   .catch (handleError.bind(null, res));

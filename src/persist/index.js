@@ -19,6 +19,7 @@ module.exports.findRevisions = findRevisions;
 module.exports.findRevision = findRevision;
 module.exports.findRevisionCaptures = findRevisionCaptures;
 module.exports.findRevisionCapture = findRevisionCapture;
+module.exports.findSiblingRevisionCaptureOf = findSiblingRevisionCaptureOf;
 module.exports.findCaptures = findCaptures;
 module.exports.findLastExpectedCapture = findLastExpectedCapture;
 module.exports.upsertRevision = upsertRevision;
@@ -80,6 +81,18 @@ function findCaptures(skip, limit) {
     {$skip: skip || 0},
     {$limit: limit || DEFAULT_LIMIT}
   ]);
+}
+
+function findSiblingRevisionCaptureOf(rid, capture, direction) {
+  return Q.ninvoke(
+      db.captures.find({
+        revision: rid,
+        capture: direction > 0 ? {$gt: capture} : {$lt: capture}
+      }, {_id: false})
+      .sort({'captureName': 1}).limit(1),
+  'toArray').then(function(docs) {
+    return docs ? docs[0] : null
+  });
 }
 
 function findRevisionCapture(rid, capture) {

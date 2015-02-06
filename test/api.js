@@ -135,7 +135,23 @@ describe('Application', function() {
           revisionAt: '1970-01-01T00:00:01.000Z',
           updatedBy: 'system',
           updatedAt: '1970-01-01T00:00:00.000Z',
-          vector: []
+          vector: [],
+          next: {
+            capture: "9018988ae55e012e437aa24cbf9a400a",
+            captureName: "scenario1/capture1.jpg",
+            checkedAs: "IS_OK",
+            expect_image: "revision1/scenario1/capture1.jpg",
+            revision: "1",
+            revisionAt: "1970-01-01T00:00:01.000Z",
+            span: 10,
+            status: "OK",
+            target_image: "revision1/scenario1/capture1.jpg",
+            threshold: 5,
+            time: 0.1,
+            updatedAt: "1970-01-01T00:00:00.000Z",
+            updatedBy: "system",
+            vector: []
+          }
         }
       }, done);
     });
