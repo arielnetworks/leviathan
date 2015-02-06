@@ -54,7 +54,8 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
   fetchRevision(revision) {
     // TODO: Pagination
     if (_store.revisionsTable[revision] &&
-        _store.revisionsTable[revision].total != null) {
+        _store.revisionsTable[revision].total != null &&
+        _store.revisionsTable[revision].reportedAs != null) {
       return;
     }
     xhr(Path.join('/api/revisions', revision, 'captures'))

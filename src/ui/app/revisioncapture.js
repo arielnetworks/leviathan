@@ -6,23 +6,12 @@ var RevisionStore = require('../stores/RevisionStore')
 var Path = require('path');
 var ReactKeyboardShortcut = require('react-keyboardshortcut');
 var Router = require('react-router');
+var Const = require('../const');
 
 var keyboardShortcut = ReactKeyboardShortcut('onKeyboardShortcut', {
   'LEFT': 'left',
   'RIGHT': 'right' 
 });
-
-var StatusClassNameMap = {
-  'OK': 'info',
-  'SUSPICIOUS': 'warning',
-  'ERROR': 'danger'
-};
-
-var CheckedAsClassNameMap = {
-  'UNPROCESSED': 'info',
-  'IS_OK': 'success',
-  'IS_BUG': 'danger'
-};
 
 var RevisionCapture = React.createClass({
 
@@ -59,10 +48,10 @@ var RevisionCapture = React.createClass({
           <li className="active">{current.captureName}</li>
         </ol>
         <h1>Revision {this.getParams().revision}、{current.captureName} の報告です！</h1>
-        <p className={'text-' + StatusClassNameMap[current.status]}>
-          機械は <span className={'label label-' + StatusClassNameMap[current.status]}>{current.status}</span> と報告しています</p>
-        <p className={'text-' + CheckedAsClassNameMap[current.status]}>
-          現在のステータスは <span className={'label label-' + CheckedAsClassNameMap[current.checkedAs]}>{current.checkedAs}</span> です</p>
+        <p className={'text-' + Const.StatusClassNameMap[current.status]}>
+          機械は <span className={'label label-' + Const.StatusClassNameMap[current.status]}>{current.status}</span> と報告しています</p>
+        <p className={'text-' + Const.CheckedAsClassNameMap[current.status]}>
+          現在のステータスは <span className={'label label-' + Const.CheckedAsClassNameMap[current.checkedAs]}>{current.checkedAs}</span> です</p>
         <div className="image-and-svg" style={{width: canvasSize.w, height: canvasSize.h}}>
           <img onLoad={this.onImageLoad} src={Path.join('/captures/', current.expect_image)} />
           <img onLoad={this.onImageLoad} src={Path.join('/captures/', current.target_image)} />
@@ -77,7 +66,7 @@ var RevisionCapture = React.createClass({
     )
   },
 
-  // XXX: Waiting for 
+  // XXX: Waiting for tidla-wave impl
   onImageLoad(e) {
     var currentSize = this.state.canvasSize;
     this.setState({
@@ -95,6 +84,7 @@ var RevisionCapture = React.createClass({
 
 });
 module.exports = RevisionCapture;
+
 
 
 function renderPrevNextNavigation_() {
@@ -124,4 +114,7 @@ function renderPrevNextNavigation_() {
     )
   }
   return;
+}
+
+function renderTitleIcon_() {
 }
