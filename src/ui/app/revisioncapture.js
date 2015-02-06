@@ -32,7 +32,7 @@ var RevisionCapture = React.createClass({
     if (!current) return <span>...</span>;
     var canvasSize = this.getCanvasSize();
     return (
-      <div>
+      <div className="app-revisioncapture">
         <ol className="breadcrumb">
           <li><a href="#/">Leviathan</a></li>
           <li><a href={Path.join('#/revisions', this.getParams().revision)}>{this.getParams().revision}</a></li>

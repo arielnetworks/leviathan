@@ -9,25 +9,25 @@ var Revision = React.createClass({
   mixins: [_mixins, Router.State],
 
   componentDidMount() {
-    RevisionStore.fetchCaptures(this.getParams().revision);
+    RevisionStore.fetchRevision(this.getParams().revision);
   },
 
   render() {
-    var revision = this.getParams().revision;
+    var revision = this.state.revisionsTable[this.getParams().revision];
     var statusHTML = revision ?
         <p>全体：{revision.total}, 未処理：{revision.UNPROCESSED}, OK：{revision.IS_OK}, BUG：{revision.IS_BUG}</p> : undefined;
     var capturesHTML;
-    if (this.state.captures) {
+    if (revision.captures) {
       capturesHTML = (
         <ul>
-        {this.state.captures.map((capture) =>
+        {revision.captures.map((capture) =>
           <li><a href={'#/revisions/' + this.getParams().revision + '/captures/' + capture.capture}>{capture.captureName}</a></li>
         )}
         </ul>
       );
     }
     return (
-      <div>
+      <div className="app-revision">
         <ol className="breadcrumb">
           <li><a href="#/">Leviathan</a></li>
           <li className="active">{this.getParams().revision}</li>

@@ -15,10 +15,8 @@ var CHANGE_EVENT = 'change';
 // _revisions[revision][capture]
 // TODO: We have to have two conatainers: [] (skip, limit) and {} (id dictionary)
 var _store = {
-  current: undefined,
   revisions: [],
   revisionsTable: {},
-  captures: [],
   capturesTable: {}
 };
 
@@ -45,7 +43,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     xhr('/api/revisions')
     .then((json) => {
       _.each(json.items, (revision) => {
-        _store.revisions.push(revision);
+        _store.revisions.push(revision); // TODO: Insert to the right index with skip/limit
         _store.revisionsTable[revision.id] = revision;
       });
       this.emit(CHANGE_EVENT);
@@ -53,16 +51,17 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     .catch((err) => console.error(err.stack));
   },
 
-  fetchCaptures(revision) {
+  fetchRevision(revision) {
     // TODO: Pagination
-    if (_store.current) return;
+    if (_store.revisionsTable[revision] &&
+        _store.revisionsTable[revision].total != null) {
+      return;
+    }
     xhr(Path.join('/api/revisions', revision, 'captures'))
     .then((json) => {
-      _store.current = json.current;
-      _.each(json.items, (capture) => {
-        _store.captures.push(capture);
-        _store.capturesTable[capture.capture] = capture;
-      });
+      _store.revisionsTable[revision] = json.current;
+      _store.revisionsTable[revision].captures = json.items;//TODO: Insert to the right index with skip/limit
+      _.each(json.items, (capture) => _store.capturesTable[capture.capture] = capture);
       this.emit(CHANGE_EVENT);
     })
     .catch((err) => console.error(err.stack));

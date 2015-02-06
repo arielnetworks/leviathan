@@ -23,7 +23,7 @@ var App = React.createClass({
 
   render: function () {
     return (
-      <div className="App">
+      <div className="app-root">
         <nav className="navbar">
         	<div className="container">
         		<div className="navbar-header">
