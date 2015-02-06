@@ -107,7 +107,7 @@ function findRevisionCaptures(rid, skip, limit, order, status, checkedAs) {
   return Q.ninvoke(db.captures.find(query, {_id: false})
       .skip(skip || 0)
       .limit(limit || DEFAULT_LIMIT)
-      .sort(order.of || 'id', order.by || -1),
+      .sort(order.of || 'captureName', order.by || 1),
   'toArray');
 }
 

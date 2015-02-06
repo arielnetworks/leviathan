@@ -7,6 +7,11 @@ var Path = require('path');
 var ReactKeyboardShortcut = require('react-keyboardshortcut');
 var Router = require('react-router');
 
+var keyboardShortcut = ReactKeyboardShortcut('onKeyboardShortcut', {
+  'LEFT': 'left',
+  'RIGHT': 'right' 
+});
+
 var StatusClassNameMap = {
   'OK': 'info',
   'SUSPICIOUS': 'warning',
@@ -21,10 +26,23 @@ var CheckedAsClassNameMap = {
 
 var RevisionCapture = React.createClass({
 
-  mixins: [_mixins, ReactKeyboardShortcut('onKeyboardShortcut', { 'A': 'a' }), Router.State],
+  mixins: [_mixins, keyboardShortcut, Router.State],
 
   onKeyboardShortcut(e) {
-    console.log(e.identifier);
+    var current = this.state.capturesTable[this.getParams().capture];
+    if (!current) return;
+    var goto;
+    switch (e.identifier) {
+      case 'LEFT':
+        goto = current.previous;
+        break;
+      case 'RIGHT':
+        goto = current.next;
+        break;
+    }
+    if (goto) {
+      location.href = Path.join('#/revisions', this.getParams().revision, 'captures', goto.capture);
+    }
   },
 
   // TODO: "/captures" must come from global.configure
@@ -42,9 +60,9 @@ var RevisionCapture = React.createClass({
         </ol>
         <h1>Revision {this.getParams().revision}、{current.captureName} の報告です！</h1>
         <p className={'text-' + StatusClassNameMap[current.status]}>
-          機械は<span className={'label label-' + StatusClassNameMap[current.status]}>{current.status}</span>と報告しています</p>
+          機械は <span className={'label label-' + StatusClassNameMap[current.status]}>{current.status}</span> と報告しています</p>
         <p className={'text-' + CheckedAsClassNameMap[current.status]}>
-          現在のステータスは<span className={'label label-' + CheckedAsClassNameMap[current.checkedAs]}>{current.checkedAs}</span>です</p>
+          現在のステータスは <span className={'label label-' + CheckedAsClassNameMap[current.checkedAs]}>{current.checkedAs}</span> です</p>
         <div className="image-and-svg" style={{width: canvasSize.w, height: canvasSize.h}}>
           <img onLoad={this.onImageLoad} src={Path.join('/captures/', current.expect_image)} />
           <img onLoad={this.onImageLoad} src={Path.join('/captures/', current.target_image)} />
@@ -60,9 +78,9 @@ var RevisionCapture = React.createClass({
   },
 
   onImageLoad(e) {
-    var currentSize = this.state.canvalSize;
+    var currentSize = this.state.canvasSize;
     this.setState({
-      canvalSize: {
+      canvasSize: {
         w: currentSize ? Math.max(currentSize.w, e.target.naturalWidth) : e.target.naturalWidth,
         h: currentSize ? Math.max(currentSize.h, e.target.naturalHeight) : e.target.naturalHeight
       }
@@ -70,7 +88,7 @@ var RevisionCapture = React.createClass({
   },
 
   getCanvasSize() {
-    var currentSize = this.state.canvalSize;
+    var currentSize = this.state.canvasSize;
     return currentSize || { w: 0, h: 0 };
   }
 
