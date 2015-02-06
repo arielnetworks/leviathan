@@ -138,9 +138,11 @@ function findRevision(id) {
     }, 0);
     return _.extend(revision, {
       total: checkedCounts.total,
-      'UNPROCESSED': checkedCounts.UNPROCESSED || 0,
-      'IS_OK': checkedCounts.IS_OK || 0,
-      'IS_BUG': checkedCounts.IS_BUG || 0
+      checkedAs: {
+        'UNPROCESSED': checkedCounts.UNPROCESSED || 0,
+        'IS_OK': checkedCounts.IS_OK || 0,
+        'IS_BUG': checkedCounts.IS_BUG || 0
+      }
     });
   });
 }

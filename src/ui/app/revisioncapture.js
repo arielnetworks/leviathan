@@ -77,6 +77,7 @@ var RevisionCapture = React.createClass({
     )
   },
 
+  // XXX: Waiting for 
   onImageLoad(e) {
     var currentSize = this.state.canvasSize;
     this.setState({
@@ -122,6 +123,5 @@ function renderPrevNextNavigation_() {
       <nav><ul className="pager">{items}</ul></nav>
     )
   }
-  console.log('xxxxxxx');
   return;
 }

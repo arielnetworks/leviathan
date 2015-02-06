@@ -59,9 +59,11 @@ describe('Application', function() {
           id: 1,
           revisionAt: '1970-01-01T00:00:01.000Z',
           total: 2,
-          UNPROCESSED: 0,
-          IS_OK: 2,
-          IS_BUG: 0,
+          checkedAs: {
+            UNPROCESSED: 0,
+            IS_OK: 2,
+            IS_BUG: 0,
+          },
           updatedAt: '1970-01-01T00:00:00.000Z'
         }
       }, done);
@@ -76,9 +78,11 @@ describe('Application', function() {
           id: '1',
           revisionAt: '1970-01-01T00:00:01.000Z',
           total: 2,
-          UNPROCESSED: 0,
-          IS_OK: 2,
-          IS_BUG: 0,
+          checkedAs: {
+            UNPROCESSED: 0,
+            IS_OK: 2,
+            IS_BUG: 0,
+          },
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         items: [{
@@ -239,9 +243,11 @@ describe('Application', function() {
           id: 2,
           revisionAt: '1970-01-01T00:00:02.000Z',
           total: 2,
-          UNPROCESSED: 2,
-          IS_OK: 0,
-          IS_BUG: 0,
+          checkedAs: {
+            UNPROCESSED: 2,
+            IS_OK: 0,
+            IS_BUG: 0,
+          },
           updatedAt: '1970-01-01T00:00:00.000Z'
         }
       }, done);
@@ -255,9 +261,11 @@ describe('Application', function() {
           id: '2',
           revisionAt: '1970-01-01T00:00:02.000Z',
           total: 2,
-          UNPROCESSED: 2,
-          IS_OK: 0,
-          IS_BUG: 0,
+          checkedAs: {
+            UNPROCESSED: 2,
+            IS_OK: 0,
+            IS_BUG: 0,
+          },
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         items: [
@@ -398,9 +406,11 @@ describe('Application', function() {
           id: 1,
           revisionAt: '1970-01-01T00:00:01.000Z',
           total: 2,
-          UNPROCESSED: 0,
-          IS_OK: 2,
-          IS_BUG: 0,
+          checkedAs: {
+            UNPROCESSED: 0,
+            IS_OK: 2,
+            IS_BUG: 0,
+          },
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         items: [
@@ -442,9 +452,11 @@ describe('Application', function() {
           id: 1,
           revisionAt: '1970-01-01T00:00:01.000Z',
           total: 2,
-          UNPROCESSED: 0,
-          IS_OK: 2,
-          IS_BUG: 0,
+          checkedAs: {
+            UNPROCESSED: 0,
+            IS_OK: 2,
+            IS_BUG: 0,
+          },
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         items:
@@ -472,9 +484,11 @@ describe('Application', function() {
           id: 1,
           revisionAt: '1970-01-01T00:00:01.000Z',
           total: 2,
-          UNPROCESSED: 0,
-          IS_OK: 2,
-          IS_BUG: 0,
+          checkedAs: {
+            UNPROCESSED: 0,
+            IS_OK: 2,
+            IS_BUG: 0,
+          },
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         items: [{
@@ -558,9 +572,11 @@ describe('Application', function() {
           id: 2,
           revisionAt: '1970-01-01T00:00:02.000Z',
           total: 2,
-          UNPROCESSED: 1,
-          IS_OK: 0,
-          IS_BUG: 1,
+          checkedAs: {
+            UNPROCESSED: 1,
+            IS_OK: 0,
+            IS_BUG: 1,
+          },
           updatedAt: '1970-01-01T00:00:00.000Z'
         }
       }, done);
@@ -647,9 +663,11 @@ describe('Application', function() {
           id: 2,
           revisionAt: '1970-01-01T00:00:02.000Z',
           total: 2,
-          UNPROCESSED: 1,
-          IS_OK: 1,
-          IS_BUG: 0,
+          checkedAs: {
+            UNPROCESSED: 1,
+            IS_OK: 1,
+            IS_BUG: 0,
+          },
           updatedAt: '1970-01-01T00:00:00.000Z'
         }
       }, done);
@@ -685,9 +703,11 @@ describe('Application', function() {
           id: 2,
           revisionAt: '1970-01-01T00:00:02.000Z',
           total: 2,
-          UNPROCESSED: 1,
-          IS_OK: 1,
-          IS_BUG: 0,
+          checkedAs: {
+            UNPROCESSED: 1,
+            IS_OK: 1,
+            IS_BUG: 0,
+          },
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         items:
@@ -740,9 +760,11 @@ describe('Application', function() {
           id: 2,
           revisionAt: '1970-01-01T00:00:02.000Z',
           total: 2,
-          UNPROCESSED: 1,
-          IS_OK: 1,
-          IS_BUG: 0,
+          checkedAs: {
+            UNPROCESSED: 1,
+            IS_OK: 1,
+            IS_BUG: 0,
+          },
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         items:
