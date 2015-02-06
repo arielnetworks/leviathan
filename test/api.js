@@ -64,6 +64,11 @@ describe('Application', function() {
             IS_OK: 2,
             IS_BUG: 0,
           },
+          reportedAs: {
+            ERROR: 0,
+            OK: 2,
+            SUSPICIOUS: 0 
+          },
           updatedAt: '1970-01-01T00:00:00.000Z'
         }
       }, done);
@@ -82,6 +87,11 @@ describe('Application', function() {
             UNPROCESSED: 0,
             IS_OK: 2,
             IS_BUG: 0,
+          },
+          reportedAs: {
+            ERROR: 0,
+            OK: 2,
+            SUSPICIOUS: 0 
           },
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
@@ -248,6 +258,11 @@ describe('Application', function() {
             IS_OK: 0,
             IS_BUG: 0,
           },
+          reportedAs: {
+            ERROR: 0,
+            OK: 1,
+            SUSPICIOUS: 1 
+          },
           updatedAt: '1970-01-01T00:00:00.000Z'
         }
       }, done);
@@ -265,6 +280,11 @@ describe('Application', function() {
             UNPROCESSED: 2,
             IS_OK: 0,
             IS_BUG: 0,
+          },
+          reportedAs: {
+            ERROR: 0,
+            OK: 1,
+            SUSPICIOUS: 1 
           },
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
@@ -411,6 +431,11 @@ describe('Application', function() {
             IS_OK: 2,
             IS_BUG: 0,
           },
+          reportedAs: {
+            ERROR: 0,
+            OK: 2,
+            SUSPICIOUS: 0 
+          },
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         items: [
@@ -457,6 +482,11 @@ describe('Application', function() {
             IS_OK: 2,
             IS_BUG: 0,
           },
+          reportedAs: {
+            ERROR: 0,
+            OK: 2,
+            SUSPICIOUS: 0 
+          },
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         items:
@@ -488,6 +518,11 @@ describe('Application', function() {
             UNPROCESSED: 0,
             IS_OK: 2,
             IS_BUG: 0,
+          },
+          reportedAs: {
+            ERROR: 0,
+            OK: 2,
+            SUSPICIOUS: 0 
           },
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
@@ -576,6 +611,11 @@ describe('Application', function() {
             UNPROCESSED: 1,
             IS_OK: 0,
             IS_BUG: 1,
+          },
+          reportedAs: {
+            ERROR: 0,
+            OK: 1,
+            SUSPICIOUS: 1 
           },
           updatedAt: '1970-01-01T00:00:00.000Z'
         }
@@ -668,6 +708,11 @@ describe('Application', function() {
             IS_OK: 1,
             IS_BUG: 0,
           },
+          reportedAs: {
+            ERROR: 0,
+            OK: 1,
+            SUSPICIOUS: 1 
+          },
           updatedAt: '1970-01-01T00:00:00.000Z'
         }
       }, done);
@@ -707,6 +752,11 @@ describe('Application', function() {
             UNPROCESSED: 1,
             IS_OK: 1,
             IS_BUG: 0,
+          },
+          reportedAs: {
+            ERROR: 0,
+            OK: 1,
+            SUSPICIOUS: 1 
           },
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
@@ -764,6 +814,11 @@ describe('Application', function() {
             UNPROCESSED: 1,
             IS_OK: 1,
             IS_BUG: 0,
+          },
+          reportedAs: {
+            ERROR: 0,
+            OK: 1,
+            SUSPICIOUS: 1 
           },
           updatedAt: '1970-01-01T00:00:00.000Z'
         },

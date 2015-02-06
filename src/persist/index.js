@@ -149,9 +149,12 @@ function findRevision(id) {
         'UNPROCESSED': checkedAsExpaned.UNPROCESSED || 0,
         'IS_OK': checkedAsExpaned.IS_OK || 0,
         'IS_BUG': checkedAsExpaned.IS_BUG || 0
+      },
+      reportedAs: {
+        'OK': reportedAsExpanded.OK || 0,
+        'SUSPICIOUS': reportedAsExpanded.SUSPICIOUS || 0,
+        'ERROR': reportedAsExpanded.ERROR || 0
       }
-      // , reportedAs: {
-      // }
     });
   });
 }
