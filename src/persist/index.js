@@ -122,29 +122,46 @@ function upsertRevision(id, revisionAt) {
 function findRevision(id) {
   return Q.all([
     Q.ninvoke(db.revisions, 'findOne', {id: id}, {_id: false}),
+    // TODO: Use mapReduce instead of calling "aggregate" twice
     Q.ninvoke(db.captures, 'aggregate',
       {$match: {revision: id}},
       {$group: {
         _id: '$checkedAs',
-        count: {$sum: 1} }}
-    )
+        count: {$sum: 1} }}),
+    Q.ninvoke(db.captures, 'aggregate',
+      {$match: {revision: id}},
+      {$group: {
+        _id: '$status',
+        count: {$sum: 1} }}),
   ])
   .then(function(result) {
     var revision = result[0];
-    var aggregated = result[1];
-    var checkedCounts = {};
-    checkedCounts.total = aggregated.reduce(function(sum, group) {
-      return sum + (checkedCounts[group._id] = group.count);
-    }, 0);
+    var checkedAs = result[1];
+    var reportedAs = result[2];
+
+    var total = checkedAs.reduce(function(sum, doc) { return sum + doc.count}, 0);
+    var checkedAsExpaned = expandCountFromAggregatedDocuments_(checkedAs);
+    var reportedAsExpanded = expandCountFromAggregatedDocuments_(reportedAs);
+
     return _.extend(revision, {
-      total: checkedCounts.total,
+      total: total,
       checkedAs: {
-        'UNPROCESSED': checkedCounts.UNPROCESSED || 0,
-        'IS_OK': checkedCounts.IS_OK || 0,
-        'IS_BUG': checkedCounts.IS_BUG || 0
+        'UNPROCESSED': checkedAsExpaned.UNPROCESSED || 0,
+        'IS_OK': checkedAsExpaned.IS_OK || 0,
+        'IS_BUG': checkedAsExpaned.IS_BUG || 0
       }
+      // , reportedAs: {
+      // }
     });
   });
+}
+
+function expandCountFromAggregatedDocuments_(aggregated) {
+  var rv = {};
+  aggregated.forEach(function(doc) {
+    rv[doc._id] = doc.count != null ? doc.count : 0
+  });
+  return rv;
 }
 
 function findRevisions(skip, limit, order) {
