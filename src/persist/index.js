@@ -122,7 +122,7 @@ function upsertRevision(id, revisionAt) {
 function findRevision(id) {
   return Q.all([
     Q.ninvoke(db.revisions, 'findOne', {id: id}, {_id: false}),
-    // TODO: Use mapReduce instead of calling "aggregate" twice
+    // TODO: Use mapReduce instead of calling "aggregate" multiple times
     Q.ninvoke(db.captures, 'aggregate',
       {$match: {revision: id}},
       {$group: {
@@ -133,11 +133,17 @@ function findRevision(id) {
       {$group: {
         _id: '$status',
         count: {$sum: 1} }}),
+    Q.ninvoke(db.captures, 'count', {
+      revision: id,
+      checkedAs: 'UNPROCESSED',
+      status: {$ne: 'OK'}
+    })
   ])
   .then(function(result) {
     var revision = result[0];
     var checkedAs = result[1];
     var reportedAs = result[2];
+    var needToProcessCount = result[3];
 
     var total = checkedAs.reduce(function(sum, doc) { return sum + doc.count}, 0);
     var checkedAsExpaned = expandCountFromAggregatedDocuments_(checkedAs);
@@ -154,7 +160,8 @@ function findRevision(id) {
         'OK': reportedAsExpanded.OK || 0,
         'SUSPICIOUS': reportedAsExpanded.SUSPICIOUS || 0,
         'ERROR': reportedAsExpanded.ERROR || 0
-      }
+      },
+      'UNPROCESSED && !OK': needToProcessCount,
     });
   });
 }

@@ -39,7 +39,6 @@ var RevisionCapture = React.createClass({
     RevisionStore.fetchCapture(this.getParams().revision, this.getParams().capture);
     var current = this.state.capturesTable[this.getParams().capture];
     if (!current) return <span>...</span>;
-    var canvasSize = this.getCanvasSize();
     return (
       <div className="app-revisioncapture">
         <ol className="breadcrumb">
@@ -52,10 +51,10 @@ var RevisionCapture = React.createClass({
           機械は <span className={'label label-' + Const.StatusClassNameMap[current.status]}>{current.status}</span> と報告しています</p>
         <p className={'text-' + Const.CheckedAsClassNameMap[current.status]}>
           現在のステータスは <span className={'label label-' + Const.CheckedAsClassNameMap[current.checkedAs]}>{current.checkedAs}</span> です</p>
-        <div className="image-and-svg" style={{width: canvasSize.w, height: canvasSize.h}}>
-          <img onLoad={this.onImageLoad} src={Path.join('/captures/', current.expect_image)} />
-          <img onLoad={this.onImageLoad} src={Path.join('/captures/', current.target_image)} />
-          <svg className="revisioncapture" style={{width: canvasSize.w, height: canvasSize.h}}>
+        <div className="image-and-svg" style={{width: current.width, height: current.height}}>
+          <img src={Path.join('/captures/', current.expect_image)} />
+          <img src={Path.join('/captures/', current.target_image)} />
+          <svg className="revisioncapture" style={{width: current.width, height: current.height}}>
             {current.vector.map((v) =>
               <line x1={v.x} y1={v.y} x2={v.dx} y2={v.dy} /> 
             )}
@@ -64,22 +63,6 @@ var RevisionCapture = React.createClass({
         {renderPrevNextNavigation_.call(this)}
       </div>
     )
-  },
-
-  // XXX: Waiting for tidla-wave impl
-  onImageLoad(e) {
-    var currentSize = this.state.canvasSize;
-    this.setState({
-      canvasSize: {
-        w: currentSize ? Math.max(currentSize.w, e.target.naturalWidth) : e.target.naturalWidth,
-        h: currentSize ? Math.max(currentSize.h, e.target.naturalHeight) : e.target.naturalHeight
-      }
-    })
-  },
-
-  getCanvasSize() {
-    var currentSize = this.state.canvasSize;
-    return currentSize || { w: 0, h: 0 };
   }
 
 });

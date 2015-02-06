@@ -18,7 +18,6 @@ var Revision = React.createClass({
   render() {
     var revision = this.state.revisionsTable[this.getParams().revision];
     if (!revision || revision.total == null) return <span>...</span>;
-
     return (
       <div className="app-revision">
         <ol className="breadcrumb">
@@ -26,6 +25,7 @@ var Revision = React.createClass({
           <li className="active">{this.getParams().revision}</li>
         </ol>
         {renderStatus.call(this)}
+        {renderProgress.call(this)}
         <h1>Revision {this.getParams().revision} の報告です！</h1>
         <ul>
         {revision.captures.map((capture) =>
@@ -52,6 +52,18 @@ function renderStatus() {
           </div>
         )
       })}
+    </div>  
+  )
+}
+
+function renderProgress() {
+  var revision = this.state.revisionsTable[this.getParams().revision];
+  // UNPROCESSED && (SUSPICIOUS || ERROR)
+  var items = [];
+
+  // OTHERWISE
+  return (
+    <div className="progress">
     </div>  
   )
 }

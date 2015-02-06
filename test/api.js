@@ -69,6 +69,7 @@ describe('Application', function() {
             OK: 2,
             SUSPICIOUS: 0 
           },
+          'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         }
       }, done);
@@ -93,6 +94,7 @@ describe('Application', function() {
             OK: 2,
             SUSPICIOUS: 0 
           },
+          'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         items: [{
@@ -271,6 +273,7 @@ describe('Application', function() {
             OK: 1,
             SUSPICIOUS: 1 
           },
+          'UNPROCESSED && !OK': 1,
           updatedAt: '1970-01-01T00:00:00.000Z'
         }
       }, done);
@@ -294,6 +297,7 @@ describe('Application', function() {
             OK: 1,
             SUSPICIOUS: 1 
           },
+          'UNPROCESSED && !OK': 1,
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         items: [
@@ -448,6 +452,7 @@ describe('Application', function() {
             OK: 2,
             SUSPICIOUS: 0 
           },
+          'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         items: [
@@ -503,6 +508,7 @@ describe('Application', function() {
             OK: 2,
             SUSPICIOUS: 0 
           },
+          'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         items:
@@ -542,6 +548,7 @@ describe('Application', function() {
             OK: 2,
             SUSPICIOUS: 0 
           },
+          'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         items: [{
@@ -639,6 +646,7 @@ describe('Application', function() {
             OK: 1,
             SUSPICIOUS: 1 
           },
+          'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         }
       }, done);
@@ -737,6 +745,7 @@ describe('Application', function() {
             OK: 1,
             SUSPICIOUS: 1 
           },
+          'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         }
       }, done);
@@ -782,6 +791,7 @@ describe('Application', function() {
             OK: 1,
             SUSPICIOUS: 1 
           },
+          'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         items:
@@ -846,6 +856,7 @@ describe('Application', function() {
             OK: 1,
             SUSPICIOUS: 1 
           },
+          'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
         },
         items:
