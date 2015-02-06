@@ -1,5 +1,6 @@
 
 var RevisionStore = require('../stores/RevisionStore');
+var Router = require('react-router');
 
 module.exports = {
 

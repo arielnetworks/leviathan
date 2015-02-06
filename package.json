@@ -2,7 +2,7 @@
   "name": "application-name",
   "version": "0.0.1",
   "private": true,
-  "main": "./src/ui/require.js",
+  "main": "./src/ui/main.js",
   "scripts": {
     "preinstall": "mkdir -p public/js; mkdir -p public/css",
     "postinstall": "gulp",
@@ -23,6 +23,7 @@
     "q": "^1.1.2",
     "react": "^0.12.2",
     "react-keyboardshortcut": "git://github.com/piglovesyou/react-keyboardshortcut",
+    "react-router": "^0.11.6",
     "reactify": "^1.0.0",
     "static-favicon": "^2.0.0-alpha",
     "tidal-wave": "arielnetworks/tidal-wave",

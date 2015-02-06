@@ -5,6 +5,7 @@ var React = require('react');
 var RevisionStore = require('../stores/RevisionStore')
 var Path = require('path');
 var ReactKeyboardShortcut = require('react-keyboardshortcut');
+var Router = require('react-router');
 
 var StatusClassNameMap = {
   'OK': 'info',
@@ -12,16 +13,16 @@ var StatusClassNameMap = {
   'ERROR': 'danger'
 };
 
-var Revision = React.createClass({
+var RevisionCapture = React.createClass({
 
-  mixins: [_mixins, ReactKeyboardShortcut('onKeyboardShortcut')],
+  mixins: [_mixins, ReactKeyboardShortcut('onKeyboardShortcut'), Router.State],
 
   onKeyboardShortcut(e) {
     console.log(e.identifier);
   },
 
   componentDidMount() {
-    RevisionStore.fetchCapture(this.props.revision, this.props.capture);
+    RevisionStore.fetchCapture(this.getParams().revision, this.getParams().capture);
     ReactKeyboardShortcut.register('A', 'a');
   },
 
@@ -33,11 +34,11 @@ var Revision = React.createClass({
     return (
       <div>
         <ol className="breadcrumb">
-          <li><a href="/">Leviathan</a></li>
-          <li><a href={Path.join('/revisions', this.props.revision)}>{this.props.revision}</a></li>
+          <li><a href="#/">Leviathan</a></li>
+          <li><a href={Path.join('#/revisions', this.getParams().revision)}>{this.getParams().revision}</a></li>
           <li className="active">{current.captureName}</li>
         </ol>
-        <h1>Revision {this.props.revision}、{current.captureName} の報告です！</h1>
+        <h1>Revision {this.getParams().revision}、{current.captureName} の報告です！</h1>
         <p className={'text-' + StatusClassNameMap[current.status]}>
           機械は<span className={'label label-' + StatusClassNameMap[current.status]}>{current.status}</span>と報告しています</p>
         <div className="image-and-svg" style={{width: canvasSize.w, height: canvasSize.h}}>
@@ -67,12 +68,8 @@ var Revision = React.createClass({
   getCanvasSize() {
     var currentSize = this.state.canvalSize;
     return currentSize || { w: 0, h: 0 };
-  },
-
-  getRevision() {
-    return this.state.revisions[this.props.revision];
   }
 
 });
-module.exports = Revision;
+module.exports = RevisionCapture;
 

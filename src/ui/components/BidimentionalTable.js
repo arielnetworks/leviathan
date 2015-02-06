@@ -5,7 +5,7 @@ var BidimentionalTable = React.createClass({
 
   render() {
     var tbodyContent = this.props.revisions.map((revision) => {
-      return <tr> <th><a href={'/revisions/' + revision.id}>{revision.id}</a></th> <td>Jacob</td> <td>Thornton</td> <td>@fat</td> </tr>
+      return <tr> <th><a href={'/#/revisions/' + revision.id}>{revision.id}</a></th> <td>Jacob</td> <td>Thornton</td> <td>@fat</td> </tr>
     });
     return (
       <table className="table table-hover">
