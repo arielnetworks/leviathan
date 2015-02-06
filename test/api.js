@@ -136,6 +136,7 @@ describe('Application', function() {
           updatedBy: 'system',
           updatedAt: '1970-01-01T00:00:00.000Z',
           vector: [],
+          hasSibling: true,
           next: {
             capture: "9018988ae55e012e437aa24cbf9a400a",
             captureName: "scenario1/capture1.jpg",

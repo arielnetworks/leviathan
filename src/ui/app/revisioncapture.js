@@ -27,12 +27,9 @@ var RevisionCapture = React.createClass({
     console.log(e.identifier);
   },
 
-  componentDidMount() {
-    RevisionStore.fetchCapture(this.getParams().revision, this.getParams().capture);
-  },
-
   // TODO: "/captures" must come from global.configure
   render() {
+    RevisionStore.fetchCapture(this.getParams().revision, this.getParams().capture);
     var current = this.state.capturesTable[this.getParams().capture];
     if (!current) return <span>...</span>;
     var canvasSize = this.getCanvasSize();
@@ -57,7 +54,7 @@ var RevisionCapture = React.createClass({
             )}
           </svg>
         </div>
-
+        {renderPrevNextNavigation_.call(this)}
       </div>
     )
   },
@@ -80,3 +77,33 @@ var RevisionCapture = React.createClass({
 });
 module.exports = RevisionCapture;
 
+
+function renderPrevNextNavigation_() {
+  var current = this.state.capturesTable[this.getParams().capture];
+  var items = [];
+  if (current.previous) {
+    items.push(
+      <li className="previous">
+        <a href={Path.join('#/revisions', this.getParams().revision, 'captures', current.previous.capture)}>
+          <span aria-hidden="true">&larr;</span> {current.previous.captureName}
+        </a>
+      </li>
+    )
+  }
+  if (current.next) {
+    items.push(
+      <li className="next">
+        <a href={Path.join('#/revisions', this.getParams().revision, 'captures', current.next.capture)}>
+          {current.next.captureName} <span aria-hidden="true">&rarr;</span>
+        </a>
+      </li>
+    )
+  }
+  if (items.length) {
+    return (
+      <nav><ul className="pager">{items}</ul></nav>
+    )
+  }
+  console.log('xxxxxxx');
+  return;
+}

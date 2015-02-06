@@ -68,7 +68,8 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
   },
 
   fetchCapture(revision, capture) {
-    if (_store.capturesTable[capture]) return;
+    if (_store.capturesTable[capture] &&
+        _.isBoolean(_store.capturesTable[capture].hasSibling)) return;
     xhr(Path.join('/api/revisions', revision, 'captures', capture))
     .then((json) => {
       _store.capturesTable[capture] = json.current;

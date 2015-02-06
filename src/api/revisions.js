@@ -59,6 +59,7 @@ GetRevisions[':id/captures/:capture'] = function(req, res) {
     var current = results[0];
     var previous = results[1];
     var next = results[2];
+    current.hasSibling = !!(previous || next);
     current.previous = previous;
     current.next = next;
     return { current: current };
