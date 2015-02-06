@@ -109,6 +109,8 @@ describe('Application', function() {
           revisionAt: '1970-01-01T00:00:01.000Z',
           updatedBy: 'system',
           updatedAt: '1970-01-01T00:00:00.000Z',
+          width: 280,
+          height: 279,
           vector: []
         }, {
           checkedAs: 'IS_OK',
@@ -124,6 +126,8 @@ describe('Application', function() {
           revisionAt: '1970-01-01T00:00:01.000Z',
           updatedBy: 'system',
           updatedAt: '1970-01-01T00:00:00.000Z',
+          width: 180,
+          height: 117,
           vector: []
         }]
       }, done);
@@ -148,6 +152,8 @@ describe('Application', function() {
           revisionAt: '1970-01-01T00:00:01.000Z',
           updatedBy: 'system',
           updatedAt: '1970-01-01T00:00:00.000Z',
+          width: 180,
+          height: 117,
           vector: [],
           hasSibling: true,
           previous: {
@@ -164,6 +170,8 @@ describe('Application', function() {
             time: 0.1,
             updatedAt: "1970-01-01T00:00:00.000Z",
             updatedBy: "system",
+            width: 280,
+            height: 279,
             vector: []
           }
         }
@@ -303,6 +311,8 @@ describe('Application', function() {
             revisionAt: '1970-01-01T00:00:02.000Z',
             updatedBy: 'system',
             updatedAt: '1970-01-01T00:00:00.000Z',
+            width: 280,
+            height: 279,
             vector: []
           }, {
             capture: 'db38f7f3f5d7d765f97e45d185066cc9',
@@ -318,6 +328,8 @@ describe('Application', function() {
             revisionAt: '1970-01-01T00:00:02.000Z',
             updatedBy: 'system',
             updatedAt: '1970-01-01T00:00:00.000Z',
+            width: 180,
+            height: 117,
             vector: [
               { dx: -5.360568046569824, dy: -0.0551748163998127, x: 80, y: 70 },
               { dx: -6.001735687255859, dy: -1.3181204795837402, x: 130, y: 70 },
@@ -449,6 +461,8 @@ describe('Application', function() {
              status: 'OK',
              span: 10,
              threshold: 5,
+             width: 280,
+             height: 279,
              vector: [],
              time: 0.1,
              target_image: 'revision1/scenario1/capture1.jpg',
@@ -463,6 +477,8 @@ describe('Application', function() {
              status: 'OK',
              span: 10,
              threshold: 5,
+             width: 180,
+             height: 117,
              vector: [],
              time: 0.1,
              target_image: 'revision1/scenario2/capture2.png',
@@ -500,6 +516,8 @@ describe('Application', function() {
              status: 'OK',
              span: 10,
              threshold: 5,
+             width: 280,
+             height: 279,
              vector: [],
              time: 0.1,
              target_image: 'revision1/scenario1/capture1.jpg',
@@ -535,6 +553,8 @@ describe('Application', function() {
           expect_image: 'revision1/scenario2/capture2.png',
           target_image: 'revision1/scenario2/capture2.png',
           time: 0.1,
+          width: 180,
+          height: 117,
           vector: [],
           captureName: 'scenario2/capture2.png',
           checkedAs: 'IS_OK',
@@ -568,6 +588,8 @@ describe('Application', function() {
           revisionAt: '1970-01-01T00:00:02.000Z',
           updatedBy: 'system',
           updatedAt: '1970-01-01T00:00:00.000Z',
+          width: 180,
+          height: 117,
           vector: [
             { dx: -5.360568046569824, dy: -0.0551748163998127, x: 80, y: 70 },
             { dx: -6.001735687255859, dy: -1.3181204795837402, x: 130, y: 70 },
@@ -664,6 +686,8 @@ describe('Application', function() {
           revisionAt: '1970-01-01T00:00:02.000Z',
           updatedBy: 'system',
           updatedAt: '1970-01-01T00:00:00.000Z',
+          width: 180,
+          height: 117,
           vector: [
             { dx: -5.360568046569824, dy: -0.0551748163998127, x: 80, y: 70 },
             { dx: -6.001735687255859, dy: -1.3181204795837402, x: 130, y: 70 },
@@ -771,6 +795,8 @@ describe('Application', function() {
              status: 'SUSPICIOUS',
              span: 10,
              threshold: 5,
+             width: 180,
+             height: 117,
              vector: [
                { dx: -5.360568046569824, dy: -0.0551748163998127, x: 80, y: 70 },
                { dx: -6.001735687255859, dy: -1.3181204795837402, x: 130, y: 70 },
@@ -833,6 +859,8 @@ describe('Application', function() {
              status: 'OK',
              span: 10,
              threshold: 5,
+             width: 280,
+             height: 279,
              vector: [],
              time: 0.1,
              target_image: 'revision2/scenario1/capture1.jpg',
