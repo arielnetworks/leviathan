@@ -15,7 +15,7 @@ var StatusClassNameMap = {
 
 var RevisionCapture = React.createClass({
 
-  mixins: [_mixins, ReactKeyboardShortcut('onKeyboardShortcut'), Router.State],
+  mixins: [_mixins, ReactKeyboardShortcut('onKeyboardShortcut', { 'A': 'a' }), Router.State],
 
   onKeyboardShortcut(e) {
     console.log(e.identifier);
@@ -23,7 +23,6 @@ var RevisionCapture = React.createClass({
 
   componentDidMount() {
     RevisionStore.fetchCapture(this.getParams().revision, this.getParams().capture);
-    ReactKeyboardShortcut.register('A', 'a');
   },
 
   // TODO: "/captures" must come from global.configure

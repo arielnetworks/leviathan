@@ -17,7 +17,7 @@ var Revision = React.createClass({
     var statusHTML = revision ?
         <p>全体：{revision.total}, 未処理：{revision.UNPROCESSED}, OK：{revision.IS_OK}, BUG：{revision.IS_BUG}</p> : undefined;
     var capturesHTML;
-    if (revision.captures) {
+    if (revision && revision.captures) {
       capturesHTML = (
         <ul>
         {revision.captures.map((capture) =>
