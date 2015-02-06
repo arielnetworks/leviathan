@@ -58,12 +58,13 @@ function renderStatus() {
 
 function renderProgress() {
   var revision = this.state.revisionsTable[this.getParams().revision];
-  // UNPROCESSED && (SUSPICIOUS || ERROR)
-  var items = [];
-
-  // OTHERWISE
+  var total = revision.total;
+  var processed = (total - revision['UNPROCESSED && !OK']) / total * 100;
+  var needToProcess = revision['UNPROCESSED && !OK'] / total * 100;
   return (
     <div className="progress">
+      <div className={'progress-bar progress-bar-success'} style={{width: processed + '%'}}><span>{processed}% 機械OK or ユーザー処理済</span></div>
+      <div className={'progress-bar progress-bar-danger'} style={{width: needToProcess + '%'}}><span>{needToProcess}% not OK and UNPROCESSED</span></div>
     </div>  
   )
 }
