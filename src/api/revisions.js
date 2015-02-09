@@ -51,20 +51,6 @@ GetRevisions[':id/captures'] = function(req, res) {
 
 GetRevisions[':id/captures/:capture'] = function(req, res) {
   buildCapture(req.params.id, req.params.capture)
-  // Q.all([
-  //   persist.findRevisionCapture(req.params.id, req.params.capture),
-  //   persist.findSiblingRevisionCaptureOf(req.params.id, req.params.capture, -1),
-  //   persist.findSiblingRevisionCaptureOf(req.params.id, req.params.capture, 1)
-  // ])
-  // .then(function(results) {
-  //   var current = results[0];
-  //   var previous = results[1];
-  //   var next = results[2];
-  //   current.hasSibling = !!(previous || next);
-  //   current.previous = previous;
-  //   current.next = next;
-  //   return { current: current };
-  // })
   .then(res.json.bind(res))
   .catch (handleError.bind(null, res));
 };
@@ -102,9 +88,12 @@ function buildCapture(revision, capture) {
     var current = results[0];
     var previous = results[1];
     var next = results[2];
-    current.hasSibling = !!(previous || next);
-    current.previous = previous;
-    current.next = next;
+    if (previous || next) {
+      current['@siblings'] = {
+        previous: previous,
+        next: next
+      };
+    }
     return { current: current };
   })
 }

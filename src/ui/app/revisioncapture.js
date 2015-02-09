@@ -20,14 +20,15 @@ var RevisionCapture = React.createClass({
 
   onKeyboardShortcut(e) {
     var current = this.state.capturesTable[this.getParams().capture];
-    if (!current) return;
+    var siblings = current && current['@siblings'];
+    if (siblings) return;
     var goto;
     switch (e.identifier) {
       case 'LEFT':
-        goto = current.previous;
+        goto = siblings.previous;
         break;
       case 'RIGHT':
-        goto = current.next;
+        goto = siblings.next;
         break;
     }
     if (goto) {
@@ -79,21 +80,23 @@ module.exports = RevisionCapture;
 
 function renderPrevNextNavigation_() {
   var current = this.state.capturesTable[this.getParams().capture];
+  var siblings = current && current['@siblings'];
+  if (siblings) return;
   var items = [];
-  if (current.previous) {
+  if (siblings.previous) {
     items.push(
       <li className="previous">
-        <a href={Path.join('#/revisions', this.getParams().revision, 'captures', current.previous.capture)}>
-          <span aria-hidden="true">&larr;</span> {current.previous.captureName}
+        <a href={Path.join('#/revisions', this.getParams().revision, 'captures', siblings.previous.capture)}>
+          <span aria-hidden="true">&larr;</span> {siblings.previous.captureName}
         </a>
       </li>
     )
   }
-  if (current.next) {
+  if (siblings.next) {
     items.push(
       <li className="next">
-        <a href={Path.join('#/revisions', this.getParams().revision, 'captures', current.next.capture)}>
-          {current.next.captureName} <span aria-hidden="true">&rarr;</span>
+        <a href={Path.join('#/revisions', this.getParams().revision, 'captures', siblings.next.capture)}>
+          {siblings.next.captureName} <span aria-hidden="true">&rarr;</span>
         </a>
       </li>
     )
