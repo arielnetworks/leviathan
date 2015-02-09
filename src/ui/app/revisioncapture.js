@@ -21,7 +21,7 @@ var RevisionCapture = React.createClass({
   onKeyboardShortcut(e) {
     var current = this.state.capturesTable[this.getParams().capture];
     var siblings = current && current['@siblings'];
-    if (siblings) return;
+    if (!siblings) return;
     var goto;
     switch (e.identifier) {
       case 'LEFT':
@@ -81,7 +81,7 @@ module.exports = RevisionCapture;
 function renderPrevNextNavigation_() {
   var current = this.state.capturesTable[this.getParams().capture];
   var siblings = current && current['@siblings'];
-  if (siblings) return;
+  if (!siblings) return;
   var items = [];
   if (siblings.previous) {
     items.push(

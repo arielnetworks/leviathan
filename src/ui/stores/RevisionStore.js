@@ -88,7 +88,6 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
 module.exports = RevisionStore;
 
 Dispatcher.register(function(action) {
-  console.log(action);
   switch(action.type) {
     case Actions.CHECKAS:
       if (_store.revisionsTable[action.revision])
