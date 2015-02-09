@@ -64,7 +64,7 @@ function renderProgress() {
   return (
     <div className="progress">
       <div className={'progress-bar progress-bar-success'} style={{width: processed + '%'}}><span>{processed}% 機械OK or ユーザー処理済</span></div>
-      <div className={'progress-bar progress-bar-danger'} style={{width: needToProcess + '%'}}><span>{needToProcess}% not OK and UNPROCESSED</span></div>
+      <div className={'progress-bar progress-bar-danger'} style={{width: needToProcess + '%'}}><span>{needToProcess}% not 機械OK and ユーザー未処理</span></div>
     </div>  
   )
 }
