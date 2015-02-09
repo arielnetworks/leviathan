@@ -7,10 +7,14 @@ var StatusClassNameMap = {
   'ERROR': 'danger'
 };
 
-var CheckedAs = ['UNPROCESSED', 'IS_OK', 'IS_BUG'];
+var CheckedAs = {
+  UNPROCESSED: 'UNPROCESSED',
+  IS_OK: 'IS_OK',
+  IS_BUG: 'IS_BUG'
+};
 
 var CheckedAsClassNameMap = {
-  'UNPROCESSED': 'info',
+  'UNPROCESSED': 'default',
   'IS_OK': 'success',
   'IS_BUG': 'danger'
 };

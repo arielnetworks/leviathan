@@ -24,7 +24,6 @@ var Revision = React.createClass({
           <li><a href="#/">Leviathan</a></li>
           <li className="active">{this.getParams().revision}</li>
         </ol>
-        {renderStatus.call(this)}
         {renderProgress.call(this)}
         <h1>Revision {this.getParams().revision} の報告です！</h1>
         <ul>
@@ -63,8 +62,8 @@ function renderProgress() {
   var needToProcess = revision['UNPROCESSED && !OK'] / total * 100;
   return (
     <div className="progress">
-      <div className={'progress-bar progress-bar-success'} style={{width: processed + '%'}}><span>{processed}% 機械OK or ユーザー処理済</span></div>
-      <div className={'progress-bar progress-bar-danger'} style={{width: needToProcess + '%'}}><span>{needToProcess}% not 機械OK and ユーザー未処理</span></div>
+      <div className={'progress-bar progress-bar-striped active progress-bar-success'} style={{width: processed + '%'}}><span>機械OKまたは人間処理済</span></div>
+      <div className={'progress-bar progress-bar-danger'} style={{width: needToProcess + '%'}}><span>あと {revision['UNPROCESSED && !OK']}件！ 機械NGかつ人間未処理</span></div>
     </div>  
   )
 }

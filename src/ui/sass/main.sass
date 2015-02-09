@@ -1,21 +1,47 @@
 
 // $icon-font-path: "./fonts/"
 $table-border-color: transparent
+
 @import _bootstrap
 
 
 
-.image-and-svg
-  margin-left: auto
-  margin-right: auto
+.progress
+  $height: 50px
+  height: $height
+  .progress-bar
+    line-height: $height
+    font-size: 120%
+
+.app-revisioncapture__keyboarshortcut__svg
+  margin: 3em auto
   position: relative
   & > img,
   & > svg
     position: absolute
+  svg.revisioncapture
+    width: 100%
+    height: 600px
+    line
+      stroke-width: 1
+      stroke: $btn-danger-border 
 
-svg.revisioncapture
-  width: 100%
-  height: 600px
-  line
-    stroke-width: 1
-    stroke: $btn-danger-border 
+.app-revisioncapture__keyboarshortcut
+  padding: .4em
+  position: fixed
+  bottom: 0
+  right: 0
+
+.app-revisioncapture__keyboarshortcut__title
+  > span
+    vertical-align: middle
+
+.app-revisioncapture__keyboarshortcut__item
+  margin-right: 0.8em
+
+.app-revisioncapture__keyboarshortcut__togglebuttons
+  @extend .clearfix
+  .btn
+    min-width: 10em
+    margin-left: .2em
+    margin-right: .2em

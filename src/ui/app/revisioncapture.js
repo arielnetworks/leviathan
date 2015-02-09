@@ -6,12 +6,18 @@ var RevisionStore = require('../stores/RevisionStore')
 var Path = require('path');
 var ReactKeyboardShortcut = require('react-keyboardshortcut');
 var Router = require('react-router');
-var Const = require('../const');
+var {CheckedAs, StatusClassNameMap, CheckedAsClassNameMap} = require('../const');
 var Actions = require('../actions/Actions');
+
+var ToggleCheckedAsOrder = [CheckedAs.IS_OK, // UP
+             CheckedAs.UNPROCESSED,
+             CheckedAs.IS_BUG]; // DOWN
 
 var keyboardShortcut = ReactKeyboardShortcut('onKeyboardShortcut', {
   'LEFT': 'left',
-  'RIGHT': 'right' 
+  'RIGHT': 'right',
+  'UP': 'up',
+  'DOWN': 'down'
 });
 
 var RevisionCapture = React.createClass({
@@ -25,14 +31,17 @@ var RevisionCapture = React.createClass({
     var goto;
     switch (e.identifier) {
       case 'LEFT':
-        goto = siblings.previous;
+        if (siblings.previous) gotoSibling.call(this, siblings.previous.capture)
         break;
       case 'RIGHT':
-        goto = siblings.next;
+        if (siblings.next) gotoSibling.call(this, siblings.next.capture)
         break;
-    }
-    if (goto) {
-      location.href = Path.join('#/revisions', this.getParams().revision, 'captures', goto.capture);
+      case 'UP':
+        toggleCheckedAs.call(this, -1);
+        break;
+      case 'DOWN':
+        toggleCheckedAs.call(this, 1);
+        break;
     }
   },
 
@@ -48,12 +57,13 @@ var RevisionCapture = React.createClass({
           <li><a href={Path.join('#/revisions', this.getParams().revision)}>{this.getParams().revision}</a></li>
           <li className="active">{current.captureName}</li>
         </ol>
-        <h1>Revision {this.getParams().revision}、{current.captureName} の報告です！</h1>
-        <p className={'text-' + Const.StatusClassNameMap[current.status]}>
-          機械は <span className={'label label-' + Const.StatusClassNameMap[current.status]}>{current.status}</span> と報告しています</p>
-        <p className={'text-' + Const.CheckedAsClassNameMap[current.status]}>
-          現在のステータスは <span className={'label label-' + Const.CheckedAsClassNameMap[current.checkedAs]}>{current.checkedAs}</span> です</p>
-        <div className="image-and-svg" style={{width: current.width, height: current.height}}>
+        <h2 className="app-revisioncapture__keyboarshortcut__title">
+          <span className={'label label-' + CheckedAsClassNameMap[current.checkedAs]}>
+          {current.checkedAs}</span>Revision {this.getParams().revision} {current.captureName}
+        </h2>
+        <p className={'text-' + StatusClassNameMap[current.status]}>
+          機械は <span className={'label label-' + StatusClassNameMap[current.status]}>{current.status}</span> と報告しています</p>
+        <div className="app-revisioncapture__keyboarshortcut__svg" style={{width: current.width, height: current.height}}>
           <img src={Path.join('/captures/', current.expect_image)} />
           <img src={Path.join('/captures/', current.target_image)} />
           <svg className="revisioncapture" style={{width: current.width, height: current.height}}>
@@ -62,13 +72,25 @@ var RevisionCapture = React.createClass({
             )}
           </svg>
         </div>
-        <h3>CheckAs</h3>
-        <ul>
-          {_.map(Const.CheckedAs, name => {
-            return <button onClick={Actions.checkAs.bind(null, this.getParams().revision, this.getParams().capture, name)}>{name}</button>
+        <div className="app-revisioncapture__keyboarshortcut__togglebuttons">
+          このキャプチャは...
+          {_.map(ToggleCheckedAsOrder, as => {
+            return <button className={'btn btn-' + CheckedAsClassNameMap[as] + (current.checkedAs == as ? ' active' : '')} onClick={Actions.checkAs.bind(null, this.getParams().revision, this.getParams().capture, as)}>{as}</button>
           })}
-        </ul>
+          です
+        </div>
         {renderPrevNextNavigation_.call(this)}
+        <div className="app-revisioncapture__keyboarshortcut">
+          <span className="app-revisioncapture__keyboarshortcut__item">
+            <kbd>LEFT</kbd> to previous,
+          </span>
+          <span className="app-revisioncapture__keyboarshortcut__item">
+            <kbd>RIGHT</kbd> to next,
+          </span>
+          <span className="app-revisioncapture__keyboarshortcut__item">
+            <kbd>TOP</kbd>/<kbd>BOTTOM</kbd> to toggle status
+          </span>
+        </div>
       </div>
     )
   }
@@ -77,6 +99,20 @@ var RevisionCapture = React.createClass({
 module.exports = RevisionCapture;
 
 
+
+function toggleCheckedAs(direction) {
+  var current = this.state.capturesTable[this.getParams().capture];
+  if (!current) return;
+  var currIndex = ToggleCheckedAsOrder.indexOf(current.checkedAs);
+  var to = ToggleCheckedAsOrder[currIndex + direction];
+  if (to) {
+    Actions.checkAs(this.getParams().revision, this.getParams().capture, to);
+  }
+}
+
+function gotoSibling(capture) {
+  location.href = Path.join('#/revisions', this.getParams().revision, 'captures', capture);
+}
 
 function renderPrevNextNavigation_() {
   var current = this.state.capturesTable[this.getParams().capture];
