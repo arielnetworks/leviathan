@@ -65,6 +65,7 @@ function updateCapture(rid, capture, data) {
       {$set: data},
       {upsert: true})
   .then(function() {
+    // TODO: We dont' need to "findeOne" here! api/revisions.js has "buildCapture" method so we we should use it
     return Q.ninvoke(db.captures, 'findOne', query, {_id: false});
   });
 }

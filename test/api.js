@@ -622,7 +622,26 @@ describe('Application', function() {
             { dx: 2.8622498512268066, dy: -9.007637023925781, x: 120, y: 110 },
             { dx: -6.2871503829956055, dy: -0.9457563161849976, x: 160, y: 110 },
             { dx: -7.390625476837158, dy: -5.659643173217773, x: 170, y: 110 }
-          ]
+          ],
+          "hasSibling": true,
+          "previous": {
+            "capture": "9018988ae55e012e437aa24cbf9a400a",
+            "captureName": "scenario1/capture1.jpg",
+            "checkedAs": "UNPROCESSED",
+            "expect_image": "revision1/scenario1/capture1.jpg",
+            "height": 279,
+            "revision": "2",
+            "revisionAt": "1970-01-01T00:00:02.000Z",
+            "span": 10,
+            "status": "OK",
+            "target_image": "revision2/scenario1/capture1.jpg",
+            "threshold": 5,
+            "time": 0.1,
+            "updatedAt": "1970-01-01T00:00:00.000Z",
+            "updatedBy": "system",
+            "vector": [],
+            "width": 280
+          }
         }
       }, done);
     });
@@ -721,7 +740,26 @@ describe('Application', function() {
             { dx: 2.8622498512268066, dy: -9.007637023925781, x: 120, y: 110 },
             { dx: -6.2871503829956055, dy: -0.9457563161849976, x: 160, y: 110 },
             { dx: -7.390625476837158, dy: -5.659643173217773, x: 170, y: 110 }
-          ]
+          ],
+          "hasSibling": true,
+          "previous": {
+            "capture": "9018988ae55e012e437aa24cbf9a400a",
+            "captureName": "scenario1/capture1.jpg",
+            "checkedAs": "UNPROCESSED",
+            "expect_image": "revision1/scenario1/capture1.jpg",
+            "height": 279,
+            "revision": "2",
+            "revisionAt": "1970-01-01T00:00:02.000Z",
+            "span": 10,
+            "status": "OK",
+            "target_image": "revision2/scenario1/capture1.jpg",
+            "threshold": 5,
+            "time": 0.1,
+            "updatedAt": "1970-01-01T00:00:00.000Z",
+            "updatedBy": "system",
+            "vector": [],
+            "width": 280
+          }
         }
       }, done);
     });

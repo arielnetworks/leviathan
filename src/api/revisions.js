@@ -50,20 +50,21 @@ GetRevisions[':id/captures'] = function(req, res) {
 };
 
 GetRevisions[':id/captures/:capture'] = function(req, res) {
-  Q.all([
-    persist.findRevisionCapture(req.params.id, req.params.capture),
-    persist.findSiblingRevisionCaptureOf(req.params.id, req.params.capture, -1),
-    persist.findSiblingRevisionCaptureOf(req.params.id, req.params.capture, 1)
-  ])
-  .then(function(results) {
-    var current = results[0];
-    var previous = results[1];
-    var next = results[2];
-    current.hasSibling = !!(previous || next);
-    current.previous = previous;
-    current.next = next;
-    return { current: current };
-  })
+  buildCapture(req.params.id, req.params.capture)
+  // Q.all([
+  //   persist.findRevisionCapture(req.params.id, req.params.capture),
+  //   persist.findSiblingRevisionCaptureOf(req.params.id, req.params.capture, -1),
+  //   persist.findSiblingRevisionCaptureOf(req.params.id, req.params.capture, 1)
+  // ])
+  // .then(function(results) {
+  //   var current = results[0];
+  //   var previous = results[1];
+  //   var next = results[2];
+  //   current.hasSibling = !!(previous || next);
+  //   current.previous = previous;
+  //   current.next = next;
+  //   return { current: current };
+  // })
   .then(res.json.bind(res))
   .catch (handleError.bind(null, res));
 };
@@ -71,19 +72,13 @@ GetRevisions[':id/captures/:capture'] = function(req, res) {
 PostRevisions[':id/captures/:capture'] = function(req, res) {
   var data = {};
   var checkedAs = getStatusFromReqest(req);
-  console.log(req.body);
-  Q().then(function() {
-    if (checkedAs) {
-      data['checkedAs'] = checkedAs;
-    }
-  })
-  .then(function() {
-    return persist.updateCapture(req.params.id, req.params.capture, data);
-  })
+  if (checkedAs) {
+    data['checkedAs'] = checkedAs;
+  }
+  persist.updateCapture(req.params.id, req.params.capture, data)
   .then(function(doc) {
     if (doc) {
-      persist.upsertRevision(req.params.id); // Without waiting.
-      return {current: doc};
+      return buildCapture(req.params.id, req.params.capture);
     }
     res.status(404);
     return {
@@ -96,6 +91,23 @@ PostRevisions[':id/captures/:capture'] = function(req, res) {
 };
 
 
+
+function buildCapture(revision, capture) {
+  return Q.all([
+    persist.findRevisionCapture(revision, capture),
+    persist.findSiblingRevisionCaptureOf(revision, capture, -1),
+    persist.findSiblingRevisionCaptureOf(revision, capture, 1)
+  ])
+  .then(function(results) {
+    var current = results[0];
+    var previous = results[1];
+    var next = results[2];
+    current.hasSibling = !!(previous || next);
+    current.previous = previous;
+    current.next = next;
+    return { current: current };
+  })
+}
 
 function handleError(res, reason) {
   res.json({
