@@ -7,6 +7,7 @@ var Path = require('path');
 var ReactKeyboardShortcut = require('react-keyboardshortcut');
 var Router = require('react-router');
 var Const = require('../const');
+var Actions = require('../actions/Actions');
 
 var keyboardShortcut = ReactKeyboardShortcut('onKeyboardShortcut', {
   'LEFT': 'left',
@@ -55,11 +56,17 @@ var RevisionCapture = React.createClass({
           <img src={Path.join('/captures/', current.expect_image)} />
           <img src={Path.join('/captures/', current.target_image)} />
           <svg className="revisioncapture" style={{width: current.width, height: current.height}}>
-            {current.vector.map((v) =>
+            {current.vector.map(v =>
               <line x1={v.x} y1={v.y} x2={v.dx} y2={v.dy} /> 
             )}
           </svg>
         </div>
+        <h3>CheckAs</h3>
+        <ul>
+          {_.map(Const.CheckedAs, name => {
+            return <button onClick={Actions.checkAs.bind(null, this.getParams().revision, this.getParams().capture, name)}>{name}</button>
+          })}
+        </ul>
         {renderPrevNextNavigation_.call(this)}
       </div>
     )

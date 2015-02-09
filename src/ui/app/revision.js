@@ -28,7 +28,7 @@ var Revision = React.createClass({
         {renderProgress.call(this)}
         <h1>Revision {this.getParams().revision} の報告です！</h1>
         <ul>
-        {revision.captures.map((capture) =>
+        {revision['@captures'].map((capture) =>
           <li><a href={'#/revisions/' + this.getParams().revision + '/captures/' + capture.capture}>{capture.captureName}</a></li>
         )}
         </ul>

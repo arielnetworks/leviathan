@@ -71,6 +71,7 @@ GetRevisions[':id/captures/:capture'] = function(req, res) {
 PostRevisions[':id/captures/:capture'] = function(req, res) {
   var data = {};
   var checkedAs = getStatusFromReqest(req);
+  console.log(req.body);
   Q().then(function() {
     if (checkedAs) {
       data['checkedAs'] = checkedAs;

@@ -1,7 +1,7 @@
 
-var AppDispatcher = require('../dispatcher/AppDispatcher');
+var Dispatcher = require('../dispatcher/Dispatcher');
 var EventEmitter = require('events').EventEmitter;
-// var TodoConstants = require('../constants/TodoConstants');
+var {CheckedAs, Actions} = require('../const');
 var assign = require('object-assign');
 var Q = require('q');
 Q.longStackSupport = true;
@@ -41,14 +41,14 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     // if (hasAll(_store.revisions, skip, skip + limit)) return;
     if (_store.revisions.length) return;
     xhr('/api/revisions')
-    .then((json) => {
+    .then(json => {
       _.each(json.items, (revision) => {
         _store.revisions.push(revision); // TODO: Insert to the right index with skip/limit
         _store.revisionsTable[revision.id] = revision;
       });
       this.emit(CHANGE_EVENT);
     })
-    .catch((err) => console.error(err.stack));
+    .catch(err => console.error(err.stack));
   },
 
   fetchRevision(revision) {
@@ -59,9 +59,9 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
       return;
     }
     xhr(Path.join('/api/revisions', revision, 'captures'))
-    .then((json) => {
+    .then(json => {
       _store.revisionsTable[revision] = json.current;
-      _store.revisionsTable[revision].captures = json.items;//TODO: Insert to the right index with skip/limit
+      _store.revisionsTable[revision]['@captures'] = json.items;//TODO: Insert to the right index with skip/limit
       _.each(json.items, (capture) => _store.capturesTable[capture.capture] = capture);
       this.emit(CHANGE_EVENT);
     })
@@ -72,22 +72,40 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     if (_store.capturesTable[capture] &&
         _.isBoolean(_store.capturesTable[capture].hasSibling)) return;
     xhr(Path.join('/api/revisions', revision, 'captures', capture))
-    .then((json) => {
-      _store.capturesTable[capture] = json.current;
-      this.emit(CHANGE_EVENT);
-    })
+    .then(handleCaptureResponse.bind(this))
     .catch((err) => console.error(err.stack));
+  },
+
+  checkAs(revision, capture, as) {
+    xhr.post(Path.join('/api/revisions', revision, 'captures', capture), {
+      checkedAs: as
+    })
+    .then(handleCaptureResponse.bind(this))
+    .catch(err => console.error(err.stack));
   }
 
 });
 module.exports = RevisionStore;
 
-AppDispatcher.register(function(action) {
+Dispatcher.register(function(action) {
+  console.log(action);
   switch(action.type) {
+    case Actions.CHECKAS:
+      if (_store.revisionsTable[action.revision])
+        _store.revisionsTable[action.revision] = null;
+      if (_store.capturesTable[action.capture])
+        _store.capturesTable[action.capture] = null;
+      RevisionStore.checkAs(action.revision, action.capture, action.as);
+      break;
   }
 });
 
 
+
+function handleCaptureResponse(json) {
+  _store.capturesTable[json.current.capture] = json.current;
+  this.emit(CHANGE_EVENT);
+}
 
 function hasAll(arr, from, to) {
   for (var i = from; i < to; i++) {

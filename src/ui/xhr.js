@@ -12,21 +12,18 @@ module.exports.post = post;
 
 
 function get(uri) {
-  return Q.nfcall(xhr, uri)
-  .then(_parseAsJson)
+  return Q.nfcall(xhr, {
+    uri,
+    json: true
+  })
+  .get(1); // same as JSON.parse(req.body)
 };
 
-function post(uri, content) {
-  return Q.nfcall({
-    uri: uri,
+function post(uri, json) {
+  return Q.nfcall(xhr, {
+    uri,
     method: 'POST',
-    body: QueryString.stringify(content)
-  }, uri)
-  .then(_parseAsJson)
+    json: json
+  })
+  .get(1); // same as JSON.parse(req.body)
 };
-
-function _parseAsJson(result) {
-  var res = result[0];
-  var body = result[1];
-  return JSON.parse(body);
-}

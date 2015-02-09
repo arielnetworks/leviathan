@@ -1,5 +1,5 @@
 
-var ReportedAs = [ 'OK', 'SUSPICIOUS', 'ERROR' ];
+var ReportedAs = ['OK', 'SUSPICIOUS', 'ERROR'];
 
 var StatusClassNameMap = {
   'OK': 'info',
@@ -7,7 +7,7 @@ var StatusClassNameMap = {
   'ERROR': 'danger'
 };
 
-var CheckedAs = [ 'UNPROCESSED', 'IS_OK', 'IS_BUG' ];
+var CheckedAs = ['UNPROCESSED', 'IS_OK', 'IS_BUG'];
 
 var CheckedAsClassNameMap = {
   'UNPROCESSED': 'info',
@@ -15,9 +15,14 @@ var CheckedAsClassNameMap = {
   'IS_BUG': 'danger'
 };
 
+var Actions = {
+  CHECKAS: 'checkas'
+};
+
 module.exports = {
   ReportedAs,
   StatusClassNameMap,
   CheckedAs,
-  CheckedAsClassNameMap
+  CheckedAsClassNameMap,
+  Actions
 };
