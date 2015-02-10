@@ -79,15 +79,15 @@ var RevisionCapture = React.createClass({
           <img src={Path.join('/captures/', current.expect_image)} />
           <img src={Path.join('/captures/', current.target_image)} />
           <svg className="revisioncapture" style={{width: current.width, height: current.height}}>
-            {current.vector.map(v =>
-              <line x1={v.x} y1={v.y} x2={v.dx} y2={v.dy} /> 
+            {current.vector.map((v, i) =>
+              <line key={i} x1={v.x} y1={v.y} x2={v.dx} y2={v.dy} />
             )}
           </svg>
         </div>
         <div className="app-revisioncapture__keyboarshortcut__togglebuttons">
           このキャプチャは...
           {_.map(ToggleCheckedAsOrder, as => {
-            return <button className={'btn btn-' + CheckedAsClassNameMap[as] + (current.checkedAs == as ? ' active' : '')} onClick={Actions.checkAs.bind(null, this.getParams().revision, this.getParams().capture, as)}>{as}</button>
+            return <button key={as} className={'btn btn-' + CheckedAsClassNameMap[as] + (current.checkedAs == as ? ' active' : '')} onClick={Actions.checkAs.bind(null, this.getParams().revision, this.getParams().capture, as)}>{as}</button>
           })}
           です
         </div>
@@ -133,7 +133,7 @@ function renderPrevNextNavigation_() {
   var items = [];
   if (siblings.previous) {
     items.push(
-      <li className="previous">
+      <li key="previous" className="previous">
         <a href={Path.join('#/revisions', this.getParams().revision, 'captures', siblings.previous.capture)}>
           <span aria-hidden="true">&larr;</span> {siblings.previous.captureName}
         </a>
@@ -142,7 +142,7 @@ function renderPrevNextNavigation_() {
   }
   if (siblings.next) {
     items.push(
-      <li className="next">
+      <li key="next" className="next">
         <a href={Path.join('#/revisions', this.getParams().revision, 'captures', siblings.next.capture)}>
           {siblings.next.captureName} <span aria-hidden="true">&rarr;</span>
         </a>

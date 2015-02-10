@@ -54,6 +54,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
   fetchRevision(revision) {
     // TODO: Pagination
     if (_store.revisionsTable[revision] &&
+        !_store.revisionsTable[revision]['_expired'] &&
         _store.revisionsTable[revision].total != null &&
         _store.revisionsTable[revision].reportedAs != null) {
       return;
@@ -61,7 +62,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     xhr(Path.join('/api/revisions', revision, 'captures'))
     .then(json => {
       _store.revisionsTable[revision] = json.current;
-      _store.revisionsTable[revision]['@captures'] = json.items;//TODO: Insert to the right index with skip/limit
+      _store.revisionsTable[revision]['@captures'] = json.items; //TODO: Insert to the right index with skip/limit
       _.each(json.items, (capture) => _store.capturesTable[capture.capture] = capture);
       this.emit(CHANGE_EVENT);
     })
@@ -70,6 +71,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
 
   fetchCapture(revision, capture) {
     if (_store.capturesTable[capture] &&
+        !_store.capturesTable[capture]['_expired'] &&
         _store.capturesTable[capture]['@siblings']) return;
     xhr(Path.join('/api/revisions', revision, 'captures', capture))
     .then(handleCaptureResponse.bind(this))
@@ -91,9 +93,9 @@ Dispatcher.register(function(action) {
   switch(action.type) {
     case Actions.CHECKAS:
       if (_store.revisionsTable[action.revision])
-        _store.revisionsTable[action.revision] = null;
+        _store.revisionsTable[action.revision]['_expired'] = true;
       if (_store.capturesTable[action.capture])
-        _store.capturesTable[action.capture] = null;
+        _store.capturesTable[action.capture]['_expired'] = true;
       RevisionStore.checkAs(action.revision, action.capture, action.as);
       break;
   }
