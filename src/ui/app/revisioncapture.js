@@ -17,7 +17,11 @@ var keyboardShortcut = ReactKeyboardShortcut('onKeyboardShortcut', {
   'LEFT': 'left',
   'RIGHT': 'right',
   'UP': 'up',
-  'DOWN': 'down'
+  'DOWN': 'down',
+  'H': 'h',
+  'J': 'j',
+  'K': 'k',
+  'L': 'l'
 });
 
 var RevisionCapture = React.createClass({
@@ -31,15 +35,19 @@ var RevisionCapture = React.createClass({
     var goto;
     switch (e.identifier) {
       case 'LEFT':
+      case 'H':
         if (siblings.previous) gotoSibling.call(this, siblings.previous.capture)
         break;
       case 'RIGHT':
+      case 'L':
         if (siblings.next) gotoSibling.call(this, siblings.next.capture)
         break;
       case 'UP':
+      case 'K':
         toggleCheckedAs.call(this, -1);
         break;
       case 'DOWN':
+      case 'J':
         toggleCheckedAs.call(this, 1);
         break;
     }
@@ -82,13 +90,13 @@ var RevisionCapture = React.createClass({
         {renderPrevNextNavigation_.call(this)}
         <div className="app-revisioncapture__keyboarshortcut">
           <span className="app-revisioncapture__keyboarshortcut__item">
-            <kbd>LEFT</kbd> to previous,
+            <kbd>←</kbd> to previous,
           </span>
           <span className="app-revisioncapture__keyboarshortcut__item">
-            <kbd>RIGHT</kbd> to next,
+            <kbd>→</kbd> to next,
           </span>
           <span className="app-revisioncapture__keyboarshortcut__item">
-            <kbd>TOP</kbd>/<kbd>BOTTOM</kbd> to toggle status
+            <kbd>↓</kbd> / <kbd>↑</kbd> to toggle status
           </span>
         </div>
       </div>
