@@ -4,6 +4,7 @@ var React = require('react');
 var Router = require('react-router');
 var RevisionStore = require('../stores/RevisionStore')
 var Const = require('../const');
+var ProgressBar = require('../components/ProgressBar');
 
 
 
@@ -24,7 +25,7 @@ var Revision = React.createClass({
           <li><a href="#/">Leviathan</a></li>
           <li className="active">{this.getParams().revision}</li>
         </ol>
-        {renderProgress.call(this)}
+        <ProgressBar revision={revision} />
         <h1>Revision {this.getParams().revision} の報告です！</h1>
         <ul>
         {revision['@captures'].map((capture) =>
@@ -38,35 +39,21 @@ var Revision = React.createClass({
 })
 module.exports = Revision;
 
-function renderStatus() {
-  var revision = this.state.revisionsTable[this.getParams().revision];
-  var total = revision.total;
-  return (
-    <div className="progress">
-      {Const.ReportedAs.map((id) => {
-        var percentile = (revision.reportedAs[id] / total * 100);
-        return (
-          <div className={'progress-bar progress-bar-' + Const.StatusClassNameMap[id]} style={{width: percentile + '%'}}>
-            <span>{percentile}% {id}</span>
-          </div>
-        )
-      })}
-    </div>  
-  )
-}
 
-function renderProgress() {
-  var revision = this.state.revisionsTable[this.getParams().revision];
-  var total = revision.total;
-  var processed = (total - revision['UNPROCESSED && !OK']) / total * 100;
-  var needToProcess = revision['UNPROCESSED && !OK'] / total * 100;
-  var done = revision['UNPROCESSED && !OK'] == 0;
-  return (
-    <div className="progress">
-      <div className={'progress-bar progress-bar-success' + (done ? '' : ' progress-bar-striped active')}
-           style={{width: processed + '%'}}><span>機械OKまたは人間処理済</span></div>
-      <div className={'progress-bar progress-bar-danger'}
-           style={{width: needToProcess + '%'}}><span>のこり {revision['UNPROCESSED && !OK']}件！ 機械NGかつ人間未処理</span></div>
-    </div>  
-  )
-}
+
+// function renderStatus() {
+//   var revision = this.state.revisionsTable[this.getParams().revision];
+//   var total = revision.total;
+//   return (
+//     <div className="progress">
+//       {Const.ReportedAs.map((id) => {
+//         var percentile = (revision.reportedAs[id] / total * 100);
+//         return (
+//           <div className={'progress-bar progress-bar-' + Const.StatusClassNameMap[id]} style={{width: percentile + '%'}}>
+//             <span>{percentile}% {id}</span>
+//           </div>
+//         )
+//       })}
+//     </div>  
+//   )
+// }

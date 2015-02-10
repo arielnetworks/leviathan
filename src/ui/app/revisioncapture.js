@@ -8,6 +8,7 @@ var ReactKeyboardShortcut = require('react-keyboardshortcut');
 var Router = require('react-router');
 var {CheckedAs, StatusClassNameMap, CheckedAsClassNameMap} = require('../const');
 var Actions = require('../actions/Actions');
+var ProgressBar = require('../components/ProgressBar');
 
 var ToggleCheckedAsOrder = [CheckedAs.IS_OK, // UP
              CheckedAs.UNPROCESSED,
@@ -55,9 +56,11 @@ var RevisionCapture = React.createClass({
 
   // TODO: "/captures" must come from global.configure
   render() {
+    RevisionStore.fetchRevision(this.getParams().revision);
     RevisionStore.fetchCapture(this.getParams().revision, this.getParams().capture);
     var current = this.state.capturesTable[this.getParams().capture];
     if (!current) return <span>...</span>;
+    var revision = this.state.revisionsTable[this.getParams().revision];
     return (
       <div className="app-revisioncapture">
         <ol className="breadcrumb">
@@ -65,6 +68,7 @@ var RevisionCapture = React.createClass({
           <li><a href={Path.join('#/revisions', this.getParams().revision)}>{this.getParams().revision}</a></li>
           <li className="active">{current.captureName}</li>
         </ol>
+        {<ProgressBar revision={revision} />}
         <h2 className="app-revisioncapture__keyboarshortcut__title">
           <span className={'label label-' + CheckedAsClassNameMap[current.checkedAs]}>
           {current.checkedAs}</span>Revision {this.getParams().revision} {current.captureName}
