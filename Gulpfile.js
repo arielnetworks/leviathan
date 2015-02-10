@@ -30,6 +30,7 @@ gulp.task('css', function() { ;
     return sass(Path.join(config.sassPath, 'main.sass'), {
         style: 'compressed',
         loadPath: [
+            config.sassPath,
             Path.join(config.bowerPath, 'bootstrap-sass-official/assets/stylesheets'),
             Path.join(config.bowerPath, 'fontawesome/scss')
         ],

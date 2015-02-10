@@ -23,18 +23,7 @@ var App = React.createClass({
 
   render: function () {
     return (
-      <div className="app-root">
-        <nav className="navbar">
-        	<div className="container">
-        		<div className="navbar-header">
-        			<a href="/#/" className="navbar-brand">Leviathan</a>
-        		</div>
-        	</div>
-        </nav>
-        <div className="container">
-          <RouteHandler/>
-        </div>
-      </div>
+      <RouteHandler/>
     );
   }
 });

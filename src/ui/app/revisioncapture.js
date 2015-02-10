@@ -9,6 +9,7 @@ var Router = require('react-router');
 var {CheckedAs, StatusClassNameMap, CheckedAsClassNameMap} = require('../const');
 var Actions = require('../actions/Actions');
 var ProgressBar = require('../components/ProgressBar');
+var Navbar = require('../components/Navbar');
 
 var ToggleCheckedAsOrder = [CheckedAs.IS_OK, // UP
              CheckedAs.UNPROCESSED,
@@ -63,45 +64,43 @@ var RevisionCapture = React.createClass({
     var revision = this.state.revisionsTable[this.getParams().revision];
     return (
       <div className="app-revisioncapture">
-        <ol className="breadcrumb">
-          <li><a href="#/">Leviathan</a></li>
-          <li><a href={Path.join('#/revisions', this.getParams().revision)}>{this.getParams().revision}</a></li>
-          <li className="active">{current.captureName}</li>
-        </ol>
-        {<ProgressBar revision={revision} />}
-        <h2 className="app-revisioncapture__keyboarshortcut__title">
-          <span className={'label label-' + CheckedAsClassNameMap[current.checkedAs]}>
-          {current.checkedAs}</span>Revision {this.getParams().revision} {current.captureName}
-        </h2>
-        <p className={'text-' + StatusClassNameMap[current.status]}>
-          機械は <span className={'label label-' + StatusClassNameMap[current.status]}>{current.status}</span> と報告しています</p>
-        <div className="app-revisioncapture__keyboarshortcut__svg" style={{width: current.width, height: current.height}}>
-          <img src={Path.join('/captures/', current.expect_image)} />
-          <img src={Path.join('/captures/', current.target_image)} />
-          <svg className="revisioncapture" style={{width: current.width, height: current.height}}>
-            {current.vector.map((v, i) =>
-              <line key={i} x1={v.x} y1={v.y} x2={v.dx} y2={v.dy} />
-            )}
-          </svg>
-        </div>
-        <div className="app-revisioncapture__keyboarshortcut__togglebuttons">
-          このキャプチャは...
-          {_.map(ToggleCheckedAsOrder, as => {
-            return <button key={as} className={'btn btn-' + CheckedAsClassNameMap[as] + (current.checkedAs == as ? ' active' : '')} onClick={Actions.checkAs.bind(null, this.getParams().revision, this.getParams().capture, as)}>{as}</button>
-          })}
-          です
-        </div>
-        {renderPrevNextNavigation_.call(this)}
-        <div className="app-revisioncapture__keyboarshortcut">
-          <span className="app-revisioncapture__keyboarshortcut__item">
-            <kbd>←</kbd> to previous,
-          </span>
-          <span className="app-revisioncapture__keyboarshortcut__item">
-            <kbd>→</kbd> to next,
-          </span>
-          <span className="app-revisioncapture__keyboarshortcut__item">
-            <kbd>↓</kbd> / <kbd>↑</kbd> to toggle status
-          </span>
+        <Navbar capture={current} />
+        <div className="container">
+          {<ProgressBar revision={revision} />}
+          <h2 className="app-revisioncapture__keyboarshortcut__title">
+            <span className={'label label-' + CheckedAsClassNameMap[current.checkedAs]}>
+            {current.checkedAs}</span>Revision {this.getParams().revision} {current.captureName}
+          </h2>
+          <p className={'text-' + StatusClassNameMap[current.status]}>
+            機械は <span className={'label label-' + StatusClassNameMap[current.status]}>{current.status}</span> と報告しています</p>
+          <div className="app-revisioncapture__keyboarshortcut__svg" style={{width: current.width, height: current.height}}>
+            <img src={Path.join('/captures/', current.expect_image)} />
+            <img src={Path.join('/captures/', current.target_image)} />
+            <svg className="revisioncapture" style={{width: current.width, height: current.height}}>
+              {current.vector.map((v, i) =>
+                <line key={i} x1={v.x} y1={v.y} x2={v.dx} y2={v.dy} />
+              )}
+            </svg>
+          </div>
+          <div className="app-revisioncapture__keyboarshortcut__togglebuttons">
+            このキャプチャは...
+            {_.map(ToggleCheckedAsOrder, as => {
+              return <button key={as} className={'btn btn-' + CheckedAsClassNameMap[as] + (current.checkedAs == as ? ' active' : '')} onClick={Actions.checkAs.bind(null, this.getParams().revision, this.getParams().capture, as)}>{as}</button>
+            })}
+            です
+          </div>
+          {renderPrevNextNavigation_.call(this)}
+          <div className="app-revisioncapture__keyboarshortcut">
+            <span className="app-revisioncapture__keyboarshortcut__item">
+              <kbd>←</kbd> to previous,
+            </span>
+            <span className="app-revisioncapture__keyboarshortcut__item">
+              <kbd>→</kbd> to next,
+            </span>
+            <span className="app-revisioncapture__keyboarshortcut__item">
+              <kbd>↓</kbd> / <kbd>↑</kbd> to toggle status
+            </span>
+          </div>
         </div>
       </div>
     )
