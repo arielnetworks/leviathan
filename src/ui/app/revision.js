@@ -60,10 +60,13 @@ function renderProgress() {
   var total = revision.total;
   var processed = (total - revision['UNPROCESSED && !OK']) / total * 100;
   var needToProcess = revision['UNPROCESSED && !OK'] / total * 100;
+  var done = revision['UNPROCESSED && !OK'] == 0;
   return (
     <div className="progress">
-      <div className={'progress-bar progress-bar-striped active progress-bar-success'} style={{width: processed + '%'}}><span>機械OKまたは人間処理済</span></div>
-      <div className={'progress-bar progress-bar-danger'} style={{width: needToProcess + '%'}}><span>あと {revision['UNPROCESSED && !OK']}件！ 機械NGかつ人間未処理</span></div>
+      <div className={'progress-bar progress-bar-success' + (done ? '' : ' progress-bar-striped active')}
+           style={{width: processed + '%'}}><span>機械OKまたは人間処理済</span></div>
+      <div className={'progress-bar progress-bar-danger'}
+           style={{width: needToProcess + '%'}}><span>のこり {revision['UNPROCESSED && !OK']}件！ 機械NGかつ人間未処理</span></div>
     </div>  
   )
 }
