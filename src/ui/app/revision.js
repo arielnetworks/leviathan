@@ -5,6 +5,7 @@ var Router = require('react-router');
 var RevisionStore = require('../stores/RevisionStore')
 var Const = require('../const');
 var ProgressBar = require('../components/ProgressBar');
+var Navbar = require('../components/Navbar');
 
 
 
@@ -21,17 +22,16 @@ var Revision = React.createClass({
     if (!revision || revision.total == null) return <span>...</span>;
     return (
       <div className="app-revision">
-        <ol className="breadcrumb">
-          <li><a href="#/">Leviathan</a></li>
-          <li className="active">{this.getParams().revision}</li>
-        </ol>
-        <ProgressBar revision={revision} />
-        <h1>Revision {this.getParams().revision} の報告です！</h1>
-        <ul>
-        {revision['@captures'].map((capture) =>
-          <li><a href={'#/revisions/' + this.getParams().revision + '/captures/' + capture.capture}>{capture.captureName}</a></li>
-        )}
-        </ul>
+        <Navbar />
+        <div className="container">
+          <ProgressBar revision={revision} />
+          <h1>Revision {this.getParams().revision} の報告です！</h1>
+          <ul>
+          {revision['@captures'].map((capture) =>
+            <li><a href={'#/revisions/' + this.getParams().revision + '/captures/' + capture.capture}>{capture.captureName}</a></li>
+          )}
+          </ul>
+        </div>
       </div>
     )
   }

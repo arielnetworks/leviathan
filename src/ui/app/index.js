@@ -3,6 +3,7 @@ var _mixins = require('./_mixins');
 var React = require('react');
 
 var RevisionStore = require('../stores/RevisionStore');
+var Navbar = require('../components/Navbar');
 
 var Index = React.createClass({
 
@@ -19,14 +20,17 @@ var Index = React.createClass({
     });
     return (
       <div className="app-index">
-        <table className="table table-hover">
-          <thead>
-            <tr> <th>#revision</th> <th>First Name</th> <th>Last Name</th> <th>Username</th> </tr>
-          </thead>
-          <tbody>
-            {tbodyContent}
-          </tbody>
-        </table>
+        <Navbar />
+        <div className="container">
+          <table className="table table-hover">
+            <thead>
+              <tr> <th>#revision</th> <th>First Name</th> <th>Last Name</th> <th>Username</th> </tr>
+            </thead>
+            <tbody>
+              {tbodyContent}
+            </tbody>
+          </table>
+        </div>
       </div>
     )
   }
