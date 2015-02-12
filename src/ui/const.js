@@ -1,10 +1,16 @@
 
 var ReportedAs = ['OK', 'SUSPICIOUS', 'ERROR'];
 
+var Status = {
+  OK: 'OK',
+  SUSPICIOUS: 'SUSPICIOUS',
+  ERROR: 'ERROR'
+};
+
 var StatusClassNameMap = {
-  'OK': 'info',
-  'SUSPICIOUS': 'warning',
-  'ERROR': 'danger'
+  OK: 'info',
+  SUSPICIOUS: 'warning',
+  ERROR: 'danger'
 };
 
 var CheckedAs = {
@@ -25,6 +31,7 @@ var Actions = {
 
 module.exports = {
   ReportedAs,
+  Status,
   StatusClassNameMap,
   CheckedAs,
   CheckedAsClassNameMap,

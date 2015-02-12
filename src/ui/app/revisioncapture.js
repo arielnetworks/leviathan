@@ -68,11 +68,17 @@ var RevisionCapture = React.createClass({
         <div className="container">
           {<ProgressBar revision={revision} />}
           <h2 className="app-revisioncapture__keyboarshortcut__title">
+            これは
             <span className={'label label-' + CheckedAsClassNameMap[current.checkedAs]}>
-            {current.checkedAs}</span>Revision {this.getParams().revision} {current.captureName}
+              {current.checkedAs}
+            </span>
+            ですね！
+            <small>
+            <small className={'text-' + StatusClassNameMap[current.status]}>
+              機械は <small className={'label label-' + StatusClassNameMap[current.status]}>{current.status}</small> と報告しています
+            </small>
+            </small>
           </h2>
-          <p className={'text-' + StatusClassNameMap[current.status]}>
-            機械は <span className={'label label-' + StatusClassNameMap[current.status]}>{current.status}</span> と報告しています</p>
           <div className="app-revisioncapture__keyboarshortcut__svg" style={{width: current.width, height: current.height}}>
             <img src={Path.join('/captures/', current.expect_image)} />
             <img src={Path.join('/captures/', current.target_image)} />
