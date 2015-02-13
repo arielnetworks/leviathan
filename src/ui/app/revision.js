@@ -17,7 +17,7 @@ var Revision = React.createClass({
 
   render() {
     var currPage = +this.getQuery().page || 1;
-    RevisionStore.fetchRevision(this.getParams().revision, currPage);
+    RevisionStore.syncRevision(this.getParams().revision, currPage);
     var revision = this.state.revisionsTable[this.getParams().revision];
     if (!revision || revision.total == null) return <span>...</span>;
     // TODO: "tr" has to have "key"

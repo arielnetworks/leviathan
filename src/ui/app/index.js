@@ -10,7 +10,7 @@ var Index = React.createClass({
   mixins: [_mixins],
 
   componentDidMount() {
-    RevisionStore.fetchRevisions(0, 20);
+    RevisionStore.syncRevisions(0, 20);
   },
 
   render() {

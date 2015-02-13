@@ -57,8 +57,8 @@ var RevisionCapture = React.createClass({
 
   // TODO: "/captures" must come from global.configure
   render() {
-    RevisionStore.fetchRevision(this.getParams().revision);
-    RevisionStore.fetchCapture(this.getParams().revision, this.getParams().capture);
+    RevisionStore.syncRevision(this.getParams().revision);
+    RevisionStore.syncCapture(this.getParams().revision, this.getParams().capture);
     var current = this.state.capturesTable[this.getParams().capture];
     if (!current) return <span>...</span>;
     var revision = this.state.revisionsTable[this.getParams().revision];

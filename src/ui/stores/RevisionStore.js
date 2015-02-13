@@ -39,7 +39,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  fetchRevisions(skip, limit) {
+  syncRevisions(skip, limit) {
     // TODO: Pagination
     // if (hasAll(_store.revisions, skip, skip + limit)) return;
     if (_store.revisions.length) return;
@@ -54,7 +54,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     .catch(err => console.error(err.stack));
   },
 
-  fetchRevision(revision, page) {
+  syncRevision(revision, page) {
     var skip = (page - 1) * perPage;
     var limit = perPage;
     var range = _.range(skip, skip + limit);
@@ -78,7 +78,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     .catch((err) => console.error(err.stack));
   },
 
-  fetchCapture(revision, capture) {
+  syncCapture(revision, capture) {
     if (_store.capturesTable[capture] &&
         !_store.capturesTable[capture]['_expired'] &&
         _store.capturesTable[capture]['@siblings']) return;
