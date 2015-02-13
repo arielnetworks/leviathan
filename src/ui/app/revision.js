@@ -21,17 +21,16 @@ var Revision = React.createClass({
     RevisionStore.syncRevision(this.getParams().revision, currPage);
     var revision = this.state.revisionsTable[this.getParams().revision];
     if (!revision || revision.total == null) return <span>...</span>;
-    // TODO: "tr" has to have "key"
 
     var Columns = [
-      {id: 'captureName', label: 'キャプチャ', formatter: function (capture) {
-        return <a href={'#/revisions/' + revision.id + '/captures/' + capture.capture}>{capture.captureName}</a> } },
-      {id: 'done', label: [<i className="fa fa-check"></i>, '機械OKまたは人間処理済'], formatter: function (capture) {
-        return capture.status == Const.Status.OK || capture.checkedAs != Const.CheckedAs.UNPROCESSED ? <i className="fa fa-check"></i> : null } },
-      {id: 'checkedAs', label: '人間', formatter: function (capture) {
-        return <span className={'label label-' + Const.CheckedAsClassNameMap[capture.checkedAs]}>{capture.checkedAs}</span> } },
-      {id: 'status', label: '機械', formatter: function (capture) {
-          return <small className={'label label-' + Const.StatusClassNameMap[capture.status]}>{capture.status}</small> } }
+      {id: 'captureName', label: 'キャプチャ', formatter: capture =>
+        <a href={Path.join('#/revisions/', revision.id, '/captures/', capture.capture)}>{capture.captureName}</a> },
+      {id: 'done', label: [<i className="fa fa-check"></i>, '機械OKまたは人間処理済'], formatter: capture =>
+        capture.status == Const.Status.OK || capture.checkedAs != Const.CheckedAs.UNPROCESSED ? <i className="fa fa-check"></i> : null },
+      {id: 'checkedAs', label: '人間', formatter: capture =>
+        <span className={'label label-' + Const.CheckedAsClassNameMap[capture.checkedAs]}>{capture.checkedAs}</span> },
+      {id: 'status', label: '機械', formatter: capture =>
+        <small className={'label label-' + Const.StatusClassNameMap[capture.status]}>{capture.status}</small> }
     ];
 
     return (
