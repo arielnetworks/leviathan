@@ -9,8 +9,11 @@ var xhr = require('../xhr');
 var _ = require('underscore');
 var assert = require('assert');
 var Path = require('path');
+var QueryString = require('querystring');
 
 var CHANGE_EVENT = 'change';
+
+var perPage = 20; // TODO: Const
 
 // _revisions[revision][capture]
 // TODO: We have to have two conatainers: [] (skip, limit) and {} (id dictionary)
@@ -51,18 +54,24 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     .catch(err => console.error(err.stack));
   },
 
-  fetchRevision(revision) {
-    // TODO: Pagination
+  fetchRevision(revision, page) {
+    var skip = (page - 1) * perPage;
+    var limit = perPage;
+    var range = _.range(skip, skip + limit);
     if (_store.revisionsTable[revision] &&
         !_store.revisionsTable[revision]['_expired'] &&
         _store.revisionsTable[revision].total != null &&
-        _store.revisionsTable[revision].reportedAs != null) {
+        _store.revisionsTable[revision].reportedAs != null &&
+        _store.revisionsTable[revision]['@captures'] &&
+        range.every(i => !!_store.revisionsTable[revision]['@captures'][i])
+    ) {
       return;
     }
-    xhr(Path.join('/api/revisions', revision, 'captures'))
+    xhr(Path.join('/api/revisions', revision, 'captures?') + QueryString.stringify({skip, limit}))
     .then(json => {
       _store.revisionsTable[revision] = json.current;
-      _store.revisionsTable[revision]['@captures'] = json.items; //TODO: Insert to the right index with skip/limit
+      _store.revisionsTable[revision]['@captures'] = _store.revisionsTable[revision]['@captures'] || [];
+      _.each(range, i => _store.revisionsTable[revision]['@captures'][i] = json.items[i - skip]);
       _.each(json.items, (capture) => _store.capturesTable[capture.capture] = capture);
       this.emit(CHANGE_EVENT);
     })

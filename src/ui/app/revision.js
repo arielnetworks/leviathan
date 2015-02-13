@@ -15,14 +15,12 @@ var Revision = React.createClass({
 
   mixins: [_mixins, Router.State],
 
-  componentDidMount() {
-    RevisionStore.fetchRevision(this.getParams().revision);
-  },
-
   render() {
+    var currPage = +this.getQuery().page || 1;
+    RevisionStore.fetchRevision(this.getParams().revision, currPage);
     var revision = this.state.revisionsTable[this.getParams().revision];
     if (!revision || revision.total == null) return <span>...</span>;
-    var currPage = +this.getQuery().page || 1;
+    // TODO: "tr" has to have "key"
     return (
       <div className="app-revision">
         <Navbar />
