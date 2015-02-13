@@ -2,10 +2,12 @@
 var _mixins = require('./_mixins');
 var React = require('react');
 var Router = require('react-router');
+var Path = require('path');
 var RevisionStore = require('../stores/RevisionStore')
 var Const = require('../const');
 var ProgressBar = require('../components/ProgressBar');
 var Navbar = require('../components/Navbar');
+var _ = require('underscore');
 
 
 
@@ -20,6 +22,7 @@ var Revision = React.createClass({
   render() {
     var revision = this.state.revisionsTable[this.getParams().revision];
     if (!revision || revision.total == null) return <span>...</span>;
+    var currPage = +this.getQuery().page || 1;
     return (
       <div className="app-revision">
         <Navbar />
@@ -60,12 +63,61 @@ var Revision = React.createClass({
                 </tbody>
               </table>
             </div>
+            {this.renderPagination(revision, currPage)}
           </div>
         </div>
       </div>
     )
-  }
+  },
 
+  renderPagination(revision, currPage) {
+    var perPage = 20;
+    var total = revision.total;
+    if (total <= perPage) return;
+    var maxPage = Math.ceil(total / perPage);
+    var isLeftEdge = currPage == 1;
+    var isRightEdge = currPage == maxPage;
+    var margin = 5;
+    var rangeStart = Math.max(1, currPage - margin);
+    var rangeEnd = Math.min(currPage + margin, maxPage);
+    var lines = [];
+    lines.push(
+      <li key="first" className={isLeftEdge ? 'disabled' : null}>
+        <a href={Path.join('#/revisions', this.getParams().revision) + '?page=' + 1}><span>&laquo;</span></a>
+      </li>
+    );
+    if (1 < rangeStart) {
+      lines.push(
+        <li key="leftskip">
+          <a href={Path.join('#/revisions', this.getParams().revision) + '?page=' + (rangeStart - 1)}><span>...</span></a>
+        </li>
+      );
+    }
+    _.each(_.range(rangeStart, rangeEnd + 1), page => {
+      lines.push(
+        <li key={page} className={currPage == page ? 'active' : null}>
+          <a href={Path.join('#/revisions', this.getParams().revision) + '?page=' + page}>{page}</a>
+        </li>
+      )
+    })
+    if (rangeEnd < maxPage) {
+      lines.push(
+        <li key="rightskip">
+          <a href={Path.join('#/revisions', this.getParams().revision) + '?page=' + (rangeEnd + 1)}><span>...</span></a>
+        </li>
+      )
+    }
+    lines.push(
+      <li key="last" className={isRightEdge ? 'disabled' : null}>
+        <a href={Path.join('#/revisions', this.getParams().revision) + '?page=' + maxPage}><span>&raquo;</span></a>
+      </li>
+    )
+    return (
+      <nav className="text-center">
+        <ul className="pagination">{lines}</ul>
+      </nav>
+    )
+  }
 })
 module.exports = Revision;
 

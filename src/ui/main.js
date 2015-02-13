@@ -38,8 +38,8 @@ var NotFound = React.createClass({
 var routes = (
   <Route handler={App}>
     <DefaultRoute handler={Index}/>
-    <Route handler={Revision} name="revision" path="revisions/:revision"/>
-    <Route handler={RevisionCapture} name="revisioncapture" path="revisions/:revision/captures/:capture"/>
+    <Route handler={Revision} name="revision" path="revisions/:revision" />
+    <Route handler={RevisionCapture} name="revisioncapture" path="revisions/:revision/captures/:capture" />
     <NotFoundRoute handler={NotFound}/>
   </Route>
 );
