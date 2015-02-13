@@ -16,11 +16,17 @@ var Navbar = React.createClass({
       </a></li>
     ];
     if (revision) {
-      crumbs.push(
-        <li key="revision" className={this.props.capture ? '' : 'active'}>
-          <a href={Path.join('#/revisions', revision)}>{revision}</a>
-        </li>
-      )
+      if (this.props.capture) {
+        crumbs.push(
+          <li key="revision" className="active">
+            <a href={Path.join('#/revisions', revision)}>{revision}</a>
+          </li>
+        )
+      } else {
+        crumbs.push(
+          <li key="revision">{revision}</li>
+        )
+      }
     }
     if (this.props.capture) {
       crumbs.push(

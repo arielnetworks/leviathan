@@ -19,7 +19,7 @@ $fa-font-path: "./fonts"
   font-size: 2rem
 
 .progress
-  $height: 50px
+  $height: 40px
   height: $height
   .progress-bar
     line-height: $height
@@ -57,3 +57,22 @@ $fa-font-path: "./fonts"
     min-width: 10em
     margin-left: .2em
     margin-right: .2em
+
+
+.paged-table .table
+  width: 100%
+.paged-table--captures
+  .table:first-child
+    margin-bottom: -1px
+  .captureName
+    width: 20rem
+  .done
+    width: 20rem
+  .checkedAs
+    width: 20rem
+  .status
+    width: 20rem
+
+.paged-table__canvas
+  max-height: 400px
+  overflow: auto

@@ -26,37 +26,40 @@ var Revision = React.createClass({
         <div className="container">
           <ProgressBar revision={revision} />
           <h1>Revision {this.getParams().revision} の報告です！</h1>
-          <div className="yeah">
+          <div className="paged-table paged-table--captures">
             <table className="table table-hover">
               <thead>
                 <tr>
-                  <th>キャプチャ</th>
-                  <th><i className="fa fa-check"></i>機械OKまたは人間処理済</th>
-                  <th>人間</th>
-                  <th>機械</th>
+                  <th className="captureName">キャプチャ</th>
+                  <th className="done"><i className="fa fa-check"></i>機械OKまたは人間処理済</th>
+                  <th className="checkedAs">人間</th>
+                  <th className="status">機械</th>
                 </tr>
               </thead>
-              <tbody>
-                {revision['@captures'].map(capture => {
-                  console.log('xx');
-                  var done = capture.status == Const.Status.OK || capture.checkedAs != Const.CheckedAs.UNPROCESSED ? <i className="fa fa-check"></i> : null;
-                  return <tr>
-                    <td><a href={'#/revisions/' + this.getParams().revision + '/captures/' + capture.capture}>{capture.captureName}</a></td>
-                    <td>{done}</td>
-                    <td>
-                      <span className={'label label-' + Const.CheckedAsClassNameMap[capture.checkedAs]}>
-                        {capture.checkedAs}
-                      </span>
-                    </td>
-                    <td>
-                      <small className={'label label-' + Const.StatusClassNameMap[capture.status]}>
-                        {capture.status}
-                      </small>
-                    </td>
-                  </tr>
-                })}
-              </tbody>
             </table>
+            <div className="paged-table__canvas">
+              <table className="table table-hover">
+                <tbody>
+                  {revision['@captures'].map(capture => {
+                    var done = capture.status == Const.Status.OK || capture.checkedAs != Const.CheckedAs.UNPROCESSED ? <i className="fa fa-check"></i> : null;
+                    return <tr>
+                      <td className="captureName"><a href={'#/revisions/' + this.getParams().revision + '/captures/' + capture.capture}>{capture.captureName}</a></td>
+                      <td className="done">{done}</td>
+                      <td className="checkedAs">
+                        <span className={'label label-' + Const.CheckedAsClassNameMap[capture.checkedAs]}>
+                          {capture.checkedAs}
+                        </span>
+                      </td>
+                      <td className="status">
+                        <small className={'label label-' + Const.StatusClassNameMap[capture.status]}>
+                          {capture.status}
+                        </small>
+                      </td>
+                    </tr>
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
