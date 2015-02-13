@@ -24,7 +24,14 @@ describe('Application', function() {
       request(app)
       .get('/api/revisions')
       .expect(200)
-      .expect({ items: [] }, done);
+      .expect({
+        meta: {
+          skip: 0,
+          limit: 20,
+          total: 0
+        },
+        items: []
+      }, done);
     });
 
     it('POST /api/tidal-wave/1', function(done) {
@@ -40,6 +47,11 @@ describe('Application', function() {
       .get('/api/revisions')
       .expect(200)
       .expect({
+        meta: {
+          skip: 0,
+          limit: 20,
+          total: 1
+        },
         items: [
           {
             id: 1,
@@ -67,7 +79,7 @@ describe('Application', function() {
           reportedAs: {
             ERROR: 0,
             OK: 2,
-            SUSPICIOUS: 0 
+            SUSPICIOUS: 0
           },
           'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
@@ -92,7 +104,7 @@ describe('Application', function() {
           reportedAs: {
             ERROR: 0,
             OK: 2,
-            SUSPICIOUS: 0 
+            SUSPICIOUS: 0
           },
           'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
@@ -240,6 +252,11 @@ describe('Application', function() {
       .get('/api/revisions')
       .expect(200)
       .expect({
+        meta: {
+          skip: 0,
+          limit: 20,
+          total: 2
+        },
         items: [
           {
             id: 2,
@@ -272,7 +289,7 @@ describe('Application', function() {
           reportedAs: {
             ERROR: 0,
             OK: 1,
-            SUSPICIOUS: 1 
+            SUSPICIOUS: 1
           },
           'UNPROCESSED && !OK': 1,
           updatedAt: '1970-01-01T00:00:00.000Z'
@@ -296,7 +313,7 @@ describe('Application', function() {
           reportedAs: {
             ERROR: 0,
             OK: 1,
-            SUSPICIOUS: 1 
+            SUSPICIOUS: 1
           },
           'UNPROCESSED && !OK': 1,
           updatedAt: '1970-01-01T00:00:00.000Z'
@@ -377,6 +394,11 @@ describe('Application', function() {
       request(app)
       .get('/api/revisions')
       .expect({
+        meta: {
+          skip: 0,
+          limit: 20,
+          total: 2
+        },
         items: [
           {
             id: 2,
@@ -395,6 +417,11 @@ describe('Application', function() {
       request(app)
       .get('/api/revisions?limit=1')
       .expect({
+        meta: {
+          skip: 0,
+          limit: 1,
+          total: 2
+        },
         items: [
           {
             id: 2,
@@ -408,6 +435,11 @@ describe('Application', function() {
       request(app)
       .get('/api/revisions?limit=1&skip=1')
       .expect({
+        meta: {
+          skip: 1,
+          limit: 1,
+          total: 2
+        },
         items: [
           {
             id: 1,
@@ -421,6 +453,11 @@ describe('Application', function() {
       request(app)
       .get('/api/revisions?order=id%20ASC')
       .expect({
+        meta: {
+          skip: 0,
+          limit: 20,
+          total: 2
+        },
         items: [
           {
             id: 1,
@@ -451,7 +488,7 @@ describe('Application', function() {
           reportedAs: {
             ERROR: 0,
             OK: 2,
-            SUSPICIOUS: 0 
+            SUSPICIOUS: 0
           },
           'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
@@ -507,7 +544,7 @@ describe('Application', function() {
           reportedAs: {
             ERROR: 0,
             OK: 2,
-            SUSPICIOUS: 0 
+            SUSPICIOUS: 0
           },
           'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
@@ -547,7 +584,7 @@ describe('Application', function() {
           reportedAs: {
             ERROR: 0,
             OK: 2,
-            SUSPICIOUS: 0 
+            SUSPICIOUS: 0
           },
           'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
@@ -665,7 +702,7 @@ describe('Application', function() {
           reportedAs: {
             ERROR: 0,
             OK: 1,
-            SUSPICIOUS: 1 
+            SUSPICIOUS: 1
           },
           'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
@@ -784,7 +821,7 @@ describe('Application', function() {
           reportedAs: {
             ERROR: 0,
             OK: 1,
-            SUSPICIOUS: 1 
+            SUSPICIOUS: 1
           },
           'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
@@ -830,7 +867,7 @@ describe('Application', function() {
           reportedAs: {
             ERROR: 0,
             OK: 1,
-            SUSPICIOUS: 1 
+            SUSPICIOUS: 1
           },
           'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'
@@ -895,7 +932,7 @@ describe('Application', function() {
           reportedAs: {
             ERROR: 0,
             OK: 1,
-            SUSPICIOUS: 1 
+            SUSPICIOUS: 1
           },
           'UNPROCESSED && !OK': 0,
           updatedAt: '1970-01-01T00:00:00.000Z'

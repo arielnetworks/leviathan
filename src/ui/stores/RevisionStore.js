@@ -18,6 +18,7 @@ var perPage = 20; // TODO: Const
 // _revisions[revision][capture]
 // TODO: We have to have two conatainers: [] (skip, limit) and {} (id dictionary)
 var _store = {
+  revisionsTotal: -1,
   revisions: [],
   revisionsTable: {},
   capturesTable: {}
@@ -43,7 +44,9 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     // TODO: Similar code. Refactor.
     page = page || 1;
     var skip = (page - 1) * perPage;
-    var limit = perPage;
+    var limit = Math.min(
+        _store.revisionsTotal >= 0 ? _store.revisionsTotal : Number.MAX_VALUE,
+        skip + perPage);
     var range = _.range(skip, skip + limit);
     // TODO: Should think about total otherwise it loops infinitly.
     if (range.every(i => _store.revisions[i])) {
@@ -51,10 +54,10 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     }
     xhr('/api/revisions?' + QueryString.stringify({skip, limit}))
     .then(json => {
+      _store.revisionsTotal = json.meta.total;
       _.each(range, i => {
         var item = json.items[i - skip];
         if (!item) return;
-        console.log(item);
         _store.revisions[i] = item;
         _store.revisionsTable[item.id] = item;
       });
@@ -64,11 +67,15 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
   },
 
   syncRevision(revision, page) {
+    // TODO: Use "rid" as an revision id.
     // TODO: Similar code. Refactor.
     page = page || 1;
     var skip = (page - 1) * perPage;
-    var limit = perPage;
-    var range = _.range(skip, skip + limit);
+    var limit = Math.min(
+        _store.revisionsTable[revision] && _.isNumber(_store.revisionsTable[revision].total) ?
+            _store.revisionsTable[revision].total : Number.MAX_VALUE,
+        skip + perPage);
+    var range = _.range(skip, limit);
     if (_store.revisionsTable[revision] &&
         !_store.revisionsTable[revision]['_expired'] &&
         _store.revisionsTable[revision]['@captures'] &&

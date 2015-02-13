@@ -70,6 +70,7 @@ function updateCapture(rid, capture, data) {
   });
 }
 
+// TODO: return "meta" and "items"
 function findCaptures(skip, limit) {
   return Q.ninvoke(db.captures, 'aggregate', [
     {$match: {checkedAs: 'IS_OK'}},
@@ -100,6 +101,7 @@ function findRevisionCapture(rid, capture) {
   return Q.ninvoke(db.captures, 'findOne', {revision: rid, capture: capture}, {_id: false});
 }
 
+// TODO: return "meta" and "items"
 function findRevisionCaptures(rid, skip, limit, order, status, checkedAs) {
   var query = { revision: rid };
   var order = parseOrderParam_(order);
@@ -176,12 +178,31 @@ function expandCountFromAggregatedDocuments_(aggregated) {
 }
 
 function findRevisions(skip, limit, order) {
+  skip = skip || 0;
+  limit = limit || DEFAULT_LIMIT;
   order = parseOrderParam_(order);
-  return Q.ninvoke(db.revisions.find({}, {_id: false})
+  order.of = order.of || 'revisionAt';
+  order.by = order.by || -1;
+  var cursor = db.revisions.find({}, {_id: false});
+  return Q.all([
+    Q.ninvoke(cursor, 'count'),
+    Q.ninvoke(cursor
       .skip(skip)
-      .limit(limit || DEFAULT_LIMIT)
-      .sort(order.of || 'revisionAt', order.by || -1),
-  'toArray');
+      .limit(limit)
+      .sort(order.of, order.by)
+    , 'toArray'),
+  ]).then(function(result) {
+    var total = result[0];
+    var items = result[1];
+    return {
+      meta: {
+        skip: skip,
+        limit: limit,
+        total: total,
+      },
+      items: items
+    }
+  });
 }
 
 function parseOrderParam_(order) {

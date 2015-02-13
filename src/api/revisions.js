@@ -15,11 +15,7 @@ var PostRevisions = module.exports['post'] = {};
 GetRevisions['index'] = function(req, res) {
   var query = req.query || {};
   persist.findRevisions(+query.skip, +query.limit, query.order)
-  .then(function(docs) {
-    res.json({
-      items: docs || []
-    });
-  })
+  .then(res.json.bind(res))
   .catch (handleError.bind(null, res));
 };
 
