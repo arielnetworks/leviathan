@@ -46,7 +46,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     var skip = (page - 1) * perPage;
     var limit = Math.min(
         _store.revisionsTotal >= 0 ? _store.revisionsTotal : Number.MAX_VALUE,
-        skip + perPage);
+        perPage);
     var range = _.range(skip, skip + limit);
     // TODO: Should think about total otherwise it loops infinitly.
     if (range.every(i => _store.revisions[i])) {
@@ -74,7 +74,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     var limit = Math.min(
         _store.revisionsTable[revision] && _.isNumber(_store.revisionsTable[revision].total) ?
             _store.revisionsTable[revision].total : Number.MAX_VALUE,
-        skip + perPage);
+        perPage);
     var range = _.range(skip, limit);
     if (_store.revisionsTable[revision] &&
         !_store.revisionsTable[revision]['_expired'] &&

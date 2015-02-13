@@ -23,7 +23,7 @@ var ProgressBar = React.createClass({
       ];
     }
     return (
-      <div className="progress">
+      <div className={'progress ' + (this.props.cssModifier ? 'progress--' + this.props.cssModifier : '')}>
         {contentHTML}
       </div>  
     )

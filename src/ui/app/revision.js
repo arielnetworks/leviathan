@@ -20,7 +20,7 @@ var Revision = React.createClass({
     var currPage = +this.getQuery().page || 1;
     RevisionStore.syncRevision(this.getParams().revision, currPage);
     var revision = this.state.revisionsTable[this.getParams().revision];
-    if (!revision || revision.total == null) return <span>...</span>;
+    if (!revision || revision.total == null || !revision['@captures']) return <span>...</span>;
 
     var Columns = [
       {id: 'captureName', label: 'キャプチャ', formatter: capture =>
@@ -37,9 +37,10 @@ var Revision = React.createClass({
       <div className="app-revision">
         <Navbar />
         <div className="container">
-          <ProgressBar revision={revision} />
+          <ProgressBar cssModifier="large" revision={revision} />
           <h1>Revision {this.getParams().revision} の報告です！</h1>
-          <Table rows={revision['@captures']}
+          <Table cssModifier="captures"
+                 rows={revision['@captures']}
                  total={revision.total}
                  columns={Columns}
                  currPage={currPage}

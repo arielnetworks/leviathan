@@ -194,14 +194,20 @@ function findRevisions(skip, limit, order) {
   ]).then(function(result) {
     var total = result[0];
     var items = result[1];
-    return {
-      meta: {
-        skip: skip,
-        limit: limit,
-        total: total,
-      },
-      items: items
-    }
+    return Q.all(items.map(function(item) {
+      // XXX: Expensive. Better idea?
+      return findRevision(item.id);
+    }))
+    .then(function(results) {
+      return {
+        meta: {
+          skip: skip,
+          limit: limit,
+          total: total,
+        },
+        items: results
+      }
+    });
   });
 }
 

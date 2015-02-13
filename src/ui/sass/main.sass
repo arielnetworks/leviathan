@@ -18,7 +18,7 @@ $fa-font-path: "./fonts"
 .breadcrumb--headernav__brand
   font-size: 2rem
 
-.progress
+.progress--large
   $height: 40px
   height: $height
   .progress-bar
@@ -58,13 +58,17 @@ $fa-font-path: "./fonts"
     margin-left: .2em
     margin-right: .2em
 
-.paged-table .table
-  width: 100%
-.paged-table--captures
+.paged-table
   .table:first-child
     margin-bottom: 0
     th, td
       border-bottom-width: 1px
+  .table
+    width: 100%
+    .progress
+      margin-bottom: 0
+
+.paged-table--captures
   .captureName
     width: 20rem
   .done
@@ -74,6 +78,10 @@ $fa-font-path: "./fonts"
   .status
     width: 20rem
 
+.paged-table--revisions
+  .revision
+    width: 8rem
+
 .paged-table__canvas
-  max-height: 400px
+  height: 400px
   overflow: auto

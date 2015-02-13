@@ -67,7 +67,7 @@ var RevisionCapture = React.createClass({
       <div className="app-revisioncapture">
         <Navbar capture={current} />
         <div className="container">
-          {<ProgressBar revision={revision} />}
+          {<ProgressBar cssModifier="large" revision={revision} />}
           <h2 className="app-revisioncapture__keyboarshortcut__title">
             これは
             <span className={'label label-' + CheckedAsClassNameMap[current.checkedAs]}>
@@ -133,6 +133,7 @@ function gotoSibling(capture) {
 }
 
 function renderPrevNextNavigation_() {
+  // TODO: Next should be a next 'UNPROCESSED && !OK'.
   var current = this.state.capturesTable[this.getParams().capture];
   var siblings = current && current['@siblings'];
   if (!siblings) return;

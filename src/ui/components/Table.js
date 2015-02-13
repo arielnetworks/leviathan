@@ -3,11 +3,23 @@ var _ = require('underscore');
 var Path = require('path');
 var QueryString = require('querystring');
 
+var perPage = 20; // TODO: Const
+
+var lastRows = []; // To prevent empty rows before hashchange.
+
 var Table = React.createClass({
 
+  // TODO: Impl sort function.
+
   render() {
+
+    var start = (this.props.currPage - 1) * perPage;
+    var end = Math.min(start + perPage, this.props.total);
+    var rows = this.props.rows.slice(start, end);
+    if (rows.length) { lastRows = rows } else { rows = lastRows } 
+
     return (
-      <div className="paged-table paged-table--captures">
+      <div className={'paged-table ' + (this.props.cssModifier ? 'paged-table--' + this.props.cssModifier : '')}>
         <table className="table table-hover">
           <thead>
             <tr>
@@ -18,8 +30,8 @@ var Table = React.createClass({
         <div className="paged-table__canvas">
           <table className="table table-hover">
             <tbody>
-              {this.props.rows.map((row, i) =>
-                <tr key={i}>
+              {rows.map((row, i) =>
+                <tr key={(this.props.currPage * perPage - 1) + i}>
                   {_.map(this.props.columns, column =>
                     <th className={column.id} key={column.id}>{column.formatter.call(this, row)}</th>
                   )}
@@ -35,7 +47,6 @@ var Table = React.createClass({
 
   renderPagination() {
     if (this.props.total <= perPage) return;
-    var perPage = 20; // TODO: Const
     var margin = 5; // TODO: Const
     var maxPage = Math.ceil(this.props.total / perPage);
     var isLeftEdge = this.props.currPage == 1;
