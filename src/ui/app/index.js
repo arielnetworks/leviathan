@@ -9,11 +9,8 @@ var Index = React.createClass({
 
   mixins: [_mixins],
 
-  componentDidMount() {
-    RevisionStore.syncRevisions(0, 20);
-  },
-
   render() {
+    RevisionStore.syncRevisions(1);
     if (!this.state.revisions) return <span>...</span>
     var tbodyContent = this.state.revisions.map((revision, index) => {
       return <tr key={index}> <th><a href={'/#/revisions/' + revision.id}>{revision.id}</a></th> <td>Jacob</td> <td>Thornton</td> <td>@fat</td> </tr>

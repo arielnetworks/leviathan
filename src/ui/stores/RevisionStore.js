@@ -39,15 +39,24 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  syncRevisions(skip, limit) {
-    // TODO: Pagination
-    // if (hasAll(_store.revisions, skip, skip + limit)) return;
-    if (_store.revisions.length) return;
-    xhr('/api/revisions')
+  syncRevisions(page) {
+    // TODO: Similar code. Refactor.
+    page = page || 1;
+    var skip = (page - 1) * perPage;
+    var limit = perPage;
+    var range = _.range(skip, skip + limit);
+    // TODO: Should think about total otherwise it loops infinitly.
+    if (range.every(i => _store.revisions[i])) {
+      return;
+    }
+    xhr('/api/revisions?' + QueryString.stringify({skip, limit}))
     .then(json => {
-      _.each(json.items, (revision) => {
-        _store.revisions.push(revision); // TODO: Insert to the right index with skip/limit
-        _store.revisionsTable[revision.id] = revision;
+      _.each(range, i => {
+        var item = json.items[i - skip];
+        if (!item) return;
+        console.log(item);
+        _store.revisions[i] = item;
+        _store.revisionsTable[item.id] = item;
       });
       this.emit(CHANGE_EVENT);
     })
@@ -55,13 +64,13 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
   },
 
   syncRevision(revision, page) {
+    // TODO: Similar code. Refactor.
+    page = page || 1;
     var skip = (page - 1) * perPage;
     var limit = perPage;
     var range = _.range(skip, skip + limit);
     if (_store.revisionsTable[revision] &&
         !_store.revisionsTable[revision]['_expired'] &&
-        _store.revisionsTable[revision].total != null &&
-        _store.revisionsTable[revision].reportedAs != null &&
         _store.revisionsTable[revision]['@captures'] &&
         range.every(i => !!_store.revisionsTable[revision]['@captures'][i])
     ) {
@@ -71,8 +80,12 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     .then(json => {
       _store.revisionsTable[revision] = json.current;
       _store.revisionsTable[revision]['@captures'] = _store.revisionsTable[revision]['@captures'] || [];
-      _.each(range, i => _store.revisionsTable[revision]['@captures'][i] = json.items[i - skip]);
-      _.each(json.items, (capture) => _store.capturesTable[capture.capture] = capture);
+      _.each(range, i => {
+        var item = json.items[i - skip];
+        if (!item) return;
+        _store.revisionsTable[revision]['@captures'][i] = item;
+        _store.capturesTable[item.capture] = item;
+      });
       this.emit(CHANGE_EVENT);
     })
     .catch((err) => console.error(err.stack));
@@ -101,6 +114,8 @@ module.exports = RevisionStore;
 Dispatcher.register(function(action) {
   switch(action.type) {
     case Actions.CHECKAS:
+      // We should not erase record here, otherwise UI will
+      // be rendered twice and it's not good look.
       if (_store.revisionsTable[action.revision])
         _store.revisionsTable[action.revision]['_expired'] = true;
       if (_store.capturesTable[action.capture])
