@@ -1,0 +1,4 @@
+{
+  "baseImageDir": "./test/fixture",
+  "relativeTargetDirPrefix": "revision"
+}

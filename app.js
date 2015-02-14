@@ -24,10 +24,10 @@ module.exports.launch = launch;
 /**
  * @param { {
  *  } } configure
- * @return {Q.Promise<
+ * @return {Q.Promise<{
  *    app: {}
  *    server: tls.Server
- *  >}
+ *  }>}
  */
 function launch(configure) {
 
