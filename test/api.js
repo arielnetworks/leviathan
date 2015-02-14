@@ -47,18 +47,24 @@ describe('Application', function() {
       .get('/api/revisions')
       .expect(200)
       .expect({
-        meta: {
-          skip: 0,
-          limit: 20,
-          total: 1
-        },
-        items: [
-          {
-            id: 1,
-            revisionAt: '1970-01-01T00:00:01.000Z',
-            updatedAt: '1970-01-01T00:00:00.000Z'
-          }
-        ]
+        meta: { skip: 0, limit: 20, total: 1 },
+        items: [{
+          id: '1',
+          revisionAt: '1970-01-01T00:00:01.000Z',
+          updatedAt: '1970-01-01T00:00:00.000Z',
+          total: 2,
+          checkedAs: {
+            IS_BUG: 0,
+            IS_OK: 2,
+            UNPROCESSED: 0
+          },
+          reportedAs: {
+            ERROR: 0,
+            OK: 2,
+            SUSPICIOUS: 0
+          },
+          'UNPROCESSED && !OK': 0
+        }]
       }, done);
     });
 
@@ -68,7 +74,7 @@ describe('Application', function() {
       .expect(200)
       .expect({
         current: {
-          id: 1,
+          id: '1',
           revisionAt: '1970-01-01T00:00:01.000Z',
           total: 2,
           checkedAs: {
@@ -169,26 +175,7 @@ describe('Application', function() {
           width: 180,
           height: 117,
           vector: [],
-          "@siblings": {
-            previous: {
-              capture: "9018988ae55e012e437aa24cbf9a400a",
-              captureName: "scenario1/capture1.jpg",
-              checkedAs: "IS_OK",
-              expect_image: "revision1/scenario1/capture1.jpg",
-              revision: "1",
-              revisionAt: "1970-01-01T00:00:01.000Z",
-              span: 10,
-              status: "OK",
-              target_image: "revision1/scenario1/capture1.jpg",
-              threshold: 5,
-              time: 0.1,
-              updatedAt: "1970-01-01T00:00:00.000Z",
-              updatedBy: "system",
-              width: 280,
-              height: 279,
-              vector: []
-            }
-          }
+          "@siblings": {}
         }
       }, done);
     });
@@ -257,17 +244,40 @@ describe('Application', function() {
           limit: 20,
           total: 2
         },
-        items: [
-          {
-            id: 2,
-            revisionAt: '1970-01-01T00:00:02.000Z',
-            updatedAt: '1970-01-01T00:00:00.000Z'
+        items: [{
+          "UNPROCESSED && !OK": 1,
+          "checkedAs": {
+            "IS_BUG": 0,
+            "IS_OK": 0,
+            "UNPROCESSED": 2,
           },
-          {
-            id: 1,
-            revisionAt: '1970-01-01T00:00:01.000Z',
-            updatedAt: '1970-01-01T00:00:00.000Z'
-          }
+          "id": "2",
+          "reportedAs": {
+            "ERROR": 0,
+            "OK": 1,
+            "SUSPICIOUS": 1,
+          },
+          "revisionAt": "1970-01-01T00:00:02.000Z",
+          "total": 2,
+          "updatedAt": "1970-01-01T00:00:00.000Z",
+        },
+        {
+          "UNPROCESSED && !OK": 0,
+          "checkedAs": {
+            "IS_BUG": 0,
+            "IS_OK": 2,
+            "UNPROCESSED": 0,
+          },
+          "id": "1",
+          "reportedAs": {
+            "ERROR": 0,
+            "OK": 2,
+            "SUSPICIOUS": 0,
+          },
+          "revisionAt": "1970-01-01T00:00:01.000Z",
+          "total": 2,
+          "updatedAt": "1970-01-01T00:00:00.000Z",
+        }
         ]
       }, done);
     });
@@ -278,7 +288,7 @@ describe('Application', function() {
       .expect(200)
       .expect({
         current: {
-          id: 2,
+          id: '2',
           revisionAt: '1970-01-01T00:00:02.000Z',
           total: 2,
           checkedAs: {
@@ -399,18 +409,40 @@ describe('Application', function() {
           limit: 20,
           total: 2
         },
-        items: [
-          {
-            id: 2,
-            revisionAt: '1970-01-01T00:00:02.000Z',
-            updatedAt: '1970-01-01T00:00:00.000Z'
+        items: [{
+          "UNPROCESSED && !OK": 1,
+          "checkedAs": {
+            "IS_BUG": 0,
+            "IS_OK": 0,
+            "UNPROCESSED": 2,
           },
-          {
-            id: 1,
-            revisionAt: '1970-01-01T00:00:01.000Z',
-            updatedAt: '1970-01-01T00:00:00.000Z'
-          }
-        ]
+          "id": "2",
+          "reportedAs": {
+            "ERROR": 0,
+            "OK": 1,
+            "SUSPICIOUS": 1,
+          },
+          "revisionAt": "1970-01-01T00:00:02.000Z",
+          "total": 2,
+          "updatedAt": "1970-01-01T00:00:00.000Z",
+        },
+        {
+          "UNPROCESSED && !OK": 0,
+          "checkedAs": {
+            "IS_BUG": 0,
+            "IS_OK": 2,
+            "UNPROCESSED": 0,
+          },
+          "id": "1",
+          "reportedAs": {
+            "ERROR": 0,
+            "OK": 2,
+            "SUSPICIOUS": 0,
+          },
+          "revisionAt": "1970-01-01T00:00:01.000Z",
+          "total": 2,
+          "updatedAt": "1970-01-01T00:00:00.000Z",
+        }]
       }, done);
     });
     it('GET /api/revisions?limit=1 should return the first document' , function(done) {
@@ -422,13 +454,23 @@ describe('Application', function() {
           limit: 1,
           total: 2
         },
-        items: [
-          {
-            id: 2,
-            revisionAt: '1970-01-01T00:00:02.000Z',
-            updatedAt: '1970-01-01T00:00:00.000Z'
-          }
-        ]
+        items: [{
+          "UNPROCESSED && !OK": 1,
+          "checkedAs": {
+            "IS_BUG": 0,
+            "IS_OK": 0,
+            "UNPROCESSED": 2,
+          },
+          "id": "2",
+          "reportedAs": {
+            "ERROR": 0,
+            "OK": 1,
+            "SUSPICIOUS": 1,
+          },
+          "revisionAt": "1970-01-01T00:00:02.000Z",
+          "total": 2,
+          "updatedAt": "1970-01-01T00:00:00.000Z",
+        }]
       }, done);
     });
     it('GET /api/revisions?limit=1&skip=1 should skip one document' , function(done) {
@@ -440,13 +482,23 @@ describe('Application', function() {
           limit: 1,
           total: 2
         },
-        items: [
-          {
-            id: 1,
-            revisionAt: '1970-01-01T00:00:01.000Z',
-            updatedAt: '1970-01-01T00:00:00.000Z'
-          }
-        ]
+        items: [{
+          "UNPROCESSED && !OK": 0,
+          "checkedAs": {
+            "IS_BUG": 0,
+            "IS_OK": 2,
+            "UNPROCESSED": 0,
+          },
+          "id": "1",
+          "reportedAs": {
+            "ERROR": 0,
+            "OK": 2,
+            "SUSPICIOUS": 0,
+          },
+          "revisionAt": "1970-01-01T00:00:01.000Z",
+          "total": 2,
+          "updatedAt": "1970-01-01T00:00:00.000Z",
+        }]
       }, done);
     });
     it('GET /api/revisions?order=id%20ASC should sorts docs as "id ASC"' , function(done) {
@@ -458,18 +510,40 @@ describe('Application', function() {
           limit: 20,
           total: 2
         },
-        items: [
-          {
-            id: 1,
-            revisionAt: '1970-01-01T00:00:01.000Z',
-            updatedAt: '1970-01-01T00:00:00.000Z'
+        items: [ {
+          "UNPROCESSED && !OK": 0,
+          "checkedAs": {
+            "IS_BUG": 0,
+            "IS_OK": 2,
+            "UNPROCESSED": 0,
           },
-          {
-            id: 2,
-            revisionAt: '1970-01-01T00:00:02.000Z',
-            updatedAt: '1970-01-01T00:00:00.000Z'
-          }
-        ]
+          "id": "1",
+          "reportedAs": {
+            "ERROR": 0,
+            "OK": 2,
+            "SUSPICIOUS": 0,
+          },
+          "revisionAt": "1970-01-01T00:00:01.000Z",
+          "total": 2,
+          "updatedAt": "1970-01-01T00:00:00.000Z",
+        },
+        {
+          "UNPROCESSED && !OK": 1,
+          "checkedAs": {
+            "IS_BUG": 0,
+            "IS_OK": 0,
+            "UNPROCESSED": 2,
+          },
+          "id": "2",
+          "reportedAs": {
+            "ERROR": 0,
+            "OK": 1,
+            "SUSPICIOUS": 1,
+          },
+          "revisionAt": "1970-01-01T00:00:02.000Z",
+          "total": 2,
+          "updatedAt": "1970-01-01T00:00:00.000Z",
+        } ]
       }, done);
     });
     it('GET /api/revisions/1/captures returns 2 documents' , function(done) {
@@ -477,7 +551,7 @@ describe('Application', function() {
       .get('/api/revisions/1/captures')
       .expect({
         current: {
-          id: 1,
+          id: '1',
           revisionAt: '1970-01-01T00:00:01.000Z',
           total: 2,
           checkedAs: {
@@ -533,7 +607,7 @@ describe('Application', function() {
       .get('/api/revisions/1/captures?limit=1')
       .expect({
         current: {
-          id: 1,
+          id: '1',
           revisionAt: '1970-01-01T00:00:01.000Z',
           total: 2,
           checkedAs: {
@@ -573,7 +647,7 @@ describe('Application', function() {
       .get('/api/revisions/1/captures?limit=1&skip=1')
       .expect({
         current: {
-          id: 1,
+          id: '1',
           revisionAt: '1970-01-01T00:00:01.000Z',
           total: 2,
           checkedAs: {
@@ -661,26 +735,7 @@ describe('Application', function() {
             { dx: -6.2871503829956055, dy: -0.9457563161849976, x: 160, y: 110 },
             { dx: -7.390625476837158, dy: -5.659643173217773, x: 170, y: 110 }
           ],
-          "@siblings": {
-            previous: {
-              capture: "9018988ae55e012e437aa24cbf9a400a",
-              captureName: "scenario1/capture1.jpg",
-              checkedAs: "UNPROCESSED",
-              expect_image: "revision1/scenario1/capture1.jpg",
-              height: 279,
-              revision: "2",
-              revisionAt: "1970-01-01T00:00:02.000Z",
-              span: 10,
-              status: "OK",
-              target_image: "revision2/scenario1/capture1.jpg",
-              threshold: 5,
-              time: 0.1,
-              updatedAt: "1970-01-01T00:00:00.000Z",
-              updatedBy: "system",
-              vector: [],
-              width: 280
-            }
-          }
+          "@siblings": { }
         }
       }, done);
     });
@@ -691,7 +746,7 @@ describe('Application', function() {
       .expect(200)
       .expect({
         current: {
-          id: 2,
+          id: '2',
           revisionAt: '1970-01-01T00:00:02.000Z',
           total: 2,
           checkedAs: {
@@ -780,26 +835,7 @@ describe('Application', function() {
             { dx: -6.2871503829956055, dy: -0.9457563161849976, x: 160, y: 110 },
             { dx: -7.390625476837158, dy: -5.659643173217773, x: 170, y: 110 }
           ],
-          "@siblings": {
-            previous: {
-              capture: "9018988ae55e012e437aa24cbf9a400a",
-              captureName: "scenario1/capture1.jpg",
-              checkedAs: "UNPROCESSED",
-              expect_image: "revision1/scenario1/capture1.jpg",
-              height: 279,
-              revision: "2",
-              revisionAt: "1970-01-01T00:00:02.000Z",
-              span: 10,
-              status: "OK",
-              target_image: "revision2/scenario1/capture1.jpg",
-              threshold: 5,
-              time: 0.1,
-              updatedAt: "1970-01-01T00:00:00.000Z",
-              updatedBy: "system",
-              vector: [],
-              width: 280
-            }
-          }
+          "@siblings": { }
         }
       }, done);
     });
@@ -810,7 +846,7 @@ describe('Application', function() {
       .expect(200)
       .expect({
         current: {
-          id: 2,
+          id: '2',
           revisionAt: '1970-01-01T00:00:02.000Z',
           total: 2,
           checkedAs: {
@@ -856,7 +892,7 @@ describe('Application', function() {
       .get('/api/revisions/2/captures?status=SUSPICIOUS')
       .expect({
         current: {
-          id: 2,
+          id: '2',
           revisionAt: '1970-01-01T00:00:02.000Z',
           total: 2,
           checkedAs: {
@@ -921,7 +957,7 @@ describe('Application', function() {
       .get('/api/revisions/2/captures?checkedAs=UNPROCESSED')
       .expect({
         current: {
-          id: 2,
+          id: '2',
           revisionAt: '1970-01-01T00:00:02.000Z',
           total: 2,
           checkedAs: {
