@@ -89,7 +89,9 @@ function findSiblingRevisionCaptureOf(rid, capture, direction) {
   return Q.ninvoke(
       db.captures.find({
         revision: rid,
-        capture: direction > 0 ? {$gt: capture} : {$lt: capture}
+        capture: direction > 0 ? {$gt: capture} : {$lt: capture},
+        checkedAs: 'UNPROCESSED',
+        status: {$ne: 'OK'}
       }, {_id: false})
       .sort({'captureName': 1}).limit(1),
   'toArray').then(function(docs) {

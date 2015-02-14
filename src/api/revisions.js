@@ -84,12 +84,9 @@ function buildCapture(revision, capture) {
     var current = results[0];
     var previous = results[1];
     var next = results[2];
-    if (previous || next) {
-      current['@siblings'] = {
-        previous: previous,
-        next: next
-      };
-    }
+    current['@siblings'] = {};
+    if (previous) current['@siblings'].previous = previous;
+    if (next) current['@siblings'].next = next;
     return { current: current };
   })
 }

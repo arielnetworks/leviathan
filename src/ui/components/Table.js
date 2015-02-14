@@ -5,8 +5,6 @@ var QueryString = require('querystring');
 
 var perPage = 20; // TODO: Const
 
-var lastRows = []; // To prevent empty rows before hashchange.
-
 var Table = React.createClass({
 
   // TODO: Impl sort function.
@@ -16,7 +14,6 @@ var Table = React.createClass({
     var start = (this.props.currPage - 1) * perPage;
     var end = Math.min(start + perPage, this.props.total);
     var rows = this.props.rows.slice(start, end);
-    if (rows.length) { lastRows = rows } else { rows = lastRows } 
 
     return (
       <div className={'paged-table ' + (this.props.cssModifier ? 'paged-table--' + this.props.cssModifier : '')}>

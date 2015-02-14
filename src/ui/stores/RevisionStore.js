@@ -23,6 +23,7 @@ var _store = {
   revisionsTable: {},
   capturesTable: {}
 };
+global._store = _store;
 
 
 
@@ -45,7 +46,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     page = page || 1;
     var skip = (page - 1) * perPage;
     var limit = Math.min(
-        _store.revisionsTotal >= 0 ? _store.revisionsTotal : Number.MAX_VALUE,
+        _store.revisionsTotal >= 0 ? _store.revisionsTotal - skip : Number.MAX_VALUE,
         perPage);
     var range = _.range(skip, skip + limit);
     // TODO: Should think about total otherwise it loops infinitly.
@@ -66,16 +67,16 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     .catch(err => console.error(err.stack));
   },
 
-  syncRevision(revision, page) {
+  syncCaptures(revision, page) {
     // TODO: Use "rid" as an revision id.
     // TODO: Similar code. Refactor.
     page = page || 1;
     var skip = (page - 1) * perPage;
     var limit = Math.min(
         _store.revisionsTable[revision] && _.isNumber(_store.revisionsTable[revision].total) ?
-            _store.revisionsTable[revision].total : Number.MAX_VALUE,
+            _store.revisionsTable[revision].total - skip : Number.MAX_VALUE,
         perPage);
-    var range = _.range(skip, limit);
+    var range = _.range(skip, skip + limit);
     if (_store.revisionsTable[revision] &&
         !_store.revisionsTable[revision]['_expired'] &&
         _store.revisionsTable[revision]['@captures'] &&

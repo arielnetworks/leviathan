@@ -18,7 +18,7 @@ var Revision = React.createClass({
 
   render() {
     var currPage = +this.getQuery().page || 1;
-    RevisionStore.syncRevision(this.getParams().revision, currPage);
+    RevisionStore.syncCaptures(this.getParams().revision, currPage);
     var revision = this.state.revisionsTable[this.getParams().revision];
     if (!revision || revision.total == null || !revision['@captures']) return <span>...</span>;
 
