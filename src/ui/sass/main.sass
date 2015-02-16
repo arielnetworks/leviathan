@@ -67,19 +67,24 @@ $fa-font-path: "./fonts"
     width: 100%
     .progress
       margin-bottom: 0
+  .cell--clickable
+    text-decoration: underline
+    cursor: pointer
+    &:hover
+      text-decoration: none
 
 .paged-table--captures
-  .captureName
+  .cell--captureName
     width: 20rem
-  .done
+  .cell--done
     width: 20rem
-  .checkedAs
+  .cell--checkedAs
     width: 20rem
-  .status
+  .cell--status
     width: 20rem
 
 .paged-table--revisions
-  .revision
+  .cell--revision
     width: 8rem
 
 .paged-table__canvas

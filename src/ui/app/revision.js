@@ -9,6 +9,7 @@ var ProgressBar = require('../components/ProgressBar');
 var Navbar = require('../components/Navbar');
 var Table = require('../components/Table');
 var _ = require('underscore');
+var Actions = require('../actions/Actions');
 
 
 
@@ -37,13 +38,13 @@ var Revision = React.createClass({
     if (!revision || revision.total == null || !revision['@captures']) return <span>...</span>;
 
     var Columns = [
-      {id: 'captureName', label: 'キャプチャ', formatter: capture =>
+      {id: 'captureName', label: 'キャプチャ', onClick: sort.bind(null, 'captureName'), formatter: capture =>
         <a href={Path.join('#/revisions/', revision.id, '/captures/', capture.capture)}>{capture.captureName}</a> },
-      {id: 'done', label: [<i className="fa fa-check"></i>, '機械OKまたは人間処理済'], formatter: capture =>
+      {id: 'done', label: [<i className="fa fa-check"></i>, '機械OKまたは人間処理済'], onClick: sort.bind(null, '???'), formatter: capture =>
         capture.status == Const.Status.OK || capture.checkedAs != Const.CheckedAs.UNPROCESSED ? <i className="fa fa-check"></i> : null },
-      {id: 'checkedAs', label: '人間', formatter: capture =>
+      {id: 'checkedAs', label: '人間', onClick: sort.bind(null, 'checkedAs'), formatter: capture =>
         <span className={'label label-' + Const.CheckedAsClassNameMap[capture.checkedAs]}>{capture.checkedAs}</span> },
-      {id: 'status', label: '機械', formatter: capture =>
+      {id: 'status', label: '機械', onClick: sort.bind(null, 'status'), formatter: capture =>
         <small className={'label label-' + Const.StatusClassNameMap[capture.status]}>{capture.status}</small> }
     ];
 
@@ -65,6 +66,12 @@ var Revision = React.createClass({
   }
 })
 module.exports = Revision;
+
+
+
+function sort(names) {
+  Actions.sort(names);
+}
 
 
 

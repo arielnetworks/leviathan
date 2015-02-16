@@ -141,19 +141,3 @@ function handleCaptureResponse(json) {
   this.emit(CHANGE_EVENT);
 }
 
-function hasAll(arr, from, to) {
-  for (var i = from; i < to; i++) {
-    if (arr[i] === undefined) {
-      return false;
-    }
-  }
-  return true;
-}
-(function testHasAll() {
-  var arr = [undefined, {}, undefined, {}, {}, {}, undefined];
-  assert(hasAll(arr, 1, 2));
-  assert(hasAll(arr, 3, 6));
-  assert(!hasAll(arr, 0, 6));
-  assert(!hasAll(arr, 1, 6));
-  assert(!hasAll(arr, 3, 7));
-})();

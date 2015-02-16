@@ -20,7 +20,8 @@ var Table = React.createClass({
         <table className="table table-hover">
           <thead>
             <tr>
-              {_.map(this.props.columns, column => <th className={column.id} key={column.id}>{column.label}</th>)}
+              {_.map(this.props.columns, column =>
+                <th onClick={column.onClick} className={getCellCssName(column, true)} key={column.id}>{column.label}</th>)}
             </tr>
           </thead>
         </table>
@@ -30,7 +31,7 @@ var Table = React.createClass({
               {rows.map((row, i) =>
                 <tr key={(this.props.currPage * perPage - 1) + i}>
                   {_.map(this.props.columns, column =>
-                    <th className={column.id} key={column.id}>{column.formatter.call(this, row)}</th>
+                    <th className={getCellCssName(column)} key={column.id}>{column.formatter.call(this, row)}</th>
                   )}
                 </tr>
               )}
@@ -79,5 +80,12 @@ var Table = React.createClass({
     )
   }
 });
+
+function getCellCssName(column, isHeader) {
+  return 'cell ' +
+         'cell--' + column.id +
+         (isHeader && column.onClick ? ' cell--clickable' : '') +
+         (column.cssModifier ? ' cell--' + column.cssModifier : '');
+}
 
 module.exports = Table;

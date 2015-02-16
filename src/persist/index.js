@@ -112,7 +112,7 @@ function findRevisionCaptures(rid, skip, limit, order, status, checkedAs) {
   return Q.ninvoke(db.captures.find(query, {_id: false})
       .skip(skip || 0)
       .limit(limit || DEFAULT_LIMIT)
-      .sort(order.of || 'captureName', order.by || 1),
+      .sort(order.by || 'captureName', order.in || 1),
   'toArray');
 }
 
@@ -183,15 +183,15 @@ function findRevisions(skip, limit, order) {
   skip = skip || 0;
   limit = limit || DEFAULT_LIMIT;
   order = parseOrderParam_(order);
-  order.of = order.of || 'revisionAt';
-  order.by = order.by || -1;
+  order.by = order.by || 'revisionAt';
+  order.in = order.in || -1;
   var cursor = db.revisions.find({}, {_id: false});
   return Q.all([
     Q.ninvoke(cursor, 'count'),
     Q.ninvoke(cursor
       .skip(skip)
       .limit(limit)
-      .sort(order.of, order.by)
+      .sort(order.by, order.in)
     , 'toArray'),
   ]).then(function(result) {
     var total = result[0];
@@ -219,16 +219,18 @@ function parseOrderParam_(order) {
   var splitted = {};
   if ((splitted = order.split(' ')).length != 2) return {};
   return {
-    of: splitted[0],
-    by: splitted[1] == 'ASC' ? 1 : -1
+    by: splitted[0],
+    in: splitted[1] == 'ASC' ? 1 : -1
   };
 }
-(function testParseOrderParam_() {
-  var order1 = parseOrderParam_('id ASC');
-  assert.equal(order1.of, 'id');
-  assert.equal(order1.by, 1);
-  var order2 = parseOrderParam_('updatedAt DESC');
-  assert.equal(order2.of, 'updatedAt');
-  assert.equal(order2.by, -1);
-})();
+if (isTesting) {
+  (function testParseOrderParam_() {
+    var order1 = parseOrderParam_('id ASC');
+    assert.equal(order1.by, 'id');
+    assert.equal(order1.in, 1);
+    var order2 = parseOrderParam_('updatedAt DESC');
+    assert.equal(order2.by, 'updatedAt');
+    assert.equal(order2.in, -1);
+  })();
+}
 

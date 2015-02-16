@@ -2,6 +2,7 @@
 var Dispatcher = require('../dispatcher/Dispatcher');
 var {CheckedAs, Actions} = require('../const');
 var xhr = require('../xhr');
+var _ = require('underscore');
 
 module.exports = {
 
@@ -14,6 +15,11 @@ module.exports = {
       type: Actions.CHECKAS,
       revision, capture, as
     });
+  },
+
+  sort(names) {
+    if (!_.isArray(names)) names = [names];
+    console.log(names);
   }
 
 };
