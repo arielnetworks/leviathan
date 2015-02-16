@@ -49,7 +49,6 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
         _store.revisionsTotal >= 0 ? _store.revisionsTotal - skip : Number.MAX_VALUE,
         perPage);
     var range = _.range(skip, skip + limit);
-    // TODO: Should think about total otherwise it loops infinitly.
     if (range.every(i => _store.revisions[i])) {
       return;
     }
@@ -68,7 +67,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
   },
 
   syncCaptures(revision, page) {
-    // TODO: Use "rid" as an revision id.
+    // TODO: Not clear enough. Use "rid" as an revision id.
     // TODO: Similar code. Refactor.
     page = page || 1;
     var skip = (page - 1) * perPage;
@@ -78,7 +77,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
         perPage);
     var range = _.range(skip, skip + limit);
     if (_store.revisionsTable[revision] &&
-        !_store.revisionsTable[revision]['_expired'] &&
+        !_store.revisionsTable[revision]['@expired'] &&
         _store.revisionsTable[revision]['@captures'] &&
         range.every(i => !!_store.revisionsTable[revision]['@captures'][i])
     ) {
@@ -86,7 +85,9 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
     }
     xhr(Path.join('/api/revisions', revision, 'captures?') + QueryString.stringify({skip, limit}))
     .then(json => {
-      _store.revisionsTable[revision] = json.current;
+      if (_store.revisionsTable[revision]) delete _store.revisionsTable[revision]['@expired'];
+      // Use _.extend to keep _store.revisions[i] and _store.revisionsTable[revision] the same reference.
+      _store.revisionsTable[revision] = _.extend(_store.revisionsTable[revision] || {}, json.current);
       _store.revisionsTable[revision]['@captures'] = _store.revisionsTable[revision]['@captures'] || [];
       _.each(range, i => {
         var item = json.items[i - skip];
@@ -101,7 +102,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
 
   syncCapture(revision, capture) {
     if (_store.capturesTable[capture] &&
-        !_store.capturesTable[capture]['_expired'] &&
+        !_store.capturesTable[capture]['@expired'] &&
         _store.capturesTable[capture]['@siblings']) return;
     xhr(Path.join('/api/revisions', revision, 'captures', capture))
     .then(handleCaptureResponse.bind(this))
@@ -125,9 +126,9 @@ Dispatcher.register(function(action) {
       // We should not erase record here, otherwise UI will
       // be rendered twice and it's not good look.
       if (_store.revisionsTable[action.revision])
-        _store.revisionsTable[action.revision]['_expired'] = true;
+        _store.revisionsTable[action.revision]['@expired'] = true;
       if (_store.capturesTable[action.capture])
-        _store.capturesTable[action.capture]['_expired'] = true;
+        _store.capturesTable[action.capture]['@expired'] = true;
       RevisionStore.checkAs(action.revision, action.capture, action.as);
       break;
   }

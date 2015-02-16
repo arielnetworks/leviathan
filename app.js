@@ -14,6 +14,8 @@ var _ = require('underscore');
 var Q = require('q');
 Q.longStackSupport = true;
 var assert = require('assert');
+var compress = require('compression');
+
 
 
 
@@ -52,6 +54,7 @@ function launch(configure) {
   app.set('view engine', 'jade');
 
   app.use(logger('dev'));
+  app.use(compress());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(cookieParser());
