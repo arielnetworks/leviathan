@@ -14,12 +14,26 @@ var _ = require('underscore');
 
 var Revision = React.createClass({
 
+  getInitialState() {
+    var store = RevisionStore.get();
+    return {
+      revision: store.revisionsTable[this.getParams().revision]
+    };
+  },
+
+  _onChange() {
+    var store = RevisionStore.get();
+    this.setState({
+      revision: store.revisionsTable[this.getParams().revision]
+    });
+  },
+
   mixins: [_mixins, Router.State],
 
   render() {
     var currPage = +this.getQuery().page || 1;
     RevisionStore.syncCaptures(this.getParams().revision, currPage);
-    var revision = this.state.revisionsTable[this.getParams().revision];
+    var revision = this.state.revision;
     if (!revision || revision.total == null || !revision['@captures']) return <span>...</span>;
 
     var Columns = [

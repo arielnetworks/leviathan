@@ -11,6 +11,22 @@ var Navbar = require('../components/Navbar');
 
 var Index = React.createClass({
 
+  getInitialState() {
+    var store = RevisionStore.get();
+    return {
+      revisions: store.revisions,
+      revisionsTotal: store.revisionsTotal
+    };
+  },
+
+  _onChange() {
+    var store = RevisionStore.get();
+    this.setState({
+      revisions: store.revisions,
+      revisionsTotal: store.revisionsTotal
+    });
+  },
+
   mixins: [_mixins, Router.State],
 
   render() {

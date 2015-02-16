@@ -4,14 +4,6 @@ var Router = require('react-router');
 
 module.exports = {
 
-  getInitialState() {
-    return RevisionStore.get();
-  },
-
-  _onChange() {
-    this.setState(RevisionStore.get())
-  },
-
   componentDidMount() {
     RevisionStore.addChangeListener(this._onChange);
   },

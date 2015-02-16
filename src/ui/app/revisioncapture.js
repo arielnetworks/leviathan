@@ -28,10 +28,26 @@ var keyboardShortcut = ReactKeyboardShortcut('onKeyboardShortcut', {
 
 var RevisionCapture = React.createClass({
 
+  getInitialState() {
+    var store = RevisionStore.get();
+    return {
+      revision: store.revisionsTable[this.getParams().revision],
+      capture: store.capturesTable[this.getParams().capture]
+    };
+  },
+
+  _onChange() {
+    var store = RevisionStore.get();
+    this.setState({
+      revision: store.revisionsTable[this.getParams().revision],
+      capture: store.capturesTable[this.getParams().capture]
+    });
+  },
+
   mixins: [_mixins, keyboardShortcut, Router.State],
 
   onKeyboardShortcut(e) {
-    var current = this.state.capturesTable[this.getParams().capture];
+    var current = this.state.capture;
     var siblings = current && current['@siblings'];
     if (!siblings) return;
     var goto;
@@ -60,9 +76,9 @@ var RevisionCapture = React.createClass({
     // TODO: Sync once.
     RevisionStore.syncCaptures(this.getParams().revision, 1);
     RevisionStore.syncCapture(this.getParams().revision, this.getParams().capture);
-    var current = this.state.capturesTable[this.getParams().capture];
+    var current = this.state.capture;
     if (!current) return <span>...</span>;
-    var revision = this.state.revisionsTable[this.getParams().revision];
+    var revision = this.state.revision;
     return (
       <div className="app-revisioncapture">
         <Navbar capture={current} />
@@ -119,7 +135,7 @@ module.exports = RevisionCapture;
 
 
 function toggleCheckedAs(direction) {
-  var current = this.state.capturesTable[this.getParams().capture];
+  var current = this.state.capture;
   if (!current) return;
   var currIndex = ToggleCheckedAsOrder.indexOf(current.checkedAs);
   var to = ToggleCheckedAsOrder[currIndex + direction];
@@ -133,8 +149,7 @@ function gotoSibling(capture) {
 }
 
 function renderPrevNextNavigation_() {
-  // TODO: Next should be a next 'UNPROCESSED && !OK'.
-  var current = this.state.capturesTable[this.getParams().capture];
+  var current = this.state.capture;
   var siblings = current && current['@siblings'];
   if (!siblings) return;
   var items = [];
