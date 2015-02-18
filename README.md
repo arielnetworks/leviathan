@@ -5,7 +5,7 @@ Leviathan [![Build Status](https://travis-ci.org/arielnetworks/leviathan.svg?bra
 
 
 > **変数や用語の意味:**
-> 
+>
 >  - **expect**: 期待値。正常なリビジョンにとられたキャプチャ、またはそのリビジョンをさします。
 >  - **チェック**: ユーザーがブラウザを通して、画像差異をバグ（リグレッションを起こした）なのか expect（開発者の意図的な仕様変更）なのかを判断することです。
 >  - **rid**: リビジョンID。git や svn のリビジョン番号です。例）2
@@ -31,7 +31,7 @@ JSON API
 -------------
 
 詳細はtest/api.js を確認してください。
- 
+
 ### POST /api/tidal-wave/{rid}
 
 画像比較処理を実行します。Jenkins など CI からのキックを想定しています。それが最初の比較の場合、全キャプチャが expect（checkedAs=IS_OK）として登録されます。revisionAt でコミットのUNIX時間の指定が必要ですので注意してください。
@@ -60,18 +60,28 @@ tidal-waveを実行したリビジョンの一覧を返します。たいした�
 
 まだありません。
 
+環境
+-------------
+以下が予めインストールされている必要があります。
+
+* Node.js
+* MongoDB
 
 開発
 -------------
 
 OpenCVが必要です。
+Sass は 3.4 がインストールされている必要があります。
 
 ```
 $ npm install
 $ node run watchjs &  # ./ui/**/*.js 編集監視
 $ node run watchsass &  # ./ui/sass/** 編集監視
-$ node index.js &  # サーバ起動
+$ node index.js -f CONFIG_FILE &  # サーバ起動
 ```
+
+CONFIG_FILE のサンプルは leviathan.sample.json を確認して下さい。
+
 
 テスト
 -------------
