@@ -37,6 +37,16 @@ $fa-font-path: "./fonts"
     line
       stroke-width: 1
       stroke: $btn-danger-border 
+.app-revisioncapture__keyboarshortcut__svg--blink
+  .app-revisioncapture__keyboarshortcut__svg__target
+    animation: blink 2s steps(10, start) infinite
+    -webkit-animation: blink 1s step-end infinite
+
+@keyframes blink
+  from
+    visibility: hidden
+  50%
+    visibility: visible
 
 .app-revisioncapture__keyboarshortcut
   padding: .4em
@@ -85,3 +95,4 @@ $fa-font-path: "./fonts"
 .paged-table__canvas
   height: 400px
   overflow: auto
+
