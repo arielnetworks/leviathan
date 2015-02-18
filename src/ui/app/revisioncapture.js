@@ -85,7 +85,7 @@ var RevisionCapture = React.createClass({
             <img src={Path.join('/captures/', current.target_image)} />
             <svg className="revisioncapture" style={{width: current.width, height: current.height}}>
               {current.vector.map((v, i) =>
-                <line key={i} x1={v.x} y1={v.y} x2={v.dx} y2={v.dy} />
+                <line key={i} x1={v.x} y1={v.y} x2={v.x + v.dx} y2={v.y + v.dy} />
               )}
             </svg>
           </div>

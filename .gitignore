@@ -6,6 +6,7 @@ bower_components
 .sass-cache
 public/js
 public/css
+leviathan.json
 
 /ui/components/Footer.react.js
 /ui/components/Header.react.js
