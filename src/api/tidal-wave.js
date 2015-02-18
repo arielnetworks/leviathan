@@ -17,7 +17,7 @@ PostTidalWave[':id'] = function(req, res) {
   var revisionAt = req.body && req.body.revisionAt;
   Q().then(function() {
     if (!revisionAt) throw new Error('Specify "revisionAt" which refers to a datetime of the commit');
-    revisionAt = new Date(revisionAt);
+    revisionAt = toDate(revisionAt);
     return Q.all([
       collectCaptures(rid, revisionAt),
       persist.upsertRevision(rid, revisionAt)
@@ -92,4 +92,13 @@ function generateHash(seed) {
 function getRevisionDir(revisionId) {
   return Path.resolve(global.configure.baseImageDir,
       (global.configure.relativeTargetDirPrefix || '') + revisionId);
+}
+
+function toDate(str) {
+  return new Date(isNumeric(str) ? +str : str);
+}
+
+var notNumericRegexp = /[^0-9]/;
+function isNumeric(str) {
+  return !notNumericRegexp.test(str);
 }
