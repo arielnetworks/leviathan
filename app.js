@@ -1,10 +1,10 @@
+'use strict';
 
 /**
  * Module dependencies.
  */
 
 var express = require('express');
-var favicon = require('static-favicon');
 var logger = require('morgan');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
@@ -84,8 +84,8 @@ function launch(config) {
     });
   });
 
-  if ('development' == app.get('env')) {
-    app.use(function(err, req, res, next) {
+  if (app.get('env') === 'development') {
+    app.use(function(err, req, res) {
       res.status(err.status || 500);
       res.render('error', {
         message: err.message,
@@ -102,7 +102,7 @@ function launch(config) {
   ], function(name) {
     _.each(require('./src/api/' + name), function(actions, method) {
       _.each(actions, function(handler, action) {
-        app[method]('/api/' + name + (action == 'index' ? '' : '/' + action), handler);
+        app[method]('/api/' + name + (action === 'index' ? '' : '/' + action), handler);
       });
     });
   });
@@ -119,10 +119,10 @@ function launch(config) {
       server: server
     };
   })
-  .catch (function(error) {
+  .catch(function(error) {
     console.log('Launching application fails.');
     console.log(error.stack);
-    process.exit(1);
+    throw new Error(error);
   });
 
   return {

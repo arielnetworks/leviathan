@@ -12,7 +12,8 @@ describe('Application', function() {
       baseImageDir: Path.resolve(__dirname, 'fixture'),
       relativeTargetDirPrefix: 'revision',
       port: 3491,
-      mongodb: 'mongodb://127.0.0.1:27017/leviathan_test'
+      mongodb: 'mongodb://127.0.0.1:27017/leviathan_test',
+      sessionSecret: "boom.."
     });
     var server = tmp.server;
     var app = tmp.app;
