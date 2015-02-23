@@ -12,7 +12,8 @@ describe('Application', function() {
       baseImageDir: Path.resolve(__dirname, 'fixture'),
       relativeTargetDirPrefix: 'revision',
       port: 3491,
-      mongodb: 'mongodb://127.0.0.1:27017/leviathan_test'
+      mongodb: 'mongodb://127.0.0.1:27017/leviathan_sample',
+      sessionSecret: 'boom..'
     });
     var server = tmp.server;
     var app = tmp.app;
@@ -86,7 +87,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 0,
             IS_OK: 2,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -111,7 +112,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 0,
             IS_OK: 2,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -181,7 +182,7 @@ describe('Application', function() {
           width: 180,
           height: 117,
           vector: [],
-          "@siblings": {}
+          '@siblings': {}
         }
       }, done);
     });
@@ -251,38 +252,38 @@ describe('Application', function() {
           total: 2
         },
         items: [{
-          "UNPROCESSED && !OK": 1,
-          "checkedAs": {
-            "IS_BUG": 0,
-            "IS_OK": 0,
-            "UNPROCESSED": 2,
+          'UNPROCESSED && !OK': 1,
+          'checkedAs': {
+            'IS_BUG': 0,
+            'IS_OK': 0,
+            'UNPROCESSED': 2
           },
-          "id": "2",
-          "reportedAs": {
-            "ERROR": 0,
-            "OK": 1,
-            "SUSPICIOUS": 1,
+          'id': '2',
+          'reportedAs': {
+            'ERROR': 0,
+            'OK': 1,
+            'SUSPICIOUS': 1
           },
-          "revisionAt": "1970-01-01T00:00:02.000Z",
-          "total": 2,
-          "updatedAt": "1970-01-01T00:00:00.000Z",
+          'revisionAt': '1970-01-01T00:00:02.000Z',
+          'total': 2,
+          'updatedAt': '1970-01-01T00:00:00.000Z'
         },
         {
-          "UNPROCESSED && !OK": 0,
-          "checkedAs": {
-            "IS_BUG": 0,
-            "IS_OK": 2,
-            "UNPROCESSED": 0,
+          'UNPROCESSED && !OK': 0,
+          'checkedAs': {
+            'IS_BUG': 0,
+            'IS_OK': 2,
+            'UNPROCESSED': 0
           },
-          "id": "1",
-          "reportedAs": {
-            "ERROR": 0,
-            "OK": 2,
-            "SUSPICIOUS": 0,
+          'id': '1',
+          'reportedAs': {
+            'ERROR': 0,
+            'OK': 2,
+            'SUSPICIOUS': 0
           },
-          "revisionAt": "1970-01-01T00:00:01.000Z",
-          "total": 2,
-          "updatedAt": "1970-01-01T00:00:00.000Z",
+          'revisionAt': '1970-01-01T00:00:01.000Z',
+          'total': 2,
+          'updatedAt': '1970-01-01T00:00:00.000Z'
         }
         ]
       }, done);
@@ -300,7 +301,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 2,
             IS_OK: 0,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -324,7 +325,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 2,
             IS_OK: 0,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -416,38 +417,38 @@ describe('Application', function() {
           total: 2
         },
         items: [{
-          "UNPROCESSED && !OK": 1,
-          "checkedAs": {
-            "IS_BUG": 0,
-            "IS_OK": 0,
-            "UNPROCESSED": 2,
+          'UNPROCESSED && !OK': 1,
+          'checkedAs': {
+            'IS_BUG': 0,
+            'IS_OK': 0,
+            'UNPROCESSED': 2
           },
-          "id": "2",
-          "reportedAs": {
-            "ERROR": 0,
-            "OK": 1,
-            "SUSPICIOUS": 1,
+          'id': '2',
+          'reportedAs': {
+            'ERROR': 0,
+            'OK': 1,
+            'SUSPICIOUS': 1
           },
-          "revisionAt": "1970-01-01T00:00:02.000Z",
-          "total": 2,
-          "updatedAt": "1970-01-01T00:00:00.000Z",
+          'revisionAt': '1970-01-01T00:00:02.000Z',
+          'total': 2,
+          'updatedAt': '1970-01-01T00:00:00.000Z'
         },
         {
-          "UNPROCESSED && !OK": 0,
-          "checkedAs": {
-            "IS_BUG": 0,
-            "IS_OK": 2,
-            "UNPROCESSED": 0,
+          'UNPROCESSED && !OK': 0,
+          'checkedAs': {
+            'IS_BUG': 0,
+            'IS_OK': 2,
+            'UNPROCESSED': 0
           },
-          "id": "1",
-          "reportedAs": {
-            "ERROR": 0,
-            "OK": 2,
-            "SUSPICIOUS": 0,
+          'id': '1',
+          'reportedAs': {
+            'ERROR': 0,
+            'OK': 2,
+            'SUSPICIOUS': 0
           },
-          "revisionAt": "1970-01-01T00:00:01.000Z",
-          "total": 2,
-          "updatedAt": "1970-01-01T00:00:00.000Z",
+          'revisionAt': '1970-01-01T00:00:01.000Z',
+          'total': 2,
+          'updatedAt': '1970-01-01T00:00:00.000Z'
         }]
       }, done);
     });
@@ -461,21 +462,21 @@ describe('Application', function() {
           total: 2
         },
         items: [{
-          "UNPROCESSED && !OK": 1,
-          "checkedAs": {
-            "IS_BUG": 0,
-            "IS_OK": 0,
-            "UNPROCESSED": 2,
+          'UNPROCESSED && !OK': 1,
+          'checkedAs': {
+            'IS_BUG': 0,
+            'IS_OK': 0,
+            'UNPROCESSED': 2
           },
-          "id": "2",
-          "reportedAs": {
-            "ERROR": 0,
-            "OK": 1,
-            "SUSPICIOUS": 1,
+          'id': '2',
+          'reportedAs': {
+            'ERROR': 0,
+            'OK': 1,
+            'SUSPICIOUS': 1
           },
-          "revisionAt": "1970-01-01T00:00:02.000Z",
-          "total": 2,
-          "updatedAt": "1970-01-01T00:00:00.000Z",
+          'revisionAt': '1970-01-01T00:00:02.000Z',
+          'total': 2,
+          'updatedAt': '1970-01-01T00:00:00.000Z'
         }]
       }, done);
     });
@@ -489,21 +490,21 @@ describe('Application', function() {
           total: 2
         },
         items: [{
-          "UNPROCESSED && !OK": 0,
-          "checkedAs": {
-            "IS_BUG": 0,
-            "IS_OK": 2,
-            "UNPROCESSED": 0,
+          'UNPROCESSED && !OK': 0,
+          'checkedAs': {
+            'IS_BUG': 0,
+            'IS_OK': 2,
+            'UNPROCESSED': 0
           },
-          "id": "1",
-          "reportedAs": {
-            "ERROR": 0,
-            "OK": 2,
-            "SUSPICIOUS": 0,
+          'id': '1',
+          'reportedAs': {
+            'ERROR': 0,
+            'OK': 2,
+            'SUSPICIOUS': 0
           },
-          "revisionAt": "1970-01-01T00:00:01.000Z",
-          "total": 2,
-          "updatedAt": "1970-01-01T00:00:00.000Z",
+          'revisionAt': '1970-01-01T00:00:01.000Z',
+          'total': 2,
+          'updatedAt': '1970-01-01T00:00:00.000Z'
         }]
       }, done);
     });
@@ -516,40 +517,40 @@ describe('Application', function() {
           limit: 20,
           total: 2
         },
-        items: [ {
-          "UNPROCESSED && !OK": 0,
-          "checkedAs": {
-            "IS_BUG": 0,
-            "IS_OK": 2,
-            "UNPROCESSED": 0,
+        items: [{
+          'UNPROCESSED && !OK': 0,
+          'checkedAs': {
+            'IS_BUG': 0,
+            'IS_OK': 2,
+            'UNPROCESSED': 0
           },
-          "id": "1",
-          "reportedAs": {
-            "ERROR": 0,
-            "OK": 2,
-            "SUSPICIOUS": 0,
+          'id': '1',
+          'reportedAs': {
+            'ERROR': 0,
+            'OK': 2,
+            'SUSPICIOUS': 0
           },
-          "revisionAt": "1970-01-01T00:00:01.000Z",
-          "total": 2,
-          "updatedAt": "1970-01-01T00:00:00.000Z",
+          'revisionAt': '1970-01-01T00:00:01.000Z',
+          'total': 2,
+          'updatedAt': '1970-01-01T00:00:00.000Z'
         },
         {
-          "UNPROCESSED && !OK": 1,
-          "checkedAs": {
-            "IS_BUG": 0,
-            "IS_OK": 0,
-            "UNPROCESSED": 2,
+          'UNPROCESSED && !OK': 1,
+          'checkedAs': {
+            'IS_BUG': 0,
+            'IS_OK': 0,
+            'UNPROCESSED': 2
           },
-          "id": "2",
-          "reportedAs": {
-            "ERROR": 0,
-            "OK": 1,
-            "SUSPICIOUS": 1,
+          'id': '2',
+          'reportedAs': {
+            'ERROR': 0,
+            'OK': 1,
+            'SUSPICIOUS': 1
           },
-          "revisionAt": "1970-01-01T00:00:02.000Z",
-          "total": 2,
-          "updatedAt": "1970-01-01T00:00:00.000Z",
-        } ]
+          'revisionAt': '1970-01-01T00:00:02.000Z',
+          'total': 2,
+          'updatedAt': '1970-01-01T00:00:00.000Z'
+        }]
       }, done);
     });
     it('GET /api/revisions/1/captures returns 2 documents' , function(done) {
@@ -563,7 +564,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 0,
             IS_OK: 2,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -619,7 +620,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 0,
             IS_OK: 2,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -659,7 +660,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 0,
             IS_OK: 2,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -685,7 +686,7 @@ describe('Application', function() {
           checkedAs: 'IS_OK',
           revisionAt: '1970-01-01T00:00:01.000Z',
           updatedBy: 'system',
-          updatedAt: '1970-01-01T00:00:00.000Z' } ]
+          updatedAt: '1970-01-01T00:00:00.000Z' }]
       })
       .end(done);
     });
@@ -741,7 +742,7 @@ describe('Application', function() {
             { dx: -6.2871503829956055, dy: -0.9457563161849976, x: 160, y: 110 },
             { dx: -7.390625476837158, dy: -5.659643173217773, x: 170, y: 110 }
           ],
-          "@siblings": { }
+          '@siblings': { }
         }
       }, done);
     });
@@ -758,7 +759,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 1,
             IS_OK: 0,
-            IS_BUG: 1,
+            IS_BUG: 1
           },
           reportedAs: {
             ERROR: 0,
@@ -841,7 +842,7 @@ describe('Application', function() {
             { dx: -6.2871503829956055, dy: -0.9457563161849976, x: 160, y: 110 },
             { dx: -7.390625476837158, dy: -5.659643173217773, x: 170, y: 110 }
           ],
-          "@siblings": { }
+          '@siblings': { }
         }
       }, done);
     });
@@ -858,7 +859,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 1,
             IS_OK: 1,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -904,7 +905,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 1,
             IS_OK: 1,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -969,7 +970,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 1,
             IS_OK: 1,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
