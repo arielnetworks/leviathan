@@ -1,7 +1,6 @@
 
 var Dispatcher = require('../dispatcher/Dispatcher');
-var {CheckedAs, Actions, ToggleCheckedAsOrder} = require('../const');
-var xhr = require('../xhr');
+var {Actions, ToggleCheckedAsOrder} = require('../const');
 var _ = require('underscore');
 
 
@@ -33,7 +32,7 @@ function toggleCheckedAs(capture, direction) {
   if (toIndex < 0) {
     toIndex += ToggleCheckedAsOrder.length;
   } else if (toIndex >= ToggleCheckedAsOrder.length) {
-    toIndex -= ToggleCheckedAsOrder.length
+    toIndex -= ToggleCheckedAsOrder.length;
   }
   var to = ToggleCheckedAsOrder[toIndex];
   if (to) {

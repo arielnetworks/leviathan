@@ -3,12 +3,12 @@ var Q = require('q');
 Q.longStackSupport = true;
 var assert = require('assert');
 var _ = require('underscore');
-var isTesting = process.env.NODE_ENV == 'test';
+var isTesting = process.env.NODE_ENV === 'test';
 
 
 
 var collectionNames = ['revisions', 'captures'];
-var db = require('mongoskin').db(global.configure.mongodb, {native_parser: true, options: { w: 1 }});
+var db = require('mongoskin').db(global.configure.mongodb, {'native_parser': true, options: { w: 1 }});
 collectionNames.forEach(db.bind.bind(db));
 var DEFAULT_LIMIT = 20;
 
@@ -57,8 +57,8 @@ function insertCapture(rid, capture, data) {
 function updateCapture(rid, capture, data) {
   var query = {revision: rid, capture: capture};
   if (isTesting) {
-    data['time'] = 0.1;
-    data['updatedAt'] = new Date('1970-01-01T00:00:00.000Z');
+    data.time = 0.1;
+    data.updatedAt = new Date('1970-01-01T00:00:00.000Z');
   }
   return Q.ninvoke(db.captures, 'update',
       query,
@@ -95,7 +95,7 @@ function findSiblingRevisionCaptureOf(rid, capture, direction) {
       }, {_id: false})
       .sort({'captureName': 1}).limit(1),
   'toArray').then(function(docs) {
-    return docs ? docs[0] : null
+    return docs ? docs[0] : null;
   });
 }
 
@@ -106,7 +106,7 @@ function findRevisionCapture(rid, capture) {
 // TODO: return "meta" and "items"
 function findRevisionCaptures(rid, skip, limit, order, status, checkedAs) {
   var query = { revision: rid };
-  var order = parseOrderParam_(order);
+  order = parseOrderParam_(order);
   if (status) query.status = status;
   if (checkedAs) query.checkedAs = checkedAs;
   return Q.ninvoke(db.captures.find(query, {_id: false})
@@ -119,7 +119,7 @@ function findRevisionCaptures(rid, skip, limit, order, status, checkedAs) {
 function upsertRevision(id, revisionAt) {
   var data = { id: id };
   if (revisionAt) data.revisionAt = revisionAt;
-  if (isTesting) data['updatedAt'] = new Date('1970-01-01T00:00:00.000Z');
+  if (isTesting) data.updatedAt = new Date('1970-01-01T00:00:00.000Z');
   return Q.ninvoke(db.revisions, 'update', {id: id}, {$set: data}, {upsert: true})
   .then(findRevision.bind(null, id));
 }
@@ -150,7 +150,7 @@ function findRevision(id) {
     var reportedAs = result[2];
     var needToProcessCount = result[3];
 
-    var total = checkedAs.reduce(function(sum, doc) { return sum + doc.count}, 0);
+    var total = checkedAs.reduce(function(sum, doc) { return sum + doc.count;}, 0);
     var checkedAsExpaned = expandCountFromAggregatedDocuments_(checkedAs);
     var reportedAsExpanded = expandCountFromAggregatedDocuments_(reportedAs);
 
@@ -166,7 +166,7 @@ function findRevision(id) {
         'SUSPICIOUS': reportedAsExpanded.SUSPICIOUS || 0,
         'ERROR': reportedAsExpanded.ERROR || 0
       },
-      'UNPROCESSED && !OK': needToProcessCount,
+      'UNPROCESSED && !OK': needToProcessCount
     });
   });
 }
@@ -174,7 +174,7 @@ function findRevision(id) {
 function expandCountFromAggregatedDocuments_(aggregated) {
   var rv = {};
   aggregated.forEach(function(doc) {
-    rv[doc._id] = doc.count != null ? doc.count : 0
+    rv[doc._id] = doc.count != null ? doc.count : 0;
   });
   return rv;
 }
@@ -192,7 +192,7 @@ function findRevisions(skip, limit, order) {
       .skip(skip)
       .limit(limit)
       .sort(order.by, order.in)
-    , 'toArray'),
+    , 'toArray')
   ]).then(function(result) {
     var total = result[0];
     var items = result[1];
@@ -205,10 +205,10 @@ function findRevisions(skip, limit, order) {
         meta: {
           skip: skip,
           limit: limit,
-          total: total,
+          total: total
         },
         items: results
-      }
+      };
     });
   });
 }
@@ -217,10 +217,10 @@ function parseOrderParam_(order) {
   if (!_.isString(order)) return {};
   if (!~order.indexOf(' ')) return {};
   var splitted = {};
-  if ((splitted = order.split(' ')).length != 2) return {};
+  if ((splitted = order.split(' ')).length !== 2) return {};
   return {
     by: splitted[0],
-    in: splitted[1] == 'ASC' ? 1 : -1
+    in: splitted[1] === 'ASC' ? 1 : -1
   };
 }
 if (isTesting) {
@@ -233,4 +233,3 @@ if (isTesting) {
     assert.equal(order2.in, -1);
   })();
 }
-

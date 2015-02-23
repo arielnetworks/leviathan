@@ -32,11 +32,7 @@ var Index = React.createClass({
   render() {
     var currPage = +this.getQuery().page || 1;
     RevisionStore.syncRevisions(currPage);
-    if (!this.state.revisions) return <span>...</span>
-
-    var tbodyContent = this.state.revisions.map((revision, index) => {
-      return <tr key={index}> <th><a href={'/#/revisions/' + revision.id}>{revision.id}</a></th> <td>Jacob</td> <td>Thornton</td> <td>@fat</td> </tr>
-    });
+    if (!this.state.revisions) return <span>...</span>;
 
     var Columns = [
       {id: 'revision', label: '#', formatter: revision =>
@@ -49,12 +45,10 @@ var Index = React.createClass({
             'SUSPICIOUS: ' + revision.reportedAs.SUSPICIOUS + '件、ERROR: ' + revision.reportedAs.ERROR + '件' :
             '';
         var content = revision.reportedAs.SUSPICIOUS + revision.reportedAs.ERROR;
-        return <span className={className} title={toolTip}>{content}</span> }},
-      {id: 'is-bug', label: 'バグ判定', formatter: revision => {
-        if (revision.checkedAs.IS_BUG) {
-          return <span className="label label-danger">{revision.checkedAs.IS_BUG}</span>
-        }
-        return  '' } },
+        return <span className={className} title={toolTip}>{content}</span>; }},
+      {id: 'is-bug', label: 'バグ判定', formatter: revision =>
+        revision.checkedAs.IS_BUG ?
+          <span className="label label-danger">{revision.checkedAs.IS_BUG}</span> : '' },
       {id: 'progress-col', label: 'チェック進み具合', formatter: revision =>
         <ProgressBar revision={revision} /> }
     ];
@@ -71,7 +65,7 @@ var Index = React.createClass({
                  pageUrlBuilder={page => '#/?page=' + page}/>
         </div>
       </div>
-    )
+    );
   }
 
 });
