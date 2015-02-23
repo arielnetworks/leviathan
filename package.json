@@ -4,8 +4,7 @@
   "private": true,
   "main": "./src/ui/main.js",
   "scripts": {
-    "preinstall": "mkdir -p public/js; mkdir -p public/css",
-    "postinstall": "gulp",
+    "postinstall": "bower install",
     "watchjs": "watchify -o public/js/bundle.js -v -d .",
     "watchsass": "gulp watch",
     "test": "mocha"
