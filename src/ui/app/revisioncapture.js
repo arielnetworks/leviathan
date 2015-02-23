@@ -71,6 +71,12 @@ var RevisionCapture = React.createClass({
     }
   },
 
+  onChangeDiableBlink() {
+    this.setState({
+      disableBlink: !this.state.disableBlink
+    })
+  },
+
   // TODO: "/captures" must come from global.configure
   render() {
     // TODO: Sync once.
@@ -91,17 +97,24 @@ var RevisionCapture = React.createClass({
             </span>
             ですね！
             <small>
-            <small className={'text-' + StatusClassNameMap[current.status]}>
-              機械は <small className={'label label-' + StatusClassNameMap[current.status]}>{current.status}</small> と報告しています
-            </small>
+              <small className={'text-' + StatusClassNameMap[current.status]}>
+                機械は <small className={'label label-' + StatusClassNameMap[current.status]}>{current.status}</small> と報告しています
+              </small>
+              　
+              <small>
+                <label for="enableBlink">
+                  <input id="enableBlink"type="checkbox" checked={!this.state.disableBlink} onChange={this.onChangeDiableBlink} /> 点滅
+                </label>
+              </small>
             </small>
           </h2>
-          <div className="app-revisioncapture__keyboarshortcut__svg" style={{width: current.width, height: current.height}}>
-            <img src={Path.join('/captures/', current.expect_image)} />
-            <img src={Path.join('/captures/', current.target_image)} />
+          <div className={'app-revisioncapture__keyboarshortcut__svg ' + (this.state.disableBlink ? '' : 'app-revisioncapture__keyboarshortcut__svg--blink')}
+               style={{width: current.width, height: current.height}}>
+            <img className="app-revisioncapture__keyboarshortcut__svg__expected" src={Path.join('/captures/', current.expect_image)} />
+            <img className="app-revisioncapture__keyboarshortcut__svg__target" src={Path.join('/captures/', current.target_image)} />
             <svg className="revisioncapture" style={{width: current.width, height: current.height}}>
               {current.vector.map((v, i) =>
-                <line key={i} x1={v.x} y1={v.y} x2={v.dx} y2={v.dy} />
+                <line key={i} x1={v.x} y1={v.y} x2={v.x + v.dx} y2={v.y + v.dy} />
               )}
             </svg>
           </div>
