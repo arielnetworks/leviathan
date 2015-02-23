@@ -38,9 +38,9 @@ function launch(configure) {
   Object.defineProperties(global.configure, {
     baseImageDir: { value: configure.baseImageDir },
     relativeTargetDirPrefix: { value: configure.relativeTargetDirPrefix || '' },
-    port: { value: process.env.PORT || 3000 },
+    port: { value: configure.port || 3000 },
     publicCaptureDir: { value: configure.publicCaptureDir || '/captures' },
-    db: { value: configure.db || { type: 'memory' } }
+    mongodb: { value: configure.mongodb || 'mongodb://127.0.0.1:27017/leviathan_sample' }
   });
   Object.seal(global.configure);
 

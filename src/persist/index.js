@@ -7,9 +7,8 @@ var isTesting = process.env.NODE_ENV == 'test';
 
 
 
-// TODO: Use Global Configuration
 var collectionNames = ['revisions', 'captures'];
-var db = require('mongoskin').db('mongodb://127.0.0.1:27017/ttt', {native_parser: true, options: { w: 1 }});
+var db = require('mongoskin').db(global.configure.mongodb, {native_parser: true, options: { w: 1 }});
 collectionNames.forEach(db.bind.bind(db));
 var DEFAULT_LIMIT = 20;
 

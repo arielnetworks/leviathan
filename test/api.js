@@ -3,21 +3,27 @@ process.env.NODE_ENV = 'test';
 
 var Path = require('path');
 var request = require('supertest');
-var persist = require('../src/persist');
 
 describe('Application', function() {
 
   describe('should work' + ' storage', function() {
 
     var tmp = require('../app').launch({
-      port: 3000,
       baseImageDir: Path.resolve(__dirname, 'fixture'),
-      relativeTargetDirPrefix: 'revision'
+      relativeTargetDirPrefix: 'revision',
+      port: 3491,
+      mongodb: 'mongodb://127.0.0.1:27017/leviathan_test'
     });
     var server = tmp.server;
     var app = tmp.app;
+    var promiseLaunch = tmp.promiseLaunch;
 
-    before(persist._destroy);
+    before(function() {
+      return promiseLaunch.then(function() {
+        var persist = require('../src/persist');
+        return persist._destroy();
+      });
+    });
     // after(persist._destroy);
 
     it('should launch', function(done) {
