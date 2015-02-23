@@ -12,6 +12,8 @@ var Path = require('path');
 var QueryString = require('querystring');
 
 var CHANGE_EVENT = 'change';
+// XXX Hack for server rendering
+var global = this;
 
 var perPage = 20; // TODO: Const
 
@@ -42,6 +44,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
   },
 
   syncRevisions(page) {
+    if (!global.document) return;
     // TODO: Similar code. Refactor.
     page = page || 1;
     var skip = (page - 1) * perPage;
@@ -67,6 +70,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
   },
 
   syncCaptures(revision, page) {
+    if (!global.document) return;
     // TODO: Not clear enough. Use "rid" as an revision id.
     // TODO: Similar code. Refactor.
     page = page || 1;
@@ -101,6 +105,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
   },
 
   syncCapture(revision, capture) {
+    if (!global.document) return;
     if (_store.capturesTable[capture] &&
         !_store.capturesTable[capture]['@expired'] &&
         _store.capturesTable[capture]['@siblings']) return;

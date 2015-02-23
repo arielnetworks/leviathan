@@ -11,6 +11,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
 var Path = require('path');
+var jade = require('jade');
 var _ = require('underscore');
 var Q = require('q');
 Q.longStackSupport = true;
@@ -77,13 +78,14 @@ function launch(config) {
   app.use(express.static(Path.join(__dirname, 'public')));
 
   app.get('/', function(req, res) {
-    // TODO: Try server-side rendering
-    // Router.run(routes, req.path, function (Handler) {
-    //   var markup = React.renderToString(React.createElement(Handler));
-    //   res.render('index', {markup: markup});
-    // });
-    var app = React.createElement(Nav, {color:"blue"});
-    res.render('index');
+    console.log('xxxxxxxx', req.session.hash)
+    var path = req.session.hash || req.path;
+    console.log('------', path)
+    return Router.run(routes, path, function(Handler) {
+      var markup = React.renderToString(React.createElement(Handler));
+      res.render('index', { markup: markup.replace('app-', 'xxx app-') });
+      req.session.hash = undefined;
+    });
   });
   ['/revisions/:revision',
    '/revisions/:revision/captures/:capture'].forEach(function(path) {

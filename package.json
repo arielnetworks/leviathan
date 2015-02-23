@@ -31,7 +31,7 @@
     "q": "^1.1.2",
     "q-io": "^1.11.6",
     "react": "^0.12.2",
-    "react-keyboardshortcut": "git://github.com/piglovesyou/react-keyboardshortcut",
+    "react-keyboardshortcut": "piglovesyou/react-keyboardshortcut#googglobal",
     "react-router": "^0.11.6",
     "reactify": "^1.0.0",
     "static-favicon": "^2.0.0-alpha",
