@@ -4,8 +4,7 @@ var {
   Route,
   DefaultRoute,
   NotFoundRoute,
-  RouteHandler,
-  Link
+  RouteHandler
 } = Router;
 
 var Index = require('./app/index');

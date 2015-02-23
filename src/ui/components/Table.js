@@ -1,7 +1,5 @@
 var React = require('react');
 var _ = require('underscore');
-var Path = require('path');
-var QueryString = require('querystring');
 
 var perPage = 20; // TODO: Const
 
@@ -47,8 +45,8 @@ var Table = React.createClass({
     if (this.props.total <= perPage) return;
     var margin = 5; // TODO: Const
     var maxPage = Math.ceil(this.props.total / perPage);
-    var isLeftEdge = this.props.currPage == 1;
-    var isRightEdge = this.props.currPage == maxPage;
+    var isLeftEdge = this.props.currPage === 1;
+    var isRightEdge = this.props.currPage === maxPage;
     var rangeStart = Math.max(1, this.props.currPage - margin);
     var rangeEnd = Math.min(this.props.currPage + margin, maxPage);
     var leftskip;
@@ -67,7 +65,7 @@ var Table = React.createClass({
           </li>
           {leftskip}
           {_.map(_.range(rangeStart, rangeEnd + 1), page =>
-            <li key={page} className={this.props.currPage == page ? 'active' : null}>
+            <li key={page} className={this.props.currPage === page ? 'active' : null}>
               <a href={this.props.pageUrlBuilder(page)}>{page}</a>
             </li>
           )}

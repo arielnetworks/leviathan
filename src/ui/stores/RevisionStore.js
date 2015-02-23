@@ -1,13 +1,12 @@
 
 var Dispatcher = require('../dispatcher/Dispatcher');
 var EventEmitter = require('events').EventEmitter;
-var {CheckedAs, Actions} = require('../const');
+var {Actions} = require('../const');
 var assign = require('object-assign');
 var Q = require('q');
 Q.longStackSupport = true;
 var xhr = require('../xhr');
 var _ = require('underscore');
-var assert = require('assert');
 var Path = require('path');
 var QueryString = require('querystring');
 
@@ -140,4 +139,3 @@ function handleCaptureResponse(json) {
   _store.capturesTable[json.current.capture] = json.current;
   this.emit(CHANGE_EVENT);
 }
-
