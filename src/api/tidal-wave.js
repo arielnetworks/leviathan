@@ -44,7 +44,7 @@ function collectCaptures(rid, revisionAt) {
       var capture = generateHash(shortPath);
       return persist.findLastExpectedCapture(capture, revisionAt)
       .then(function(capture) {
-        if (capture && capture.checkedAs == 'IS_OK' && capture.revision) {
+        if (capture && capture.revision) {
           return Path.resolve(getRevisionDir(capture.revision), shortPath);
         }
         // Looks like it's the first time to run tidal-wave

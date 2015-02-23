@@ -39,9 +39,10 @@ function _destroy() {
 }
 
 function findLastExpectedCapture(capture, revisionAt) {
-  return Q.ninvoke(db.captures.find({capture: capture, checkedAs: 'IS_OK', revisionAt: {$lt: revisionAt}}, {_id: false})
-      .sort('revisionAt', -1).limit(1),
-  'toArray').get(0);
+  return Q.ninvoke(db.captures.find({
+    capture: capture,
+    revisionAt: {$lt: revisionAt}
+  }, {_id: false}).sort('revisionAt', -1).limit(1), 'toArray').get(0);
 }
 
 function insertCapture(rid, capture, data) {
