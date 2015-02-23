@@ -25,23 +25,29 @@ $btn-default-bg: #e0e3e5
 $btn-default-border: darken(#e0e3e5, 5%)
 
 
+
 @import _bootstrap
 @import font-awesome
 
 
 
+.navbar
+  background: #ededed
+
 .breadcrumb--headernav
   margin-top: $navbar-margin-bottom
   font-size: 1.4rem
+  a[href]
+    color: $gray-darker
 .breadcrumb--headernav__brand
   font-size: 2rem
 
 .progress--large
-  $height: 40px
+  $height: 25px
   height: $height
   .progress-bar
     line-height: $height
-    font-size: 120%
+    font-size: 110%
 
 .app-revisioncapture__keyboarshortcut__svg
   margin: 3em auto
