@@ -17,6 +17,11 @@ Q.longStackSupport = true;
 var assert = require('assert');
 var compress = require('compression');
 
+var React = require('react');
+var Router = require('react-router');
+require('node-jsx').install({ harmony: true });
+var routes = require('./src/ui/routes');
+
 
 
 
@@ -73,14 +78,20 @@ function launch(config) {
 
   app.get('/', function(req, res) {
     // TODO: Try server-side rendering
+    // Router.run(routes, req.path, function (Handler) {
+    //   var markup = React.renderToString(React.createElement(Handler));
+    //   res.render('index', {markup: markup});
+    // });
+    var app = React.createElement(Nav, {color:"blue"});
     res.render('index');
   });
   ['/revisions/:revision',
    '/revisions/:revision/captures/:capture'].forEach(function(path) {
     app.get(path, function(req, res) {
+      var hash = req.url;
       req.session = req.session || {};
-      req.session.cameFrom = req.url;
-      res.redirect(Path.join('/#', req.url));
+      req.session.hash = hash;
+      res.redirect(Path.join('/#', hash));
     });
   });
 

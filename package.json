@@ -26,6 +26,7 @@
     "minimist": "^1.1.0",
     "mongoskin": "^1.4.12",
     "morgan": "^1.5.1",
+    "node-jsx": "^0.12.4",
     "object-assign": "^2.0.0",
     "q": "^1.1.2",
     "q-io": "^1.11.6",
