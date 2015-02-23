@@ -126,11 +126,11 @@ describe('Application', function() {
           checkedAs: 'IS_OK',
           capture: '9018988ae55e012e437aa24cbf9a400a',
           captureName: 'scenario1/capture1.jpg',
-          expect_image: 'revision1/scenario1/capture1.jpg',
+          'expect_image': 'revision1/scenario1/capture1.jpg',
           revision: '1',
           span: 10,
           status: 'OK',
-          target_image: 'revision1/scenario1/capture1.jpg',
+          'target_image': 'revision1/scenario1/capture1.jpg',
           threshold: 5,
           time: 0.1,
           revisionAt: '1970-01-01T00:00:01.000Z',
@@ -143,11 +143,11 @@ describe('Application', function() {
           checkedAs: 'IS_OK',
           capture: 'db38f7f3f5d7d765f97e45d185066cc9',
           captureName: 'scenario2/capture2.png',
-          expect_image: 'revision1/scenario2/capture2.png',
+          'expect_image': 'revision1/scenario2/capture2.png',
           revision: '1',
           span: 10,
           status: 'OK',
-          target_image: 'revision1/scenario2/capture2.png',
+          'target_image': 'revision1/scenario2/capture2.png',
           threshold: 5,
           time: 0.1,
           revisionAt: '1970-01-01T00:00:01.000Z',
@@ -169,11 +169,11 @@ describe('Application', function() {
           checkedAs: 'IS_OK',
           capture: 'db38f7f3f5d7d765f97e45d185066cc9',
           captureName: 'scenario2/capture2.png',
-          expect_image: 'revision1/scenario2/capture2.png',
+          'expect_image': 'revision1/scenario2/capture2.png',
           revision: '1',
           span: 10,
           status: 'OK',
-          target_image: 'revision1/scenario2/capture2.png',
+          'target_image': 'revision1/scenario2/capture2.png',
           threshold: 5,
           time: 0.1,
           revisionAt: '1970-01-01T00:00:01.000Z',
@@ -340,11 +340,11 @@ describe('Application', function() {
             capture: '9018988ae55e012e437aa24cbf9a400a',
             captureName: 'scenario1/capture1.jpg',
             checkedAs: 'UNPROCESSED',
-            expect_image: 'revision1/scenario1/capture1.jpg',
+            'expect_image': 'revision1/scenario1/capture1.jpg',
             revision: '2',
             span: 10,
             status: 'OK',
-            target_image: 'revision2/scenario1/capture1.jpg',
+            'target_image': 'revision2/scenario1/capture1.jpg',
             threshold: 5,
             time: 0.1,
             revisionAt: '1970-01-01T00:00:02.000Z',
@@ -357,11 +357,11 @@ describe('Application', function() {
             capture: 'db38f7f3f5d7d765f97e45d185066cc9',
             captureName: 'scenario2/capture2.png',
             checkedAs: 'UNPROCESSED',
-            expect_image: 'revision1/scenario2/capture2.png',
+            'expect_image': 'revision1/scenario2/capture2.png',
             revision: '2',
             span: 10,
             status: 'SUSPICIOUS',
-            target_image: 'revision2/scenario2/capture2.png',
+            'target_image': 'revision2/scenario2/capture2.png',
             threshold: 5,
             time: 0.1,
             revisionAt: '1970-01-01T00:00:02.000Z',
@@ -589,8 +589,8 @@ describe('Application', function() {
              height: 279,
              vector: [],
              time: 0.1,
-             target_image: 'revision1/scenario1/capture1.jpg',
-             expect_image: 'revision1/scenario1/capture1.jpg' }, {
+             'target_image': 'revision1/scenario1/capture1.jpg',
+             'expect_image': 'revision1/scenario1/capture1.jpg' }, {
              checkedAs: 'IS_OK',
              revision: '1',
              capture: 'db38f7f3f5d7d765f97e45d185066cc9',
@@ -605,8 +605,8 @@ describe('Application', function() {
              height: 117,
              vector: [],
              time: 0.1,
-             target_image: 'revision1/scenario2/capture2.png',
-             expect_image: 'revision1/scenario2/capture2.png' }] })
+             'target_image': 'revision1/scenario2/capture2.png',
+             'expect_image': 'revision1/scenario2/capture2.png' }] })
       .end(done);
     });
     it('GET /api/revisions/1/captures?limit=1 returns 2 documents' , function(done) {
@@ -645,8 +645,8 @@ describe('Application', function() {
              height: 279,
              vector: [],
              time: 0.1,
-             target_image: 'revision1/scenario1/capture1.jpg',
-             expect_image: 'revision1/scenario1/capture1.jpg' }] })
+             'target_image': 'revision1/scenario1/capture1.jpg',
+             'expect_image': 'revision1/scenario1/capture1.jpg' }] })
       .end(done);
     });
     it('GET /api/revisions/1/captures?limit=1&skip=1 returns 2 documents' , function(done) {
@@ -676,8 +676,8 @@ describe('Application', function() {
           status: 'OK',
           span: 10,
           threshold: 5,
-          expect_image: 'revision1/scenario2/capture2.png',
-          target_image: 'revision1/scenario2/capture2.png',
+          'expect_image': 'revision1/scenario2/capture2.png',
+          'target_image': 'revision1/scenario2/capture2.png',
           time: 0.1,
           width: 180,
           height: 117,
@@ -704,11 +704,11 @@ describe('Application', function() {
 
           capture: 'db38f7f3f5d7d765f97e45d185066cc9',
           captureName: 'scenario2/capture2.png',
-          expect_image: 'revision1/scenario2/capture2.png',
+          'expect_image': 'revision1/scenario2/capture2.png',
           revision: '2',
           span: 10,
           status: 'SUSPICIOUS',
-          target_image: 'revision2/scenario2/capture2.png',
+          'target_image': 'revision2/scenario2/capture2.png',
           threshold: 5,
           time: 0.1,
           revisionAt: '1970-01-01T00:00:02.000Z',
@@ -804,11 +804,11 @@ describe('Application', function() {
 
           capture: 'db38f7f3f5d7d765f97e45d185066cc9',
           captureName: 'scenario2/capture2.png',
-          expect_image: 'revision1/scenario2/capture2.png',
+          'expect_image': 'revision1/scenario2/capture2.png',
           revision: 2,
           span: 10,
           status: 'SUSPICIOUS',
-          target_image: 'revision2/scenario2/capture2.png',
+          'target_image': 'revision2/scenario2/capture2.png',
           threshold: 5,
           time: 0.1,
           revisionAt: '1970-01-01T00:00:02.000Z',
@@ -954,8 +954,8 @@ describe('Application', function() {
                { dx: -6.2871503829956055, dy: -0.9457563161849976, x: 160, y: 110 },
                { dx: -7.390625476837158, dy: -5.659643173217773, x: 170, y: 110 }],
              time: 0.1,
-             target_image: 'revision2/scenario2/capture2.png',
-             expect_image: 'revision1/scenario2/capture2.png' }] })
+             'target_image': 'revision2/scenario2/capture2.png',
+             'expect_image': 'revision1/scenario2/capture2.png' }] })
       .end(done);
     });
 
@@ -995,12 +995,11 @@ describe('Application', function() {
              height: 279,
              vector: [],
              time: 0.1,
-             target_image: 'revision2/scenario1/capture1.jpg',
-             expect_image: 'revision1/scenario1/capture1.jpg' }] })
+             'target_image': 'revision2/scenario1/capture1.jpg',
+             'expect_image': 'revision1/scenario1/capture1.jpg' }] })
       .end(done);
     });
 
   });
 
 });
-

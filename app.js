@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Module dependencies.
  */
@@ -85,13 +83,15 @@ function launch(config) {
   });
 
   if (app.get('env') === 'development') {
-    app.use(function(err, req, res) {
+    /*eslint-disable no-unused-vars*/
+    app.use(function(err, req, res, next) {
       res.status(err.status || 500);
       res.render('error', {
         message: err.message,
         error: err
       });
     });
+    /*eslint-enable no-unused-vars*/
   }
 
   // API Routing
