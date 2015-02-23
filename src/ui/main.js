@@ -28,7 +28,6 @@ var App = React.createClass({
   }
 });
 
-
 var NotFound = React.createClass({
   render: function () {
     return <h2>Not found</h2>;

@@ -1,5 +1,6 @@
 {
   "baseImageDir": "./test/fixture",
   "relativeTargetDirPrefix": "revision",
-  "mongodb": "mongodb://127.0.0.1:27017/leviathan_sample"
+  "mongodb": "mongodb://127.0.0.1:27017/leviathan_sample",
+  "sessionSecret": "boom.."
 }

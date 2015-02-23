@@ -6,10 +6,11 @@
 var express = require('express');
 var favicon = require('static-favicon');
 var logger = require('morgan');
+var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
-var path = require('path');
+var Path = require('path');
 var _ = require('underscore');
 var Q = require('q');
 Q.longStackSupport = true;
@@ -31,44 +32,56 @@ module.exports.launch = launch;
  *    server: tls.Server
  *  }>}
  */
-function launch(configure) {
+function launch(config) {
 
   // Define global configuration
   global.configure = {};
   Object.defineProperties(global.configure, {
-    baseImageDir: { value: configure.baseImageDir },
-    relativeTargetDirPrefix: { value: configure.relativeTargetDirPrefix || '' },
-    port: { value: configure.port || 3000 },
-    publicCaptureDir: { value: configure.publicCaptureDir || '/captures' },
-    mongodb: { value: configure.mongodb || 'mongodb://127.0.0.1:27017/leviathan_sample' }
+    baseImageDir: { value: config.baseImageDir },
+    relativeTargetDirPrefix: { value: config.relativeTargetDirPrefix || '' },
+    port: { value: config.port || 3000 },
+    publicCaptureDir: { value: config.publicCaptureDir || '/captures' },
+    mongodb: { value: config.mongodb || 'mongodb://127.0.0.1:27017/leviathan_sample' }
   });
   Object.seal(global.configure);
 
   // Required configurations:
   assert(global.configure.baseImageDir);
+  assert(config.sessionSecret);
 
   // Express environments
   var app = express();
   app.set('port', global.configure.port);
-  app.set('views', path.join(__dirname, 'src/jade'));
+  app.set('views', Path.join(__dirname, 'src/jade'));
   app.set('view engine', 'jade');
 
   app.use(logger('dev'));
   app.use(compress());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(session({
+    secret: config.sessionSecret,
+    cookie: { maxAge: 30 * 1000 },
+    saveUninitialized: true,
+    resave: true
+  }));
   app.use(cookieParser());
 
   // Expose captures
   app.use(global.configure.publicCaptureDir, express.static(global.configure.baseImageDir));
-  app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.static(Path.join(__dirname, 'public')));
 
-  app.get('/', function(req, res) { res.render('index') });
-  app.get('/revisions/:revision', function(req, res) {
-    res.render('revision', {revision: req.params.revision});
+  app.get('/', function(req, res) {
+    // TODO: Try server-side rendering
+    res.render('index');
   });
-  app.get('/revisions/:revision/captures/:capture', function(req, res) {
-    res.render('revisioncapture', {revision: req.params.revision, capture: req.params.capture });
+  ['/revisions/:revision',
+   '/revisions/:revision/captures/:capture'].forEach(function(path) {
+    app.get(path, function(req, res) {
+      req.session = req.session || {};
+      req.session.cameFrom = req.url;
+      res.redirect(Path.join('/#', req.url));
+    });
   });
 
   if ('development' == app.get('env')) {
