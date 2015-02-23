@@ -4,8 +4,9 @@
   "private": true,
   "main": "./src/ui/main.js",
   "scripts": {
-    "postinstall": "bower install",
+    "postinstall": "mkdir -p public/{js,css}; bower install",
     "watch": "gulp watch",
+    "build": "gulp",
     "test": "mocha"
   },
   "dependencies": {
@@ -18,6 +19,8 @@
     "express": "^4.10.4",
     "flux": "^2.0.1",
     "gulp-if": "^1.2.5",
+    "gulp-streamify": "0.0.5",
+    "gulp-uglify": "^1.1.0",
     "jade": "^1.9.1",
     "minimist": "^1.1.0",
     "mongoskin": "^1.4.12",

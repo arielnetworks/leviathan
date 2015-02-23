@@ -6,6 +6,8 @@ var sass = require('gulp-ruby-sass');
 var autoprefix = require('gulp-autoprefixer');
 var notify = require('gulp-notify');
 var Path = require('path');
+var uglify = require('gulp-uglify');
+var streamify = require('gulp-streamify');
 
 // Super thanks: http://truongtx.me/2014/08/06/using-watchify-with-gulp-for-fast-browserify-build/
 var browserify = require('browserify');
@@ -79,9 +81,11 @@ function browserifyShare(watch) {
   b.add(config.uiEntryPoint);
   bundleShare(b);
   function bundleShare(b) {
-    b.bundle()
-    .pipe(source('bundle.js'))
-    .pipe(gulp.dest(Path.join(config.deployPath, 'js')));
+    b = b.bundle().pipe(source('bundle.js'));
+    if (!watch) {
+      b.pipe(streamify(uglify()));
+    }
+    b.pipe(gulp.dest(Path.join(config.deployPath, 'js')));
   }
 }
 
