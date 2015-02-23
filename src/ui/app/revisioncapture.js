@@ -2,18 +2,14 @@
 var _mixins = require('./_mixins');
 var _ = require('underscore');
 var React = require('react');
-var RevisionStore = require('../stores/RevisionStore')
+var RevisionStore = require('../stores/RevisionStore');
 var Path = require('path');
 var ReactKeyboardShortcut = require('react-keyboardshortcut');
 var Router = require('react-router');
-var {CheckedAs, StatusClassNameMap, CheckedAsClassNameMap} = require('../const');
+var {CheckedAs, StatusClassNameMap, CheckedAsClassNameMap, ToggleCheckedAsOrder} = require('../const');
 var Actions = require('../actions/Actions');
 var ProgressBar = require('../components/ProgressBar');
 var Navbar = require('../components/Navbar');
-
-var ToggleCheckedAsOrder = [CheckedAs.IS_OK, // UP
-             CheckedAs.UNPROCESSED,
-             CheckedAs.IS_BUG]; // DOWN
 
 var keyboardShortcut = ReactKeyboardShortcut('onKeyboardShortcut', {
   'LEFT': 'left',
@@ -62,11 +58,11 @@ var RevisionCapture = React.createClass({
         break;
       case 'UP':
       case 'K':
-        toggleCheckedAs.call(this, -1);
+        Actions.toggleCheckedAs(this.state.capture, -1);
         break;
       case 'DOWN':
       case 'J':
-        toggleCheckedAs.call(this, 1);
+        Actions.toggleCheckedAs(this.state.capture, 1);
         break;
     }
   },
@@ -92,9 +88,10 @@ var RevisionCapture = React.createClass({
           {<ProgressBar cssModifier="large" revision={revision} />}
           <h2 className="app-revisioncapture__keyboarshortcut__title">
             これは
-            <span className={'label label-' + CheckedAsClassNameMap[current.checkedAs]}>
+            <button className={'app-revisioncapture__keyboarshortcut__title__btn btn btn-lg btn-' + CheckedAsClassNameMap[current.checkedAs]}
+                  onClick={function() {Actions.toggleCheckedAs(current, 1)}}>
               {current.checkedAs}
-            </span>
+            </button>
             ですね！
             <small>
               <small className={'text-' + StatusClassNameMap[current.status]}>
@@ -146,16 +143,6 @@ var RevisionCapture = React.createClass({
 module.exports = RevisionCapture;
 
 
-
-function toggleCheckedAs(direction) {
-  var current = this.state.capture;
-  if (!current) return;
-  var currIndex = ToggleCheckedAsOrder.indexOf(current.checkedAs);
-  var to = ToggleCheckedAsOrder[currIndex + direction];
-  if (to) {
-    Actions.checkAs(this.getParams().revision, this.getParams().capture, to);
-  }
-}
 
 function gotoSibling(capture) {
   location.href = Path.join('#/revisions', this.getParams().revision, 'captures', capture);

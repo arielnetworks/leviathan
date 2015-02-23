@@ -31,7 +31,7 @@ var Table = React.createClass({
               {rows.map((row, i) =>
                 <tr key={(this.props.currPage * perPage - 1) + i}>
                   {_.map(this.props.columns, column =>
-                    <th className={getCellCssName(column)} key={column.id}>{column.formatter.call(this, row)}</th>
+                    <td className={getCellCssName(column)} key={column.id}>{column.formatter.call(this, row)}</td>
                   )}
                 </tr>
               )}

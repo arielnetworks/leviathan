@@ -43,7 +43,7 @@ var Revision = React.createClass({
       {id: 'done', label: [<i className="fa fa-check"></i>, '機械OKまたは人間処理済'], onClick: sort.bind(null, '???'), formatter: capture =>
         capture.status == Const.Status.OK || capture.checkedAs != Const.CheckedAs.UNPROCESSED ? <i className="fa fa-check"></i> : null },
       {id: 'checkedAs', label: '人間', onClick: sort.bind(null, 'checkedAs'), formatter: capture =>
-        <span className={'label label-' + Const.CheckedAsClassNameMap[capture.checkedAs]}>{capture.checkedAs}</span> },
+        <button onClick={Actions.toggleCheckedAs.bind(null, capture, 1)} className={'btn btn-xs btn-' + Const.CheckedAsClassNameMap[capture.checkedAs]}>{capture.checkedAs}</button> },
       {id: 'status', label: '機械', onClick: sort.bind(null, 'status'), formatter: capture =>
         <small className={'label label-' + Const.StatusClassNameMap[capture.status]}>{capture.status}</small> }
     ];

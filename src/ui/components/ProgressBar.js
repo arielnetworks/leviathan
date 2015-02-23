@@ -14,7 +14,7 @@ var ProgressBar = React.createClass({
       var needToProcess = revision['UNPROCESSED && !OK'] / total * 100;
       var done = revision['UNPROCESSED && !OK'] == 0;
       contentHTML = [
-        <div key="success" className={'progress-bar progress-bar-success' + (done ? '' : ' progress-bar-striped active')}
+        <div key="success" className={'progress-bar ' + (done ? 'progress-bar-success' : 'progress-bar-info progress-bar-striped active')}
              style={{width: processed + '%'}}><span>
              <i className="fa fa-check"></i>
              機械OKまたは人間処理済</span></div>,
