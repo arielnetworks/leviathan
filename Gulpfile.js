@@ -1,6 +1,4 @@
 
-// XXX: Note! This Gulpfile is only about sass compilation.
-
 var gulp = require('gulp');
 var sass = require('gulp-ruby-sass');
 var autoprefix = require('gulp-autoprefixer');
