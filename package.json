@@ -7,7 +7,7 @@
     "postinstall": "mkdir -p public/{js,css}; bower install",
     "watch": "gulp watch",
     "build": "gulp",
-    "test": "mocha"
+    "test": "gulp && mocha"
   },
   "dependencies": {
     "body-parser": "^1.9.3",
