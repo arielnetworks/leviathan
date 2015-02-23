@@ -7,24 +7,47 @@ var autoprefix = require('gulp-autoprefixer');
 var notify = require('gulp-notify');
 var Path = require('path');
 
+// Super thanks: http://truongtx.me/2014/08/06/using-watchify-with-gulp-for-fast-browserify-build/
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var watchify = require('watchify');
+
 
 
 var config = {
   sassPath: './src/ui/sass',
-  bowerPath: './bower_components'
+  uiEntryPoint: './src/ui/main.js',
+  bowerPath: './bower_components',
+  deployPath: './public'
 };
 
 
+
+// Main Tasks
+gulp.task('default', ['icons', 'css', 'js']);
+gulp.task('js', browserifyShare.bind(null, false));
+gulp.task('css', css);
+gulp.task('watch', ['icons', 'watch-js', 'watch-sass']);
+
+
+
+gulp.task('watch-js', browserifyShare.bind(null, true));
+
+gulp.task('watch-sass', ['css'], watchSass);
 
 gulp.task('icons', function() {
   return gulp.src([
     config.bowerPath + '/bootstrap-sass-official/assets/fonts/bootstrap/**.*',
     config.bowerPath + '/fontawesome/fonts/**.*'
   ])
-  .pipe(gulp.dest('./public/css/fonts'));
+  .pipe(gulp.dest(Path.join(config.deployPath, 'css/fonts')));
 });
 
-gulp.task('css', function() {
+function watchSass() {
+  gulp.watch(config.sassPath + '/**/*.sass', ['css']);
+}
+
+function css() {
   return sass(Path.join(config.sassPath, 'main.sass'), {
     style: 'compressed',
     loadPath: [
@@ -38,12 +61,27 @@ gulp.task('css', function() {
     return 'Error: ' + error.message;
   }))
   .pipe(autoprefix('last 2 version'))
-  .pipe(gulp.dest('./public/css'));
-});
+  .pipe(gulp.dest(Path.join(config.deployPath, 'css')));
+}
 
-gulp.task('watch', function() {
-  gulp.watch(config.sassPath + '/**/*.sass', ['css']);
-});
-
-gulp.task('default', ['icons', 'css']);
+function browserifyShare(watch) {
+  var b = browserify({
+    cache: {},
+    packageCache: {},
+    fullPaths: true
+  });
+  if (watch) {
+    b = watchify(b);
+    b.on('update', function() {
+      bundleShare(b);
+    });
+  }
+  b.add(config.uiEntryPoint);
+  bundleShare(b);
+  function bundleShare(b) {
+    b.bundle()
+    .pipe(source('bundle.js'))
+    .pipe(gulp.dest(Path.join(config.deployPath, 'js')));
+  }
+}
 
