@@ -19,6 +19,9 @@
     "no-use-before-define": [2, "nofunc"],
     "strict": [0],
     "no-underscore-dangle": [0],
-    "curly": [0]
+    "curly": [0],
+    "consistent-return": [0], // why
+    "new-cap": [0],
+    "dot-notation": [0]
   }
 }

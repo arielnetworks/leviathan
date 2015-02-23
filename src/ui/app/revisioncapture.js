@@ -4,14 +4,16 @@ var _ = require('underscore');
 var React = require('react');
 var RevisionStore = require('../stores/RevisionStore');
 var Path = require('path');
-var ReactKeyboardShortcut = require('react-keyboardshortcut');
+var reactKeyboardShortcut = require('react-keyboardshortcut');
 var Router = require('react-router');
-var {CheckedAs, StatusClassNameMap, CheckedAsClassNameMap, ToggleCheckedAsOrder} = require('../const');
+var {StatusClassNameMap,
+     CheckedAsClassNameMap,
+     ToggleCheckedAsOrder} = require('../const');
 var Actions = require('../actions/Actions');
 var ProgressBar = require('../components/ProgressBar');
 var Navbar = require('../components/Navbar');
 
-var keyboardShortcut = ReactKeyboardShortcut('onKeyboardShortcut', {
+var keyboardShortcut = reactKeyboardShortcut('onKeyboardShortcut', {
   'LEFT': 'left',
   'RIGHT': 'right',
   'UP': 'up',
@@ -46,15 +48,14 @@ var RevisionCapture = React.createClass({
     var current = this.state.capture;
     var siblings = current && current['@siblings'];
     if (!siblings) return;
-    var goto;
     switch (e.identifier) {
       case 'LEFT':
       case 'H':
-        if (siblings.previous) gotoSibling.call(this, siblings.previous.capture)
+        if (siblings.previous) gotoSibling.call(this, siblings.previous.capture);
         break;
       case 'RIGHT':
       case 'L':
-        if (siblings.next) gotoSibling.call(this, siblings.next.capture)
+        if (siblings.next) gotoSibling.call(this, siblings.next.capture);
         break;
       case 'UP':
       case 'K':
@@ -70,7 +71,7 @@ var RevisionCapture = React.createClass({
   onChangeDiableBlink() {
     this.setState({
       disableBlink: !this.state.disableBlink
-    })
+    });
   },
 
   // TODO: "/captures" must come from global.configure
@@ -89,7 +90,7 @@ var RevisionCapture = React.createClass({
           <h2 className="app-revisioncapture__keyboarshortcut__title">
             これは
             <button className={'app-revisioncapture__keyboarshortcut__title__btn btn btn-lg btn-' + CheckedAsClassNameMap[current.checkedAs]}
-                  onClick={function() {Actions.toggleCheckedAs(current, 1)}}>
+                  onClick={() => Actions.toggleCheckedAs(current, 1)}>
               {current.checkedAs}
             </button>
             ですね！
@@ -97,7 +98,6 @@ var RevisionCapture = React.createClass({
               <small className={'text-' + StatusClassNameMap[current.status]}>
                 機械は <small className={'label label-' + StatusClassNameMap[current.status]}>{current.status}</small> と報告しています
               </small>
-              　
               <small>
                 <label for="enableBlink">
                   <input id="enableBlink"type="checkbox" checked={!this.state.disableBlink} onChange={this.onChangeDiableBlink} /> 点滅
@@ -117,9 +117,8 @@ var RevisionCapture = React.createClass({
           </div>
           <div className="app-revisioncapture__keyboarshortcut__togglebuttons">
             このキャプチャは...
-            {_.map(ToggleCheckedAsOrder, as => {
-              return <button key={as} className={'btn btn-' + CheckedAsClassNameMap[as] + (current.checkedAs == as ? ' active' : '')} onClick={Actions.checkAs.bind(null, this.getParams().revision, this.getParams().capture, as)}>{as}</button>
-            })}
+            {_.map(ToggleCheckedAsOrder, as =>
+              <button key={as} className={'btn btn-' + CheckedAsClassNameMap[as] + (current.checkedAs === as ? ' active' : '')} onClick={Actions.checkAs.bind(null, this.getParams().revision, this.getParams().capture, as)}>{as}</button>)}
             です
           </div>
           {renderPrevNextNavigation_.call(this)}
@@ -136,7 +135,7 @@ var RevisionCapture = React.createClass({
           </div>
         </div>
       </div>
-    )
+    );
   }
 
 });
@@ -160,7 +159,7 @@ function renderPrevNextNavigation_() {
           <span aria-hidden="true">&larr;</span> {siblings.previous.captureName}
         </a>
       </li>
-    )
+    );
   }
   if (siblings.next) {
     items.push(
@@ -169,15 +168,12 @@ function renderPrevNextNavigation_() {
           {siblings.next.captureName} <span aria-hidden="true">&rarr;</span>
         </a>
       </li>
-    )
+    );
   }
   if (items.length) {
     return (
       <nav><ul className="pager">{items}</ul></nav>
-    )
+    );
   }
   return;
-}
-
-function renderTitleIcon_() {
 }

@@ -51,7 +51,7 @@ var Table = React.createClass({
     var rangeEnd = Math.min(this.props.currPage + margin, maxPage);
     var leftskip;
     var rightskip;
-    if (1 < rangeStart) {
+    if (rangeStart > 1) {
       leftskip = <li><a href={this.props.pageUrlBuilder(rangeStart - 1)}><span>...</span></a></li>;
     }
     if (rangeEnd < maxPage) {
@@ -75,7 +75,7 @@ var Table = React.createClass({
           </li>
         </ul>
       </nav>
-    )
+    );
   }
 });
 

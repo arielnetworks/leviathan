@@ -15,7 +15,7 @@ GetRevisions['index'] = function(req, res) {
       items: docs || []
     });
   })
-  .catch (handleError.bind(null, res));
+  .catch(handleError.bind(null, res));
 };
 
 function handleError(res, reason) {
