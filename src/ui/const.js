@@ -40,5 +40,6 @@ module.exports = {
   CheckedAs,
   CheckedAsClassNameMap,
   Actions,
-  ToggleCheckedAsOrder
+  ToggleCheckedAsOrder,
+  PER_PAGE: 20
 };

@@ -1,7 +1,7 @@
 
 var Dispatcher = require('../dispatcher/Dispatcher');
 var EventEmitter = require('events').EventEmitter;
-var {Actions} = require('../const');
+var {Actions, PER_PAGE} = require('../const');
 var assign = require('object-assign');
 var Q = require('q');
 Q.longStackSupport = true;
@@ -12,10 +12,6 @@ var QueryString = require('querystring');
 
 var CHANGE_EVENT = 'change';
 
-var perPage = 20; // TODO: Const
-
-// _revisions[revision][capture]
-// TODO: We have to have two conatainers: [] (skip, limit) and {} (id dictionary)
 var _store = {
   revisionsTotal: -1,
   revisions: [],
@@ -71,7 +67,7 @@ function removeChangeListener(callback) {
 }
 
 function syncRevisions(page) {
-  var { skip, limit, total, range } = getRequestParams(page, perPage, _store.revisionsTotal);
+  var { skip, limit, range } = getRequestParams(page, _store.revisionsTotal);
   if (range.every(i => _store.revisions[i])) {
     return;
   }
@@ -82,7 +78,7 @@ function syncRevisions(page) {
 
 function syncCaptures(revision, page) {
   // TODO: Not clear enough. Use "rid" as an revision id.
-  var { skip, limit, total, range } = getRequestParams(page, perPage,
+  var { skip, limit, range } = getRequestParams(page,
       _store.revisionsTable[revision] ? _store.revisionsTable[revision].total : 0);
   if (_store.revisionsTable[revision] &&
       !_store.revisionsTable[revision]['@expired'] &&
@@ -92,20 +88,23 @@ function syncCaptures(revision, page) {
     return;
   }
   xhr(Path.join('/api/revisions', revision, 'captures?') + QueryString.stringify({skip, limit}))
-  .then(json => {
-    if (_store.revisionsTable[revision]) delete _store.revisionsTable[revision]['@expired'];
-    // Use _.extend to keep _store.revisions[i] and _store.revisionsTable[revision] the same reference.
-    _store.revisionsTable[revision] = _.extend(_store.revisionsTable[revision] || {}, json.current);
-    _store.revisionsTable[revision]['@captures'] = _store.revisionsTable[revision]['@captures'] || [];
-    _.each(range, i => {
-      var item = json.items[i - skip];
-      if (!item) return;
-      _store.revisionsTable[revision]['@captures'][i] = item;
-      _store.capturesTable[item.capture] = item;
-    });
-    this.emit(CHANGE_EVENT);
-  })
+  .then(storeCaptures.bind(null, revision, range))
   .catch((err) => console.error(err.stack));
+}
+
+function storeCaptures(revision, range, json) {
+  if (_store.revisionsTable[revision]) delete _store.revisionsTable[revision]['@expired'];
+  // Use _.extend to keep _store.revisions[i] and _store.revisionsTable[revision] the same reference.
+  _store.revisionsTable[revision] = _.extend(_store.revisionsTable[revision] || {}, json.current);
+  _store.revisionsTable[revision]['@captures'] = _store.revisionsTable[revision]['@captures'] || [];
+  var skip = range[0] || 0;
+  _.each(range, i => {
+    var item = json.items[i - skip];
+    if (!item) return;
+    _store.revisionsTable[revision]['@captures'][i] = item;
+    _store.capturesTable[item.capture] = item;
+  });
+  RevisionStore.emit(CHANGE_EVENT);
 }
 
 function syncCapture(revision, capture) {
@@ -125,12 +124,12 @@ function checkAs(revision, capture, as) {
   .catch(err => console.error(err.stack));
 }
 
-function getRequestParams(page, perPage, total) {
+function getRequestParams(page, total) {
   page = page || 1;
-  var skip = (page - 1) * perPage;
+  var skip = (page - 1) * PER_PAGE;
   var limit = Math.min(
       total >= 0 ? total - skip : Number.MAX_VALUE,
-      perPage);
+      PER_PAGE);
   var range = _.range(skip, skip + limit);
   return { skip, limit, total, range };
 }
