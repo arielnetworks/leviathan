@@ -9,6 +9,7 @@ var ProgressBar = require('../components/ProgressBar');
 var Navbar = require('../components/Navbar');
 var Table = require('../components/Table');
 var Actions = require('../actions/Actions');
+var Link = require('../components/Link');
 
 
 
@@ -38,7 +39,7 @@ var Revision = React.createClass({
 
     var Columns = [
       {id: 'captureName', label: 'キャプチャ', onClick: sort.bind(null, 'captureName'), formatter: capture =>
-        <a href={Path.join('#/revisions/', revision.id, '/captures/', capture.capture)}>{capture.captureName}</a> },
+        <Link path={Path.join('/revisions/', revision.id, '/captures/', capture.capture)}>{capture.captureName}</Link> },
       {id: 'done', label: [<i className="fa fa-check"></i>, '機械OKまたは人間処理済'], onClick: sort.bind(null, '???'), formatter: capture =>
         capture.status === Const.Status.OK || capture.checkedAs !== Const.CheckedAs.UNPROCESSED ? <i className="fa fa-check"></i> : null },
       {id: 'checkedAs', label: '人間', onClick: sort.bind(null, 'checkedAs'), formatter: capture =>
@@ -58,7 +59,7 @@ var Revision = React.createClass({
                  total={revision.total}
                  columns={Columns}
                  currPage={currPage}
-                 pageUrlBuilder={page => Path.join('#/revisions', revision.id) + '?page=' + page}/>
+                 pageUrlBuilder={page => Path.join('/revisions', revision.id) + '?page=' + page}/>
         </div>
       </div>
     );

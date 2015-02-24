@@ -2,6 +2,7 @@
 var React = require('react');
 var Router = require('react-router');
 var Path = require('path');
+var Link = require('../components/Link');
 
 
 
@@ -10,15 +11,15 @@ var Navbar = React.createClass({
   render() {
     var revision = this.getParams().revision;
     var crumbs = [
-      <li key="brand" className="breadcrumb--headernav__brand"><a href="#/">
+      <li key="brand" className="breadcrumb--headernav__brand"><Link path="/">
         Leviathan
-      </a></li>
+      </Link></li>
     ];
     if (revision) {
       if (this.props.capture) {
         crumbs.push(
           <li key="revision" className="active">
-            <a href={Path.join('#/revisions', revision)}>{revision}</a>
+            <Link path={Path.join('/revisions', revision)}>{revision}</Link>
           </li>
         );
       } else {

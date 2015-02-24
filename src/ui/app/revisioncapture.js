@@ -5,13 +5,14 @@ var React = require('react');
 var RevisionStore = require('../stores/RevisionStore');
 var Path = require('path');
 var reactKeyboardShortcut = require('react-keyboardshortcut');
-var Router = require('react-router');
+var {State, HistoryLocation} = require('react-router');
 var {StatusClassNameMap,
      CheckedAsClassNameMap,
      ToggleCheckedAsOrder} = require('../const');
 var Actions = require('../actions/Actions');
 var ProgressBar = require('../components/ProgressBar');
 var Navbar = require('../components/Navbar');
+var Link = require('../components/Link');
 
 var keyboardShortcut = reactKeyboardShortcut('onKeyboardShortcut', {
   'LEFT': 'left',
@@ -42,7 +43,7 @@ var RevisionCapture = React.createClass({
     });
   },
 
-  mixins: [_mixins, keyboardShortcut, Router.State],
+  mixins: [_mixins, keyboardShortcut, State],
 
   onKeyboardShortcut(e) {
     var current = this.state.capture;
@@ -144,7 +145,7 @@ module.exports = RevisionCapture;
 
 
 function gotoSibling(capture) {
-  location.href = Path.join('#/revisions', this.getParams().revision, 'captures', capture);
+  HistoryLocation.push(Path.join('#/revisions', this.getParams().revision, 'captures', capture));
 }
 
 function renderPrevNextNavigation_() {
@@ -155,18 +156,18 @@ function renderPrevNextNavigation_() {
   if (siblings.previous) {
     items.push(
       <li key="previous" className="previous">
-        <a href={Path.join('#/revisions', this.getParams().revision, 'captures', siblings.previous.capture)}>
+        <Link path={Path.join('/revisions', this.getParams().revision, 'captures', siblings.previous.capture)}>
           <span aria-hidden="true">&larr;</span> {siblings.previous.captureName}
-        </a>
+        </Link>
       </li>
     );
   }
   if (siblings.next) {
     items.push(
       <li key="next" className="next">
-        <a href={Path.join('#/revisions', this.getParams().revision, 'captures', siblings.next.capture)}>
+        <Link path={Path.join('/revisions', this.getParams().revision, 'captures', siblings.next.capture)}>
           {siblings.next.captureName} <span aria-hidden="true">&rarr;</span>
-        </a>
+        </Link>
       </li>
     );
   }

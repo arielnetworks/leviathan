@@ -8,6 +8,7 @@ var ProgressBar = require('../components/ProgressBar');
 
 var RevisionStore = require('../stores/RevisionStore');
 var Navbar = require('../components/Navbar');
+var Link = require('../components/Link');
 
 var Index = React.createClass({
 
@@ -36,7 +37,7 @@ var Index = React.createClass({
 
     var Columns = [
       {id: 'revision', label: '#', formatter: revision =>
-        <a href={Path.join('#/revisions/', revision.id)}>{revision.id}</a> },
+        <Link path={Path.join('/revisions/', revision.id)}>{revision.id}</Link> },
       {id: 'reported-as', label: '機械検知', formatter: revision => {
         var className = 'label ' + (
           revision.reportedAs.ERROR || revision.reportedAs.SUSPICIOUS ? 'label-warning' :
