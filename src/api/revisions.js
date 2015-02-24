@@ -13,7 +13,7 @@ var PostRevisions = module.exports['post'] = {};
 
 
 
-GetRevisions['index'] = function(req, res, next) {
+GetRevisions[''] = function(req, res, next) {
   var query = req.query || {};
   persist.findRevisions(+query.skip, +query.limit, query.order)
   .then(ApiUtil.putResolvedValue(req))
@@ -21,16 +21,17 @@ GetRevisions['index'] = function(req, res, next) {
   .done(next);
 };
 
-GetRevisions[':id'] = function(req, res) {
+GetRevisions[':id'] = function(req, res, next) {
   persist.findRevision(req.params.id)
   .then(function(current) {
     return { current: current };
   })
-  .then(res.json.bind(res))
-  .catch(handleError.bind(null, res));
+  .then(ApiUtil.putResolvedValue(req))
+  .catch(ApiUtil.putRejectedReason(req))
+  .done(next);
 };
 
-GetRevisions[':id/captures'] = function(req, res) {
+GetRevisions[':id/captures'] = function(req, res, next) {
   var query = req.query || {};
   Q.all([
     persist.findRevision(req.params.id),
@@ -39,21 +40,24 @@ GetRevisions[':id/captures'] = function(req, res) {
         query.status, query.checkedAs)
   ])
   .then(function(results) {
-    res.json({
+    return {
       current: results[0],
       items: results[1]
-    });
+    };
   })
-  .catch(handleError.bind(null, res));
+  .then(ApiUtil.putResolvedValue(req))
+  .catch(ApiUtil.putRejectedReason(req))
+  .done(next);
 };
 
-GetRevisions[':id/captures/:capture'] = function(req, res) {
+GetRevisions[':id/captures/:capture'] = function(req, res, next) {
   buildCapture(req.params.id, req.params.capture)
-  .then(res.json.bind(res))
-  .catch(handleError.bind(null, res));
+  .then(ApiUtil.putResolvedValue(req))
+  .catch(ApiUtil.putRejectedReason(req))
+  .done(next);
 };
 
-PostRevisions[':id/captures/:capture'] = function(req, res) {
+PostRevisions[':id/captures/:capture'] = function(req, res, next) {
   var data = {};
   var checkedAs = getStatusFromReqest(req);
   if (checkedAs) {
@@ -70,8 +74,9 @@ PostRevisions[':id/captures/:capture'] = function(req, res) {
       reason: STATUS_CODES[404]
     };
   })
-  .then(res.json.bind(res))
-  .catch(handleError.bind(null, res));
+  .then(ApiUtil.putResolvedValue(req))
+  .catch(ApiUtil.putRejectedReason(req))
+  .done(next);
 };
 
 
@@ -93,12 +98,6 @@ function buildCapture(revision, capture) {
   });
 }
 
-function handleError(res, reason) {
-  res.json({
-    error: 1,
-    reason: reason
-  });
-}
 var Status = ['UNPROCESSED', 'IS_BUG', 'IS_OK'];
 function getStatusFromReqest(req) {
   var v = req.body && req.body['checkedAs'];

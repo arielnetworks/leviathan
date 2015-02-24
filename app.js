@@ -14,6 +14,7 @@ var Q = require('q');
 Q.longStackSupport = true;
 var assert = require('assert');
 var compress = require('compression');
+var ApiUtil = require('./src/api/util');
 
 var React = require('react');
 var Router = require('react-router');
@@ -112,15 +113,8 @@ function launch(config) {
   ], function(name) {
     _.each(require('./src/api/' + name), function(actions, method) {
       _.each(actions, function(handler, action) {
-        app[method]('/api/' + name + (action === 'index' ? '' : '/' + action), handler, function(req, res) {
-          if (req['@rejectedReason']) {
-            return res.json({
-              error: 1,
-              reason: req['@rejectedReason']
-            });
-          }
-          return res.json(req['@resolvedValue']);
-        })
+        app[method](Path.join('/api/', name, action),
+            handler, ApiUtil.handleAsJSONResponse);
       });
     });
   });

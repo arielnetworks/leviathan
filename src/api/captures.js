@@ -1,5 +1,6 @@
 
 var persist = require('../persist');
+var ApiUtil = require('./util');
 
 
 
@@ -7,20 +8,15 @@ var GetRevisions = module.exports['get'] = {};
 
 
 
-GetRevisions['index'] = function(req, res) {
+GetRevisions[''] = function(req, res, next) {
   var query = req.query || {};
   persist.findCaptures(+query.skip, +query.limit)
   .then(function(docs) {
-    res.json({
+    return {
       items: docs || []
-    });
+    };
   })
-  .catch(handleError.bind(null, res));
+  .then(ApiUtil.putResolvedValue(req))
+  .catch(ApiUtil.putRejectedReason(req))
+  .done(next);
 };
-
-function handleError(res, reason) {
-  res.json({
-    error: 1,
-    reason: reason
-  });
-}

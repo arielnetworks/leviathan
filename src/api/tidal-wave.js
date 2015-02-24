@@ -5,13 +5,14 @@ var Q = require('q');
 Q.longStackSupport = true;
 var TidalWave = require('tidal-wave');
 var persist = require('../persist');
+var ApiUtil = require('./util');
 
 var PostTidalWave = {};
 module.exports.post = PostTidalWave;
 
 
 
-PostTidalWave[':id'] = function(req, res) {
+PostTidalWave[':id'] = function(req, res, next) {
   var rid = req.params.id;
   var revisionAt = req.body && req.body.revisionAt;
   Q().then(function() {
@@ -26,10 +27,9 @@ PostTidalWave[':id'] = function(req, res) {
     var tidalWaveResult = result[0];
     return tidalWaveResult;
   })
-  .then(res.json.bind(res))
-  .catch(function(error) {
-    res.json({error: true, reason: error.stack});
-  });
+  .then(ApiUtil.putResolvedValue(req))
+  .catch(ApiUtil.putRejectedReason(req))
+  .done(next);
 };
 
 
