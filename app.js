@@ -75,9 +75,7 @@ function launch(config) {
   app.use(express.static(Path.join(__dirname, 'public')));
 
   app.get('/', function(req, res) {
-    console.log('xxxxxxxx', req.session.hash);
     var path = req.session.hash || req.path;
-    console.log('------', path);
     return Router.run(routes, path, function(Handler) {
       var markup = React.renderToString(React.createElement(Handler));
       res.render('index', { markup: markup.replace('app-', 'xxx app-') });
@@ -114,7 +112,15 @@ function launch(config) {
   ], function(name) {
     _.each(require('./src/api/' + name), function(actions, method) {
       _.each(actions, function(handler, action) {
-        app[method]('/api/' + name + (action === 'index' ? '' : '/' + action), handler);
+        app[method]('/api/' + name + (action === 'index' ? '' : '/' + action), handler, function(req, res) {
+          if (req['@rejectedReason']) {
+            return res.json({
+              error: 1,
+              reason: req['@rejectedReason']
+            });
+          }
+          return res.json(req['@resolvedValue']);
+        })
       });
     });
   });

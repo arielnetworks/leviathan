@@ -4,6 +4,7 @@ var _ = require('underscore');
 // DB Shemas
 var persist = require('../persist');
 var STATUS_CODES = require('http').STATUS_CODES;
+var ApiUtil = require('./util');
 
 
 
@@ -12,11 +13,12 @@ var PostRevisions = module.exports['post'] = {};
 
 
 
-GetRevisions['index'] = function(req, res) {
+GetRevisions['index'] = function(req, res, next) {
   var query = req.query || {};
   persist.findRevisions(+query.skip, +query.limit, query.order)
-  .then(res.json.bind(res))
-  .catch(handleError.bind(null, res));
+  .then(ApiUtil.putResolvedValue(req))
+  .catch(ApiUtil.putRejectedReason(req))
+  .done(next);
 };
 
 GetRevisions[':id'] = function(req, res) {
