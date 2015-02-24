@@ -1,7 +1,6 @@
 
 var Q = require('q');
 var xhr = require('xhr');
-var QueryString = require('querystring');
 
 
 
@@ -17,7 +16,7 @@ function get(uri) {
     json: true
   })
   .get(1); // same as JSON.parse(req.body)
-};
+}
 
 function post(uri, json) {
   return Q.nfcall(xhr, {
@@ -26,4 +25,4 @@ function post(uri, json) {
     json: json
   })
   .get(1); // same as JSON.parse(req.body)
-};
+}

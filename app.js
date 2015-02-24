@@ -1,17 +1,14 @@
-
 /**
  * Module dependencies.
  */
 
 var express = require('express');
-var favicon = require('static-favicon');
 var logger = require('morgan');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
 var Path = require('path');
-var jade = require('jade');
 var _ = require('underscore');
 var Q = require('q');
 Q.longStackSupport = true;
@@ -78,9 +75,9 @@ function launch(config) {
   app.use(express.static(Path.join(__dirname, 'public')));
 
   app.get('/', function(req, res) {
-    console.log('xxxxxxxx', req.session.hash)
+    console.log('xxxxxxxx', req.session.hash);
     var path = req.session.hash || req.path;
-    console.log('------', path)
+    console.log('------', path);
     return Router.run(routes, path, function(Handler) {
       var markup = React.renderToString(React.createElement(Handler));
       res.render('index', { markup: markup.replace('app-', 'xxx app-') });
@@ -97,7 +94,8 @@ function launch(config) {
     });
   });
 
-  if ('development' == app.get('env')) {
+  if (app.get('env') === 'development') {
+    /*eslint-disable no-unused-vars*/
     app.use(function(err, req, res, next) {
       res.status(err.status || 500);
       res.render('error', {
@@ -105,6 +103,7 @@ function launch(config) {
         error: err
       });
     });
+    /*eslint-enable no-unused-vars*/
   }
 
   // API Routing
@@ -115,7 +114,7 @@ function launch(config) {
   ], function(name) {
     _.each(require('./src/api/' + name), function(actions, method) {
       _.each(actions, function(handler, action) {
-        app[method]('/api/' + name + (action == 'index' ? '' : '/' + action), handler);
+        app[method]('/api/' + name + (action === 'index' ? '' : '/' + action), handler);
       });
     });
   });
@@ -132,10 +131,10 @@ function launch(config) {
       server: server
     };
   })
-  .catch (function(error) {
+  .catch(function(error) {
     console.log('Launching application fails.');
     console.log(error.stack);
-    process.exit(1);
+    throw new Error(error);
   });
 
   return {

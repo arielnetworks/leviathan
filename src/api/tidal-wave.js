@@ -1,14 +1,13 @@
 
 
 var Path = require('path');
-var _ = require('underscore');
 var Q = require('q');
 Q.longStackSupport = true;
 var TidalWave = require('tidal-wave');
 var persist = require('../persist');
 
 var PostTidalWave = {};
-module.exports['post'] = PostTidalWave;
+module.exports.post = PostTidalWave;
 
 
 
@@ -28,7 +27,7 @@ PostTidalWave[':id'] = function(req, res) {
     return tidalWaveResult;
   })
   .then(res.json.bind(res))
-  .catch (function(error) {
+  .catch(function(error) {
     res.json({error: true, reason: error.stack});
   });
 };
@@ -41,8 +40,8 @@ function collectCaptures(rid, revisionAt) {
   var targetDir = getRevisionDir(rid);
   var t = TidalWave.create(targetDir, {
     getExpectedPath: function(shortPath) {
-      var capture = generateHash(shortPath);
-      return persist.findLastExpectedCapture(capture, revisionAt)
+      var cid = generateHash(shortPath);
+      return persist.findLastExpectedCapture(cid, revisionAt)
       .then(function(capture) {
         if (capture && capture.revision) {
           return Path.resolve(getRevisionDir(capture.revision), shortPath);
@@ -75,11 +74,11 @@ function insertCapture(rid, revisionAt, data) {
 
   var capture = generateHash(captureName);
 
-  data['capture'] = capture;
-  data['captureName'] = captureName;
-  data['revision'] = rid;
-  data['checkedAs'] = 'UNPROCESSED';
-  data['revisionAt'] = revisionAt;
+  data.capture = capture;
+  data.captureName = captureName;
+  data.revision = rid;
+  data.checkedAs = 'UNPROCESSED';
+  data.revisionAt = revisionAt;
   return persist.insertCapture(rid, capture, data);
 }
 

@@ -1,0 +1,28 @@
+{
+  "settings": {
+    "ecmascript": 6,
+    "jsx": true
+  },
+  "ecmaFeatures": {
+    "objectLiteralShorthandMethods": true,
+    "objectLiteralShorthandProperties": true,
+    "destructuring": true,
+    "arrowFunctions": true,
+    "jsx": true
+  },
+  "env": {
+    "node": true,
+    "browser": true,
+    "mocha": true
+  },
+  "rules": {
+    "quotes": [2, "single"],
+    "no-use-before-define": [2, "nofunc"],
+    "strict": [0],
+    "no-underscore-dangle": [0],
+    "curly": [0],
+    "consistent-return": [0], // why
+    "new-cap": [0],
+    "dot-notation": [0]
+  }
+}

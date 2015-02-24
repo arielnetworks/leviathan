@@ -1,6 +1,5 @@
 
 var React = require('react');
-var Const = require('../const');
 
 
 
@@ -12,9 +11,9 @@ var ProgressBar = React.createClass({
       var total = revision.total;
       var processed = (total - revision['UNPROCESSED && !OK']) / total * 100;
       var needToProcess = revision['UNPROCESSED && !OK'] / total * 100;
-      var done = revision['UNPROCESSED && !OK'] == 0;
+      var done = revision['UNPROCESSED && !OK'] === 0;
       contentHTML = [
-        <div key="success" className={'progress-bar progress-bar-success' + (done ? '' : ' progress-bar-striped active')}
+        <div key="success" className={'progress-bar ' + (done ? 'progress-bar-success' : 'progress-bar-info progress-bar-striped active')}
              style={{width: processed + '%'}}><span>
              <i className="fa fa-check"></i>
              機械OKまたは人間処理済</span></div>,
@@ -25,8 +24,8 @@ var ProgressBar = React.createClass({
     return (
       <div className={'progress ' + (this.props.cssModifier ? 'progress--' + this.props.cssModifier : '')}>
         {contentHTML}
-      </div>  
-    )
+      </div>
+    );
   }
 });
 

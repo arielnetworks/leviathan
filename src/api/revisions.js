@@ -16,7 +16,7 @@ GetRevisions['index'] = function(req, res) {
   var query = req.query || {};
   persist.findRevisions(+query.skip, +query.limit, query.order)
   .then(res.json.bind(res))
-  .catch (handleError.bind(null, res));
+  .catch(handleError.bind(null, res));
 };
 
 GetRevisions[':id'] = function(req, res) {
@@ -25,7 +25,7 @@ GetRevisions[':id'] = function(req, res) {
     return { current: current };
   })
   .then(res.json.bind(res))
-  .catch (handleError.bind(null, res));
+  .catch(handleError.bind(null, res));
 };
 
 GetRevisions[':id/captures'] = function(req, res) {
@@ -42,13 +42,13 @@ GetRevisions[':id/captures'] = function(req, res) {
       items: results[1]
     });
   })
-  .catch (handleError.bind(null, res));
+  .catch(handleError.bind(null, res));
 };
 
 GetRevisions[':id/captures/:capture'] = function(req, res) {
   buildCapture(req.params.id, req.params.capture)
   .then(res.json.bind(res))
-  .catch (handleError.bind(null, res));
+  .catch(handleError.bind(null, res));
 };
 
 PostRevisions[':id/captures/:capture'] = function(req, res) {
@@ -69,7 +69,7 @@ PostRevisions[':id/captures/:capture'] = function(req, res) {
     };
   })
   .then(res.json.bind(res))
-  .catch (handleError.bind(null, res));
+  .catch(handleError.bind(null, res));
 };
 
 
@@ -88,7 +88,7 @@ function buildCapture(revision, capture) {
     if (previous) current['@siblings'].previous = previous;
     if (next) current['@siblings'].next = next;
     return { current: current };
-  })
+  });
 }
 
 function handleError(res, reason) {

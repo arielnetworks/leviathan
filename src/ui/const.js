@@ -29,11 +29,16 @@ var Actions = {
   CHECKAS: 'checkas'
 };
 
+var ToggleCheckedAsOrder = [CheckedAs.IS_OK, // UP
+             CheckedAs.UNPROCESSED,
+             CheckedAs.IS_BUG]; // DOWN
+
 module.exports = {
   ReportedAs,
   Status,
   StatusClassNameMap,
   CheckedAs,
   CheckedAsClassNameMap,
-  Actions
+  Actions,
+  ToggleCheckedAsOrder
 };

@@ -1,19 +1,18 @@
 
 var Dispatcher = require('../dispatcher/Dispatcher');
 var EventEmitter = require('events').EventEmitter;
-var {CheckedAs, Actions} = require('../const');
+var {Actions} = require('../const');
 var assign = require('object-assign');
 var Q = require('q');
 Q.longStackSupport = true;
 var xhr = require('../xhr');
 var _ = require('underscore');
-var assert = require('assert');
 var Path = require('path');
 var QueryString = require('querystring');
 
 var CHANGE_EVENT = 'change';
 // XXX Hack for server rendering
-var global = this;
+var globalRef = this;
 
 var perPage = 20; // TODO: Const
 
@@ -25,7 +24,7 @@ var _store = {
   revisionsTable: {},
   capturesTable: {}
 };
-global._store = _store;
+globalRef._store = _store;
 
 
 
@@ -44,7 +43,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
   },
 
   syncRevisions(page) {
-    if (!global.document) return;
+    if (!globalRef.document) return;
     // TODO: Similar code. Refactor.
     page = page || 1;
     var skip = (page - 1) * perPage;
@@ -70,7 +69,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
   },
 
   syncCaptures(revision, page) {
-    if (!global.document) return;
+    if (!globalRef.document) return;
     // TODO: Not clear enough. Use "rid" as an revision id.
     // TODO: Similar code. Refactor.
     page = page || 1;
@@ -105,7 +104,7 @@ var RevisionStore = assign({}, EventEmitter.prototype, {
   },
 
   syncCapture(revision, capture) {
-    if (!global.document) return;
+    if (!globalRef.document) return;
     if (_store.capturesTable[capture] &&
         !_store.capturesTable[capture]['@expired'] &&
         _store.capturesTable[capture]['@siblings']) return;
@@ -145,4 +144,3 @@ function handleCaptureResponse(json) {
   _store.capturesTable[json.current.capture] = json.current;
   this.emit(CHANGE_EVENT);
 }
-
