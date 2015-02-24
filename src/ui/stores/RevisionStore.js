@@ -12,23 +12,23 @@ var QueryString = require('querystring');
 
 var CHANGE_EVENT = 'change';
 
-var _store = {
-  revisionsTotal: -1,
-  revisions: [],
-  revisionsTable: {},
-  capturesTable: {}
-};
-_store = _store;
+var _store;
+clearStore();
 
 
 
 var RevisionStore = assign({}, EventEmitter.prototype, {
+  initialize,
   getStore,
+  clearStore,
   addChangeListener,
   removeChangeListener,
   syncRevisions,
+  storeRevisions,
   syncCaptures,
+  storeCaptures,
   syncCapture,
+  storeCapture,
   checkAs
 });
 module.exports = RevisionStore;
@@ -54,8 +54,21 @@ Dispatcher.register(function(action) {
 
 
 
+function initialize(store) {
+  _store = store;
+}
+
 function getStore() {
   return _store;
+}
+
+function clearStore() {
+  _store = {
+    revisionsTotal: -1,
+    revisions: [],
+    revisionsTable: {},
+    capturesTable: {}
+  };
 }
 
 function addChangeListener(callback) {
@@ -72,7 +85,7 @@ function syncRevisions(page) {
     return;
   }
   xhr('/api/revisions?' + QueryString.stringify({skip, limit}))
-  .then(storeRevisions.bind(null, range))
+  .then(storeRevisions)
   .catch(err => console.error(err.stack));
 }
 
@@ -139,7 +152,8 @@ function getRequestParams(page, total) {
 
 
 
-function storeRevisions(range, json) {
+function storeRevisions(json) {
+  var range = _.range(json.meta.skip, json.meta.skip + json.meta.limit);
   var skip = range[0] || 0;
   _store.revisionsTotal = json.meta.total;
   _.each(range, i => {

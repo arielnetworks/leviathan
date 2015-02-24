@@ -75,35 +75,36 @@ function launch(config) {
   app.use(global.configure.publicCaptureDir, express.static(global.configure.baseImageDir));
   app.use(express.static(Path.join(__dirname, 'public')));
 
-  app.get('/', function(req, res) {
-    var path = req.session.hash || req.path;
-    return Router.run(routes, path, function(Handler) {
-      var markup = React.renderToString(React.createElement(Handler));
-      res.render('index', { markup: markup.replace('app-', 'xxx app-') });
-      req.session.hash = undefined;
-    });
-  });
-  ['/revisions/:revision',
-   '/revisions/:revision/captures/:capture'].forEach(function(path) {
-    app.get(path, function(req, res) {
-      var hash = req.url;
-      req.session = req.session || {};
-      req.session.hash = hash;
-      res.redirect(Path.join('/#', hash));
-    });
-  });
+  var RevisionsApi = require('./src/api/revisions');
+  // TODO: Separate store for each request.
+  var RevisionStore = require('./src/ui/stores/RevisionStore');
 
-  if (app.get('env') === 'development') {
-    /*eslint-disable no-unused-vars*/
-    app.use(function(err, req, res, next) {
-      res.status(err.status || 500);
-      res.render('error', {
-        message: err.message,
-        error: err
+  app.get('/', RevisionsApi.get[''], function(req, res, next) {
+    RevisionStore.storeRevisions(req['@resolvedValue']);
+    next();
+  }, handleBrowserRequest);
+  app.get('/revisions/:revision', RevisionsApi.get[':id'], function(req, res, next) {
+    RevisionStore.storeCaptures(req['@resolvedValue']);
+    next();
+  }, handleBrowserRequest);
+  app.get('/revisions/:revision/captures/:capture', function(req, res, next) {
+    RevisionStore.storeCaptures(req['@resolvedValue']);
+    next();
+  }, handleBrowserRequest);
+
+  function handleBrowserRequest(req, res) {
+    Router.run(routes, req.path, function(Handler) {
+      var markup = React.renderToString(React.createElement(Handler));
+      res.render('index', {
+        markup: markup,
+        initialData: JSON.stringify(RevisionStore.getStore())
       });
     });
-    /*eslint-enable no-unused-vars*/
+    RevisionStore.clearStore();
   }
+
+
+
 
   // API Routing
   _.each([
@@ -118,6 +119,19 @@ function launch(config) {
       });
     });
   });
+
+  if (app.get('env') === 'development') {
+    /*eslint-disable no-unused-vars*/
+    app.use(function(err, req, res, next) {
+      // console.log(err.stack);
+      res.status(err.status || 500);
+      res.render('error', {
+        message: err.message,
+        error: err
+      });
+    });
+    /*eslint-enable no-unused-vars*/
+  }
 
   var server = http.createServer(app);
 
