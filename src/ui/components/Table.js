@@ -19,7 +19,10 @@ var Table = React.createClass({
           <thead>
             <tr>
               {_.map(this.props.columns, column =>
-                <th onClick={column.onClick} className={getCellCssName(column, true)} key={column.id}>{column.label}</th>)}
+                <th className={getCellCssName(column, true)} key={column.id}>
+                  <a className="cell__link" href={this.props.pageUrlBuilder(1, [column.id, column.sort])}>{column.label}</a>
+                </th>
+              )}
             </tr>
           </thead>
         </table>
@@ -81,9 +84,9 @@ var Table = React.createClass({
 
 function getCellCssName(column, isHeader) {
   return 'cell ' +
-         'cell--' + column.id +
-         (isHeader && column.onClick ? ' cell--clickable' : '') +
-         (column.cssModifier ? ' cell--' + column.cssModifier : '');
+         `cell--${column.id}` +
+         (isHeader && column.sort ? ` cell--ordered cell--ordered-${column.sort.toLowerCase()}` : '') +
+         (column.cssModifier ? ` cell--${column.cssModifier}` : '');
 }
 
 module.exports = Table;
