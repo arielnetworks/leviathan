@@ -71,13 +71,7 @@ function removeChangeListener(callback) {
 }
 
 function syncRevisions(page) {
-  // TODO: Similar code. Refactor.
-  page = page || 1;
-  var skip = (page - 1) * perPage;
-  var limit = Math.min(
-      _store.revisionsTotal >= 0 ? _store.revisionsTotal - skip : Number.MAX_VALUE,
-      perPage);
-  var range = _.range(skip, skip + limit);
+  var { skip, limit, total, range } = getRequestParams(page, perPage, _store.revisionsTotal);
   if (range.every(i => _store.revisions[i])) {
     return;
   }
@@ -88,14 +82,8 @@ function syncRevisions(page) {
 
 function syncCaptures(revision, page) {
   // TODO: Not clear enough. Use "rid" as an revision id.
-  // TODO: Similar code. Refactor.
-  page = page || 1;
-  var skip = (page - 1) * perPage;
-  var limit = Math.min(
-      _store.revisionsTable[revision] && _.isNumber(_store.revisionsTable[revision].total) ?
-          _store.revisionsTable[revision].total - skip : Number.MAX_VALUE,
-      perPage);
-  var range = _.range(skip, skip + limit);
+  var { skip, limit, total, range } = getRequestParams(page, perPage,
+      _store.revisionsTable[revision] ? _store.revisionsTable[revision].total : 0);
   if (_store.revisionsTable[revision] &&
       !_store.revisionsTable[revision]['@expired'] &&
       _store.revisionsTable[revision]['@captures'] &&
@@ -125,7 +113,7 @@ function syncCapture(revision, capture) {
       !_store.capturesTable[capture]['@expired'] &&
       _store.capturesTable[capture]['@siblings']) return;
   xhr(Path.join('/api/revisions', revision, 'captures', capture))
-  .then(storeCapture.bind(this))
+  .then(storeCapture)
   .catch((err) => console.error(err.stack));
 }
 
@@ -133,10 +121,19 @@ function checkAs(revision, capture, as) {
   xhr.post(Path.join('/api/revisions', revision, 'captures', capture), {
     checkedAs: as
   })
-  .then(storeCapture.bind(this))
+  .then(storeCapture)
   .catch(err => console.error(err.stack));
 }
 
+function getRequestParams(page, perPage, total) {
+  page = page || 1;
+  var skip = (page - 1) * perPage;
+  var limit = Math.min(
+      total >= 0 ? total - skip : Number.MAX_VALUE,
+      perPage);
+  var range = _.range(skip, skip + limit);
+  return { skip, limit, total, range };
+}
 
 
 
