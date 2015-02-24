@@ -62,7 +62,7 @@ var Index = React.createClass({
                  total={this.state.revisionsTotal}
                  columns={Columns}
                  currPage={currPage}
-                 pageUrlBuilder={page => '#/?page=' + page}/>
+                 pageUrlBuilder={page => '/?page=' + page}/>
         </div>
       </div>
     );

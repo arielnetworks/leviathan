@@ -1,5 +1,6 @@
 var React = require('react');
 var _ = require('underscore');
+var Link = require('./Link');
 
 var perPage = 20; // TODO: Const
 
@@ -52,26 +53,26 @@ var Table = React.createClass({
     var leftskip;
     var rightskip;
     if (rangeStart > 1) {
-      leftskip = <li><a href={this.props.pageUrlBuilder(rangeStart - 1)}><span>...</span></a></li>;
+      leftskip = <li><Link path={this.props.pageUrlBuilder(rangeStart - 1)}>...</Link></li>;
     }
     if (rangeEnd < maxPage) {
-      rightskip = <li><a href={this.props.pageUrlBuilder(rangeEnd + 1)}><span>...</span></a></li>;
+      rightskip = <li><Link path={this.props.pageUrlBuilder(rangeEnd + 1)}>...</Link></li>;
     }
     return (
       <nav className="text-center">
         <ul className="pagination">
           <li className={isLeftEdge ? 'disabled' : null}>
-            <a href={this.props.pageUrlBuilder(1)}><span>&laquo;</span></a>
+            <Link path={this.props.pageUrlBuilder(1)}>&laquo;</Link>
           </li>
           {leftskip}
           {_.map(_.range(rangeStart, rangeEnd + 1), page =>
             <li key={page} className={this.props.currPage === page ? 'active' : null}>
-              <a href={this.props.pageUrlBuilder(page)}>{page}</a>
+              <Link path={this.props.pageUrlBuilder(page)}>{page}</Link>
             </li>
           )}
           {rightskip}
           <li className={isRightEdge ? 'disabled' : null}>
-            <a href={this.props.pageUrlBuilder(maxPage)}><span>&raquo;</span></a>
+            <Link path={this.props.pageUrlBuilder(maxPage)}>&raquo;</Link>
           </li>
         </ul>
       </nav>
