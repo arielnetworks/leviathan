@@ -15,14 +15,14 @@ var Actions = require('../actions/Actions');
 var Revision = React.createClass({
 
   getInitialState() {
-    var store = RevisionStore.get();
+    var store = RevisionStore.getStore();
     return {
       revision: store.revisionsTable[this.getParams().revision]
     };
   },
 
   _onChange() {
-    var store = RevisionStore.get();
+    var store = RevisionStore.getStore();
     this.setState({
       revision: store.revisionsTable[this.getParams().revision]
     });

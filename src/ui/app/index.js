@@ -12,7 +12,7 @@ var Navbar = require('../components/Navbar');
 var Index = React.createClass({
 
   getInitialState() {
-    var store = RevisionStore.get();
+    var store = RevisionStore.getStore();
     return {
       revisions: store.revisions,
       revisionsTotal: store.revisionsTotal
@@ -20,7 +20,7 @@ var Index = React.createClass({
   },
 
   _onChange() {
-    var store = RevisionStore.get();
+    var store = RevisionStore.getStore();
     this.setState({
       revisions: store.revisions,
       revisionsTotal: store.revisionsTotal

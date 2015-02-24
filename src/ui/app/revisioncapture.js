@@ -27,7 +27,7 @@ var keyboardShortcut = reactKeyboardShortcut('onKeyboardShortcut', {
 var RevisionCapture = React.createClass({
 
   getInitialState() {
-    var store = RevisionStore.get();
+    var store = RevisionStore.getStore();
     return {
       revision: store.revisionsTable[this.getParams().revision],
       capture: store.capturesTable[this.getParams().capture]
@@ -35,7 +35,7 @@ var RevisionCapture = React.createClass({
   },
 
   _onChange() {
-    var store = RevisionStore.get();
+    var store = RevisionStore.getStore();
     this.setState({
       revision: store.revisionsTable[this.getParams().revision],
       capture: store.capturesTable[this.getParams().capture]
