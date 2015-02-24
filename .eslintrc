@@ -12,7 +12,8 @@
   },
   "env": {
     "node": true,
-    "browser": true
+    "browser": true,
+    "mocha": true
   },
   "rules": {
     "quotes": [2, "single"],

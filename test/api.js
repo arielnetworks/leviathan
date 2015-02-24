@@ -13,9 +13,8 @@ describe('Application', function() {
       relativeTargetDirPrefix: 'revision',
       port: 3491,
       mongodb: 'mongodb://127.0.0.1:27017/leviathan_test',
-      sessionSecret: "boom.."
+      sessionSecret: 'boom..'
     });
-    var server = tmp.server;
     var app = tmp.app;
     var promiseLaunch = tmp.promiseLaunch;
 
@@ -49,7 +48,7 @@ describe('Application', function() {
       .expect({ data: 2, error: 0, request: 2 }, done);
     });
 
-    it('GET /api/revisions' , function(done) {
+    it('GET /api/revisions', function(done) {
       request(app)
       .get('/api/revisions')
       .expect(200)
@@ -75,7 +74,7 @@ describe('Application', function() {
       }, done);
     });
 
-    it('GET /api/revisions/1' , function(done) {
+    it('GET /api/revisions/1', function(done) {
       request(app)
       .get('/api/revisions/1')
       .expect(200)
@@ -87,7 +86,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 0,
             IS_OK: 2,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -100,7 +99,7 @@ describe('Application', function() {
       }, done);
     });
 
-    it('GET /api/revisions/1/captures' , function(done) {
+    it('GET /api/revisions/1/captures', function(done) {
       request(app)
       .get('/api/revisions/1/captures')
       .expect(200)
@@ -112,7 +111,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 0,
             IS_OK: 2,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -160,7 +159,7 @@ describe('Application', function() {
       }, done);
     });
 
-    it('GET /api/revisions/1/captures/db38f7f3f5d7d765f97e45d185066cc9' , function(done) {
+    it('GET /api/revisions/1/captures/db38f7f3f5d7d765f97e45d185066cc9', function(done) {
       request(app)
       .get('/api/revisions/1/captures/db38f7f3f5d7d765f97e45d185066cc9')
       .expect(200)
@@ -182,12 +181,12 @@ describe('Application', function() {
           width: 180,
           height: 117,
           vector: [],
-          "@siblings": {}
+          '@siblings': {}
         }
       }, done);
     });
 
-    it('GET /api/captures' , function(done) {
+    it('GET /api/captures', function(done) {
       request(app)
       .get('/api/captures')
       .expect(200)
@@ -219,7 +218,7 @@ describe('Application', function() {
 
     // // Now we have 2 revisions in a store.
 
-    it('/api/captures should not changed any data ' , function(done) {
+    it('/api/captures should not changed any data ', function(done) {
       request(app)
       .get('/api/captures')
       .expect(200)
@@ -241,7 +240,7 @@ describe('Application', function() {
       }, done);
     });
 
-    it('GET /api/revisions' , function(done) {
+    it('GET /api/revisions', function(done) {
       request(app)
       .get('/api/revisions')
       .expect(200)
@@ -252,44 +251,44 @@ describe('Application', function() {
           total: 2
         },
         items: [{
-          "UNPROCESSED && !OK": 1,
-          "checkedAs": {
-            "IS_BUG": 0,
-            "IS_OK": 0,
-            "UNPROCESSED": 2,
+          'UNPROCESSED && !OK': 1,
+          'checkedAs': {
+            'IS_BUG': 0,
+            'IS_OK': 0,
+            'UNPROCESSED': 2
           },
-          "id": "2",
-          "reportedAs": {
-            "ERROR": 0,
-            "OK": 1,
-            "SUSPICIOUS": 1,
+          'id': '2',
+          'reportedAs': {
+            'ERROR': 0,
+            'OK': 1,
+            'SUSPICIOUS': 1
           },
-          "revisionAt": "1970-01-01T00:00:02.000Z",
-          "total": 2,
-          "updatedAt": "1970-01-01T00:00:00.000Z",
+          'revisionAt': '1970-01-01T00:00:02.000Z',
+          'total': 2,
+          'updatedAt': '1970-01-01T00:00:00.000Z'
         },
         {
-          "UNPROCESSED && !OK": 0,
-          "checkedAs": {
-            "IS_BUG": 0,
-            "IS_OK": 2,
-            "UNPROCESSED": 0,
+          'UNPROCESSED && !OK': 0,
+          'checkedAs': {
+            'IS_BUG': 0,
+            'IS_OK': 2,
+            'UNPROCESSED': 0
           },
-          "id": "1",
-          "reportedAs": {
-            "ERROR": 0,
-            "OK": 2,
-            "SUSPICIOUS": 0,
+          'id': '1',
+          'reportedAs': {
+            'ERROR': 0,
+            'OK': 2,
+            'SUSPICIOUS': 0
           },
-          "revisionAt": "1970-01-01T00:00:01.000Z",
-          "total": 2,
-          "updatedAt": "1970-01-01T00:00:00.000Z",
+          'revisionAt': '1970-01-01T00:00:01.000Z',
+          'total': 2,
+          'updatedAt': '1970-01-01T00:00:00.000Z'
         }
         ]
       }, done);
     });
 
-    it('GET /api/revisions/2' , function(done) {
+    it('GET /api/revisions/2', function(done) {
       request(app)
       .get('/api/revisions/2')
       .expect(200)
@@ -301,7 +300,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 2,
             IS_OK: 0,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -314,7 +313,7 @@ describe('Application', function() {
       }, done);
     });
 
-    it('GET /api/revisions/2/captures' , function(done) {
+    it('GET /api/revisions/2/captures', function(done) {
       request(app)
       .get('/api/revisions/2/captures')
       .expect({
@@ -325,7 +324,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 2,
             IS_OK: 0,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -404,10 +403,10 @@ describe('Application', function() {
 
 
     // Parameters test
-    // Without "order" parameter,
-    //  * "/api/revisions" ordered by "id DESC"
-    //  * other api ordered by "updatedAt DESC"
-    it('GET /api/revisions returns 2 documents' , function(done) {
+    // Without 'order' parameter,
+    //  * '/api/revisions' ordered by 'id DESC'
+    //  * other api ordered by 'updatedAt DESC'
+    it('GET /api/revisions returns 2 documents', function(done) {
       request(app)
       .get('/api/revisions')
       .expect({
@@ -417,42 +416,42 @@ describe('Application', function() {
           total: 2
         },
         items: [{
-          "UNPROCESSED && !OK": 1,
-          "checkedAs": {
-            "IS_BUG": 0,
-            "IS_OK": 0,
-            "UNPROCESSED": 2,
+          'UNPROCESSED && !OK': 1,
+          'checkedAs': {
+            'IS_BUG': 0,
+            'IS_OK': 0,
+            'UNPROCESSED': 2
           },
-          "id": "2",
-          "reportedAs": {
-            "ERROR": 0,
-            "OK": 1,
-            "SUSPICIOUS": 1,
+          'id': '2',
+          'reportedAs': {
+            'ERROR': 0,
+            'OK': 1,
+            'SUSPICIOUS': 1
           },
-          "revisionAt": "1970-01-01T00:00:02.000Z",
-          "total": 2,
-          "updatedAt": "1970-01-01T00:00:00.000Z",
+          'revisionAt': '1970-01-01T00:00:02.000Z',
+          'total': 2,
+          'updatedAt': '1970-01-01T00:00:00.000Z'
         },
         {
-          "UNPROCESSED && !OK": 0,
-          "checkedAs": {
-            "IS_BUG": 0,
-            "IS_OK": 2,
-            "UNPROCESSED": 0,
+          'UNPROCESSED && !OK': 0,
+          'checkedAs': {
+            'IS_BUG': 0,
+            'IS_OK': 2,
+            'UNPROCESSED': 0
           },
-          "id": "1",
-          "reportedAs": {
-            "ERROR": 0,
-            "OK": 2,
-            "SUSPICIOUS": 0,
+          'id': '1',
+          'reportedAs': {
+            'ERROR': 0,
+            'OK': 2,
+            'SUSPICIOUS': 0
           },
-          "revisionAt": "1970-01-01T00:00:01.000Z",
-          "total": 2,
-          "updatedAt": "1970-01-01T00:00:00.000Z",
+          'revisionAt': '1970-01-01T00:00:01.000Z',
+          'total': 2,
+          'updatedAt': '1970-01-01T00:00:00.000Z'
         }]
       }, done);
     });
-    it('GET /api/revisions?limit=1 should return the first document' , function(done) {
+    it('GET /api/revisions?limit=1 should return the first document', function(done) {
       request(app)
       .get('/api/revisions?limit=1')
       .expect({
@@ -462,25 +461,25 @@ describe('Application', function() {
           total: 2
         },
         items: [{
-          "UNPROCESSED && !OK": 1,
-          "checkedAs": {
-            "IS_BUG": 0,
-            "IS_OK": 0,
-            "UNPROCESSED": 2,
+          'UNPROCESSED && !OK': 1,
+          'checkedAs': {
+            'IS_BUG': 0,
+            'IS_OK': 0,
+            'UNPROCESSED': 2
           },
-          "id": "2",
-          "reportedAs": {
-            "ERROR": 0,
-            "OK": 1,
-            "SUSPICIOUS": 1,
+          'id': '2',
+          'reportedAs': {
+            'ERROR': 0,
+            'OK': 1,
+            'SUSPICIOUS': 1
           },
-          "revisionAt": "1970-01-01T00:00:02.000Z",
-          "total": 2,
-          "updatedAt": "1970-01-01T00:00:00.000Z",
+          'revisionAt': '1970-01-01T00:00:02.000Z',
+          'total': 2,
+          'updatedAt': '1970-01-01T00:00:00.000Z'
         }]
       }, done);
     });
-    it('GET /api/revisions?limit=1&skip=1 should skip one document' , function(done) {
+    it('GET /api/revisions?limit=1&skip=1 should skip one document', function(done) {
       request(app)
       .get('/api/revisions?limit=1&skip=1')
       .expect({
@@ -490,25 +489,25 @@ describe('Application', function() {
           total: 2
         },
         items: [{
-          "UNPROCESSED && !OK": 0,
-          "checkedAs": {
-            "IS_BUG": 0,
-            "IS_OK": 2,
-            "UNPROCESSED": 0,
+          'UNPROCESSED && !OK': 0,
+          'checkedAs': {
+            'IS_BUG': 0,
+            'IS_OK': 2,
+            'UNPROCESSED': 0
           },
-          "id": "1",
-          "reportedAs": {
-            "ERROR": 0,
-            "OK": 2,
-            "SUSPICIOUS": 0,
+          'id': '1',
+          'reportedAs': {
+            'ERROR': 0,
+            'OK': 2,
+            'SUSPICIOUS': 0
           },
-          "revisionAt": "1970-01-01T00:00:01.000Z",
-          "total": 2,
-          "updatedAt": "1970-01-01T00:00:00.000Z",
+          'revisionAt': '1970-01-01T00:00:01.000Z',
+          'total': 2,
+          'updatedAt': '1970-01-01T00:00:00.000Z'
         }]
       }, done);
     });
-    it('GET /api/revisions?order=id%20ASC should sorts docs as "id ASC"' , function(done) {
+    it('GET /api/revisions?order=id%20ASC should sorts docs as "id ASC"', function(done) {
       request(app)
       .get('/api/revisions?order=id%20ASC')
       .expect({
@@ -518,42 +517,42 @@ describe('Application', function() {
           total: 2
         },
         items: [ {
-          "UNPROCESSED && !OK": 0,
-          "checkedAs": {
-            "IS_BUG": 0,
-            "IS_OK": 2,
-            "UNPROCESSED": 0,
+          'UNPROCESSED && !OK': 0,
+          'checkedAs': {
+            'IS_BUG': 0,
+            'IS_OK': 2,
+            'UNPROCESSED': 0
           },
-          "id": "1",
-          "reportedAs": {
-            "ERROR": 0,
-            "OK": 2,
-            "SUSPICIOUS": 0,
+          'id': '1',
+          'reportedAs': {
+            'ERROR': 0,
+            'OK': 2,
+            'SUSPICIOUS': 0
           },
-          "revisionAt": "1970-01-01T00:00:01.000Z",
-          "total": 2,
-          "updatedAt": "1970-01-01T00:00:00.000Z",
+          'revisionAt': '1970-01-01T00:00:01.000Z',
+          'total': 2,
+          'updatedAt': '1970-01-01T00:00:00.000Z'
         },
         {
-          "UNPROCESSED && !OK": 1,
-          "checkedAs": {
-            "IS_BUG": 0,
-            "IS_OK": 0,
-            "UNPROCESSED": 2,
+          'UNPROCESSED && !OK': 1,
+          'checkedAs': {
+            'IS_BUG': 0,
+            'IS_OK': 0,
+            'UNPROCESSED': 2
           },
-          "id": "2",
-          "reportedAs": {
-            "ERROR": 0,
-            "OK": 1,
-            "SUSPICIOUS": 1,
+          'id': '2',
+          'reportedAs': {
+            'ERROR': 0,
+            'OK': 1,
+            'SUSPICIOUS': 1
           },
-          "revisionAt": "1970-01-01T00:00:02.000Z",
-          "total": 2,
-          "updatedAt": "1970-01-01T00:00:00.000Z",
+          'revisionAt': '1970-01-01T00:00:02.000Z',
+          'total': 2,
+          'updatedAt': '1970-01-01T00:00:00.000Z'
         } ]
       }, done);
     });
-    it('GET /api/revisions/1/captures returns 2 documents' , function(done) {
+    it('GET /api/revisions/1/captures returns 2 documents', function(done) {
       request(app)
       .get('/api/revisions/1/captures')
       .expect({
@@ -564,7 +563,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 0,
             IS_OK: 2,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -609,7 +608,7 @@ describe('Application', function() {
              'expect_image': 'revision1/scenario2/capture2.png' }] })
       .end(done);
     });
-    it('GET /api/revisions/1/captures?limit=1 returns 2 documents' , function(done) {
+    it('GET /api/revisions/1/captures?limit=1 returns 2 documents', function(done) {
       request(app)
       .get('/api/revisions/1/captures?limit=1')
       .expect({
@@ -620,7 +619,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 0,
             IS_OK: 2,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -649,7 +648,7 @@ describe('Application', function() {
              'expect_image': 'revision1/scenario1/capture1.jpg' }] })
       .end(done);
     });
-    it('GET /api/revisions/1/captures?limit=1&skip=1 returns 2 documents' , function(done) {
+    it('GET /api/revisions/1/captures?limit=1&skip=1 returns 2 documents', function(done) {
       request(app)
       .get('/api/revisions/1/captures?limit=1&skip=1')
       .expect({
@@ -660,7 +659,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 0,
             IS_OK: 2,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -691,9 +690,9 @@ describe('Application', function() {
       .end(done);
     });
 
-    // Test changing "checkedAs" status
+    // Test changing 'checkedAs' status
 
-    it('POST /api/revisions/2/captures/db38f7f3f5d7d765f97e45d185066cc9 should change "checkedAs"' , function(done) {
+    it('POST /api/revisions/2/captures/db38f7f3f5d7d765f97e45d185066cc9 should change "checkedAs"', function(done) {
       request(app)
       .post('/api/revisions/2/captures/db38f7f3f5d7d765f97e45d185066cc9')
       .send({ checkedAs: 'IS_BUG' })
@@ -742,12 +741,12 @@ describe('Application', function() {
             { dx: -6.2871503829956055, dy: -0.9457563161849976, x: 160, y: 110 },
             { dx: -7.390625476837158, dy: -5.659643173217773, x: 170, y: 110 }
           ],
-          "@siblings": { }
+          '@siblings': { }
         }
       }, done);
     });
 
-    it('should update its revision count' , function(done) {
+    it('should update its revision count', function(done) {
       request(app)
       .get('/api/revisions/2')
       .expect(200)
@@ -759,7 +758,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 1,
             IS_OK: 0,
-            IS_BUG: 1,
+            IS_BUG: 1
           },
           reportedAs: {
             ERROR: 0,
@@ -772,7 +771,7 @@ describe('Application', function() {
       }, done);
     });
 
-    it('/api/captures should not changed any data ' , function(done) {
+    it('/api/captures should not changed any data ', function(done) {
       request(app)
       .get('/api/captures')
       .expect(200)
@@ -794,7 +793,7 @@ describe('Application', function() {
       }, done);
     });
 
-    it('POST /api/revisions/2/captures/db38f7f3f5d7d765f97e45d185066cc9 should change status again' , function(done) {
+    it('POST /api/revisions/2/captures/db38f7f3f5d7d765f97e45d185066cc9 should change status again', function(done) {
       request(app)
       .post('/api/revisions/2/captures/db38f7f3f5d7d765f97e45d185066cc9')
       .send({ checkedAs: 'IS_OK' })
@@ -842,12 +841,12 @@ describe('Application', function() {
             { dx: -6.2871503829956055, dy: -0.9457563161849976, x: 160, y: 110 },
             { dx: -7.390625476837158, dy: -5.659643173217773, x: 170, y: 110 }
           ],
-          "@siblings": { }
+          '@siblings': { }
         }
       }, done);
     });
 
-    it('should update its revision count again' , function(done) {
+    it('should update its revision count again', function(done) {
       request(app)
       .get('/api/revisions/2')
       .expect(200)
@@ -859,7 +858,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 1,
             IS_OK: 1,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -872,7 +871,7 @@ describe('Application', function() {
       }, done);
     });
 
-    it('should update captures ' , function(done) {
+    it('should update captures ', function(done) {
       request(app)
       .get('/api/captures')
       .expect(200)
@@ -894,7 +893,7 @@ describe('Application', function() {
       }, done);
     });
 
-    it('GET /api/revisions/2/captures?status=SUSPICIOUS should filter docs by status' , function(done) {
+    it('GET /api/revisions/2/captures?status=SUSPICIOUS should filter docs by status', function(done) {
       request(app)
       .get('/api/revisions/2/captures?status=SUSPICIOUS')
       .expect({
@@ -905,7 +904,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 1,
             IS_OK: 1,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,
@@ -959,7 +958,7 @@ describe('Application', function() {
       .end(done);
     });
 
-    it('GET /api/revisions/2/captures?checkedAs=UNPROCESSED should filter docs by checkedAs' , function(done) {
+    it('GET /api/revisions/2/captures?checkedAs=UNPROCESSED should filter docs by checkedAs', function(done) {
       request(app)
       .get('/api/revisions/2/captures?checkedAs=UNPROCESSED')
       .expect({
@@ -970,7 +969,7 @@ describe('Application', function() {
           checkedAs: {
             UNPROCESSED: 1,
             IS_OK: 1,
-            IS_BUG: 0,
+            IS_BUG: 0
           },
           reportedAs: {
             ERROR: 0,

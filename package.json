@@ -7,7 +7,7 @@
     "postinstall": "mkdir -p public/{js,css}; bower install",
     "watch": "gulp watch",
     "build": "gulp",
-    "test": "eslint index.js app.js src && gulp && mocha"
+    "test": "eslint index.js app.js src test && gulp && mocha"
   },
   "dependencies": {
     "body-parser": "^1.9.3",
