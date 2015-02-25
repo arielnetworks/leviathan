@@ -7,12 +7,12 @@ var TidalWave = require('tidal-wave');
 var persist = require('../persist');
 var ApiUtil = require('./util');
 
-var PostTidalWave = {};
-module.exports.post = PostTidalWave;
+var POST = {};
+module.exports.post = POST;
 
 
 
-PostTidalWave[':id'] = function(req, res, next) {
+POST[':id'] = function(req, res, next) {
   var rid = req.params.id;
   var revisionAt = req.body && req.body.revisionAt;
   Q().then(function() {

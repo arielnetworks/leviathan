@@ -8,12 +8,12 @@ var ApiUtil = require('./util');
 
 
 
-var GetRevisions = module.exports['get'] = {};
-var PostRevisions = module.exports['post'] = {};
+var GET = module.exports['get'] = {};
+var POST = module.exports.post = {};
 
 
 
-GetRevisions[''] = function(req, res, next) {
+GET[''] = function(req, res, next) {
   var query = req.query || {};
   persist.findRevisions(+query.skip, +query.limit, query.order)
   .then(ApiUtil.putResolvedValue(req))
@@ -21,7 +21,7 @@ GetRevisions[''] = function(req, res, next) {
   .done(next);
 };
 
-GetRevisions[':id'] = function(req, res, next) {
+GET[':id'] = function(req, res, next) {
   persist.findRevision(req.params.id)
   .then(function(current) {
     return { current: current };
@@ -31,7 +31,7 @@ GetRevisions[':id'] = function(req, res, next) {
   .done(next);
 };
 
-GetRevisions[':id/captures'] = function(req, res, next) {
+GET[':id/captures'] = function(req, res, next) {
   var query = req.query || {};
   Q.all([
     persist.findRevision(req.params.id),
@@ -50,14 +50,14 @@ GetRevisions[':id/captures'] = function(req, res, next) {
   .done(next);
 };
 
-GetRevisions[':id/captures/:capture'] = function(req, res, next) {
+GET[':id/captures/:capture'] = function(req, res, next) {
   buildCapture(req.params.id, req.params.capture)
   .then(ApiUtil.putResolvedValue(req))
   .catch(ApiUtil.putRejectedReason(req))
   .done(next);
 };
 
-PostRevisions[':id/captures/:capture'] = function(req, res, next) {
+POST[':id/captures/:capture'] = function(req, res, next) {
   var data = {};
   var checkedAs = getStatusFromReqest(req);
   if (checkedAs) {
@@ -69,10 +69,7 @@ PostRevisions[':id/captures/:capture'] = function(req, res, next) {
       return buildCapture(req.params.id, req.params.capture);
     }
     res.status(404);
-    return {
-      error: true,
-      reason: STATUS_CODES[404]
-    };
+    throw new Error('404');
   })
   .then(ApiUtil.putResolvedValue(req))
   .catch(ApiUtil.putRejectedReason(req))

@@ -4,11 +4,11 @@ var ApiUtil = require('./util');
 
 
 
-var GetRevisions = module.exports['get'] = {};
+var GET = module.exports['get'] = {};
 
 
 
-GetRevisions[''] = function(req, res, next) {
+GET[''] = function(req, res, next) {
   var query = req.query || {};
   persist.findCaptures(+query.skip, +query.limit)
   .then(function(docs) {
