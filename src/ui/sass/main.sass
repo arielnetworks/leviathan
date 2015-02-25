@@ -24,6 +24,8 @@ $btn-default-color: $gray-dark
 $btn-default-bg: #e0e3e5
 $btn-default-border: darken(#e0e3e5, 5%)
 
+$fa-font: normal normal normal 14px/1 FontAwesome
+
 
 
 @import _bootstrap
@@ -104,11 +106,17 @@ $btn-default-border: darken(#e0e3e5, 5%)
     width: 100%
     .progress
       margin-bottom: 0
-  .cell--clickable
+  .cell__link
     text-decoration: underline
     cursor: pointer
     &:hover
       text-decoration: none
+  .cell--ordered::after
+    font: $fa-font
+  .cell--ordered-asc::after
+    content: $fa-var-sort-asc
+  .cell--ordered-desc::after
+    content: $fa-var-sort-desc
 
 .paged-table--captures
   .cell--captureName

@@ -76,27 +76,29 @@ function syncRevisions(page) {
   .catch(err => console.error(err.stack));
 }
 
-function syncCaptures(revision, page) {
+function syncCaptures(revision, page, order) {
   // TODO: Not clear enough. Use "rid" as an revision id.
   var { skip, limit, range } = getRequestParams(page,
       _store.revisionsTable[revision] ? _store.revisionsTable[revision].total : 0);
   if (_store.revisionsTable[revision] &&
       !_store.revisionsTable[revision]['@expired'] &&
       _store.revisionsTable[revision]['@captures'] &&
-      range.every(i => !!_store.revisionsTable[revision]['@captures'][i])
+      range.every(i => !!_store.revisionsTable[revision]['@captures'][i]) &&
+      order === _store.revisionsTable[revision].order
   ) {
     return;
   }
-  xhr(Path.join('/api/revisions', revision, 'captures?') + QueryString.stringify({skip, limit}))
-  .then(storeCaptures.bind(null, revision, range))
+  xhr(Path.join('/api/revisions', revision, 'captures?') + QueryString.stringify({skip, limit, order}))
+  .then(storeCaptures.bind(null, revision, range, order))
   .catch((err) => console.error(err.stack));
 }
 
-function storeCaptures(revision, range, json) {
+function storeCaptures(revision, range, order, json) {
   if (_store.revisionsTable[revision]) delete _store.revisionsTable[revision]['@expired'];
   // Use _.extend to keep _store.revisions[i] and _store.revisionsTable[revision] the same reference.
   _store.revisionsTable[revision] = _.extend(_store.revisionsTable[revision] || {}, json.current);
   _store.revisionsTable[revision]['@captures'] = _store.revisionsTable[revision]['@captures'] || [];
+  _store.revisionsTable[revision].order = order;
   var skip = range[0] || 0;
   _.each(range, i => {
     var item = json.items[i - skip];

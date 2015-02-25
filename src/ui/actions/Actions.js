@@ -1,11 +1,10 @@
 
 var Dispatcher = require('../dispatcher/Dispatcher');
 var {Actions, ToggleCheckedAsOrder} = require('../const');
-var _ = require('underscore');
 
 
 
-module.exports = { checkAs, sort, toggleCheckedAs };
+module.exports = { checkAs, toggleCheckedAs };
 
 
 
@@ -18,11 +17,6 @@ function checkAs(revision, capture, as) {
     type: Actions.CHECKAS,
     revision, capture, as
   });
-}
-
-function sort(names) {
-  if (!_.isArray(names)) names = [names];
-  console.log(names);
 }
 
 function toggleCheckedAs(capture, direction) {
