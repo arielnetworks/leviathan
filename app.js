@@ -76,7 +76,6 @@ function launch(config) {
 
   var RevisionsApi = require('./src/api/revisions');
   var routes = require('./src/ui/routes');
-  // TODO: Separate store for each request.
   var RevisionStore = require('./src/ui/stores/RevisionStore');
 
   app.get('/', function(req, res, next) {

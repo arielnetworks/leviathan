@@ -99,11 +99,12 @@ module.exports.create = () => {
       return;
     }
     xhr(Path.join('/api/revisions', revision, 'captures?') + QueryString.stringify({skip, limit}))
-    .then(storeCaptures.bind(null, revision, range))
+    .then(storeCaptures.bind(null, range))
     .catch((err) => console.error(err.stack));
   }
 
-  function storeCaptures(revision, range, json) {
+  function storeCaptures(range, json) {
+    var revision = json.current.id;
     if (_store.revisionsTable[revision]) delete _store.revisionsTable[revision]['@expired'];
     // Use _.extend to keep _store.revisions[i] and _store.revisionsTable[revision] the same reference.
     _store.revisionsTable[revision] = _.extend(_store.revisionsTable[revision] || {}, json.current);
