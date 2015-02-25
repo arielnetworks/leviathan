@@ -3,7 +3,6 @@ var _mixins = require('./_mixins');
 var React = require('react');
 var Router = require('react-router');
 var Path = require('path');
-var RevisionStore = require('../stores/RevisionStore');
 var Const = require('../const');
 var ProgressBar = require('../components/ProgressBar');
 var Navbar = require('../components/Navbar');

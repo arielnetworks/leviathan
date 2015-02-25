@@ -1,6 +1,4 @@
 
-var RevisionStore = require('../stores/RevisionStore');
-
 module.exports = {
 
   componentDidMount() {

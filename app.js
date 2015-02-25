@@ -19,7 +19,6 @@ var ApiUtil = require('./src/api/util');
 var React = require('react');
 var Router = require('react-router');
 require('node-jsx').install({ harmony: true });
-var routes = require('./src/ui/routes');
 
 
 
@@ -76,21 +75,48 @@ function launch(config) {
   app.use(express.static(Path.join(__dirname, 'public')));
 
   var RevisionsApi = require('./src/api/revisions');
+  var routes = require('./src/ui/routes');
   // TODO: Separate store for each request.
   var RevisionStore = require('./src/ui/stores/RevisionStore');
 
-  app.get('/', RevisionsApi.get[''], function(req, res, next) {
-    RevisionStore.storeRevisions(req['@resolvedValue']);
-    next();
-  }, handleBrowserRequest);
-  app.get('/revisions/:revision', RevisionsApi.get[':id'], function(req, res, next) {
-    RevisionStore.storeCaptures(req['@resolvedValue']);
-    next();
-  }, handleBrowserRequest);
+  app.get('/', function(req, res, next) {
+    var store = RevisionStore.create();
+    RevisionsApi.get[''](req)
+    .then(function(data) {
+      store.storeRevisions(data);
+    })
+    .done(bindDataOnResponse(req, res, store))
+  });
+
+  app.get('/revisions/:id', function(req, res, next) {
+    var store = RevisionStore.create();
+    RevisionsApi.get[':id'](req)
+    .then(function(data) {
+      store.storeCaptures(data);
+    })
+    .done(bindDataOnResponse(req, res, store))
+  });
+
   app.get('/revisions/:revision/captures/:capture', function(req, res, next) {
     RevisionStore.storeCaptures(req['@resolvedValue']);
     next();
   }, handleBrowserRequest);
+
+
+  function bindDataOnResponse(req, res, store) {
+    return function() {
+      Router.run(routes, req.path, function(Handler) {
+        var markup = React.renderToString(React.createElement(Handler, { store: store }));
+        res.render('index', {
+          markup: markup,
+          initialData: JSON.stringify(store.getStore())
+        });
+      });
+      store.clearStore();
+    }
+  }
+
+
 
   function handleBrowserRequest(req, res) {
     Router.run(routes, req.path, function(Handler) {

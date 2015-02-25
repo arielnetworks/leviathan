@@ -6,14 +6,13 @@ var Table = require('../components/Table');
 var Path = require('path');
 var ProgressBar = require('../components/ProgressBar');
 
-var RevisionStore = require('../stores/RevisionStore');
 var Navbar = require('../components/Navbar');
 var Link = require('../components/Link');
 
 var Index = React.createClass({
 
   getInitialState() {
-    var store = RevisionStore.getStore();
+    var store = this.props.store.getStore();
     return {
       revisions: store.revisions,
       revisionsTotal: store.revisionsTotal
@@ -21,7 +20,7 @@ var Index = React.createClass({
   },
 
   _onChange() {
-    var store = RevisionStore.getStore();
+    var store = this.props.store.getStore();
     this.setState({
       revisions: store.revisions,
       revisionsTotal: store.revisionsTotal
@@ -32,7 +31,7 @@ var Index = React.createClass({
 
   render() {
     var currPage = +this.getQuery().page || 1;
-    RevisionStore.syncRevisions(currPage);
+    this.props.store.syncRevisions(currPage);
     if (!this.state.revisions) return <span>...</span>;
 
     var Columns = [

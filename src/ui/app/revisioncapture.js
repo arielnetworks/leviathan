@@ -2,7 +2,6 @@
 var _mixins = require('./_mixins');
 var _ = require('underscore');
 var React = require('react');
-var RevisionStore = require('../stores/RevisionStore');
 var Path = require('path');
 var reactKeyboardShortcut = require('react-keyboardshortcut');
 var {State, HistoryLocation} = require('react-router');
@@ -28,7 +27,7 @@ var keyboardShortcut = reactKeyboardShortcut('onKeyboardShortcut', {
 var RevisionCapture = React.createClass({
 
   getInitialState() {
-    var store = RevisionStore.getStore();
+    var store = this.props.store.getStore();
     return {
       revision: store.revisionsTable[this.getParams().revision],
       capture: store.capturesTable[this.getParams().capture]
@@ -36,7 +35,7 @@ var RevisionCapture = React.createClass({
   },
 
   _onChange() {
-    var store = RevisionStore.getStore();
+    var store = this.props.store.getStore();
     this.setState({
       revision: store.revisionsTable[this.getParams().revision],
       capture: store.capturesTable[this.getParams().capture]
@@ -78,8 +77,8 @@ var RevisionCapture = React.createClass({
   // TODO: "/captures" must come from global.configure
   render() {
     // TODO: Sync once.
-    RevisionStore.syncCaptures(this.getParams().revision, 1);
-    RevisionStore.syncCapture(this.getParams().revision, this.getParams().capture);
+    this.props.store.syncCaptures(this.getParams().revision, 1);
+    this.props.store.syncCapture(this.getParams().revision, this.getParams().capture);
     var current = this.state.capture;
     if (!current) return <span>...</span>;
     var revision = this.state.revision;
