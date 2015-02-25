@@ -103,17 +103,34 @@ function findRevisionCapture(rid, capture) {
   return Q.ninvoke(db.captures, 'findOne', {revision: rid, capture: capture}, {_id: false});
 }
 
-// TODO: return "meta" and "items"
 function findRevisionCaptures(rid, skip, limit, order, status, checkedAs) {
+  skip = skip || 0;
+  limit = limit || DEFAULT_LIMIT;
   var query = { revision: rid };
   order = parseOrderParam_(order);
   if (status) query.status = status;
   if (checkedAs) query.checkedAs = checkedAs;
-  return Q.ninvoke(db.captures.find(query, {_id: false})
+  var cursor = db.captures.find(query, {_id: false})
+  return Q.all([
+    Q.ninvoke(cursor, 'count'),
+    Q.ninvoke(cursor
       .skip(skip || 0)
       .limit(limit || DEFAULT_LIMIT)
-      .sort(order.by || 'captureName', order.in || 1),
-  'toArray');
+      .sort(order.by || 'captureName', order.in || 1)
+    , 'toArray')
+  ])
+  .then(function(results) {
+    var total = results[0];
+    var items = results[1];
+    return {
+      meta: {
+        skip: skip,
+        limit: limit,
+        total: total
+      },
+      items: items
+    }
+  });
 }
 
 function upsertRevision(id, revisionAt) {

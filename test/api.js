@@ -104,6 +104,11 @@ describe('Application', function() {
       .get('/api/revisions/1/captures')
       .expect(200)
       .expect({
+        meta: {
+          limit: 20,
+          skip: 0,
+          total: 2
+        },
         current: {
           id: '1',
           revisionAt: '1970-01-01T00:00:01.000Z',
@@ -317,6 +322,11 @@ describe('Application', function() {
       request(app)
       .get('/api/revisions/2/captures')
       .expect({
+        meta: {
+          limit: 20,
+          skip: 0,
+          total: 2
+        },
         current: {
           id: '2',
           revisionAt: '1970-01-01T00:00:02.000Z',
@@ -556,6 +566,11 @@ describe('Application', function() {
       request(app)
       .get('/api/revisions/1/captures')
       .expect({
+        meta: {
+          limit: 20,
+          skip: 0,
+          total: 2
+        },
         current: {
           id: '1',
           revisionAt: '1970-01-01T00:00:01.000Z',
@@ -612,6 +627,11 @@ describe('Application', function() {
       request(app)
       .get('/api/revisions/1/captures?limit=1')
       .expect({
+        meta: {
+          limit: 1,
+          skip: 0,
+          total: 2
+        },
         current: {
           id: '1',
           revisionAt: '1970-01-01T00:00:01.000Z',
@@ -652,6 +672,11 @@ describe('Application', function() {
       request(app)
       .get('/api/revisions/1/captures?limit=1&skip=1')
       .expect({
+        meta: {
+          limit: 1,
+          skip: 1,
+          total: 2
+        },
         current: {
           id: '1',
           revisionAt: '1970-01-01T00:00:01.000Z',
@@ -897,6 +922,11 @@ describe('Application', function() {
       request(app)
       .get('/api/revisions/2/captures?status=SUSPICIOUS')
       .expect({
+        meta: {
+          limit: 20,
+          skip: 0,
+          total: 1
+        },
         current: {
           id: '2',
           revisionAt: '1970-01-01T00:00:02.000Z',
@@ -962,6 +992,11 @@ describe('Application', function() {
       request(app)
       .get('/api/revisions/2/captures?checkedAs=UNPROCESSED')
       .expect({
+        meta: {
+          limit: 20,
+          skip: 0,
+          total: 1
+        },
         current: {
           id: '2',
           revisionAt: '1970-01-01T00:00:02.000Z',

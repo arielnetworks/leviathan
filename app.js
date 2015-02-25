@@ -142,7 +142,8 @@ function launch(config) {
         app[method](Path.join('/api/', name, action), function(req, res) {
           buildData(req)
           .catch(function(reason) {
-            return res.json({ error: true, reason: reason });
+            throw new Error(reason);
+            return { error: true, reason: reason };
           })
           .done(function(data) {
             res.json(data);

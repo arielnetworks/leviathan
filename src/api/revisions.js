@@ -3,8 +3,8 @@ var Q = require('q');
 var _ = require('underscore');
 // DB Shemas
 var persist = require('../persist');
-var STATUS_CODES = require('http').STATUS_CODES;
-var ApiUtil = require('./util');
+// var STATUS_CODES = require('http').STATUS_CODES;
+// var ApiUtil = require('./util');
 
 
 
@@ -15,7 +15,7 @@ var POST = module.exports.post = {};
 
 GET[''] = function(req) {
   var query = req.query || {};
-  return persist.findRevisions(+query.skip, +query.limit, query.order)
+  return persist.findRevisions(+query.skip, +query.limit, query.order);
   // .then(ApiUtil.putResolvedValue(req))
   // .catch(ApiUtil.putRejectedReason(req))
   // .done(next);
@@ -25,7 +25,7 @@ GET[':id'] = function(req) {
   return persist.findRevision(req.params.id)
   .then(function(current) {
     return { current: current };
-  })
+  });
   // .then(ApiUtil.putResolvedValue(req))
   // .catch(ApiUtil.putRejectedReason(req))
   // .done(next);
@@ -40,18 +40,22 @@ GET[':id/captures'] = function(req) {
         query.status, query.checkedAs)
   ])
   .then(function(results) {
-    return {
-      current: results[0],
-      items: results[1]
-    };
-  })
+    var current = results[0];
+    var meta = results[1].meta;
+    var items = results[1].items;
+    return _.extend(results[1], {
+      current: current,
+      meta: meta,
+      items: items
+    });
+  });
   // .then(ApiUtil.putResolvedValue(req))
   // .catch(ApiUtil.putRejectedReason(req))
   // .done(next);
 };
 
 GET[':id/captures/:capture'] = function(req) {
-  return buildCapture(req.params.id, req.params.capture)
+  return buildCapture(req.params.id, req.params.capture);
   // .then(ApiUtil.putResolvedValue(req))
   // .catch(ApiUtil.putRejectedReason(req))
   // .done(next);
@@ -68,9 +72,8 @@ POST[':id/captures/:capture'] = function(req) {
     if (doc) {
       return buildCapture(req.params.id, req.params.capture);
     }
-    res.status(404);
     throw new Error('404');
-  })
+  });
   // .then(ApiUtil.putResolvedValue(req))
   // .catch(ApiUtil.putRejectedReason(req))
   // .done(next);

@@ -18,7 +18,7 @@ var CHANGE_EVENT = 'change';
 module.exports.create = () => {
   var _store;
 
-  // TODO: this variable is not necessary. refactor. 
+  // TODO: this variable is not necessary. refactor.
   var _emitter;
 
   clearStore();
