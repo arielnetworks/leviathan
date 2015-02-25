@@ -5,7 +5,6 @@ var Q = require('q');
 Q.longStackSupport = true;
 var TidalWave = require('tidal-wave');
 var persist = require('../persist');
-var ApiUtil = require('./util');
 
 var POST = {};
 module.exports.post = POST;
@@ -26,7 +25,7 @@ POST[':id'] = function(req) {
   .then(function(result) {
     var tidalWaveResult = result[0];
     return tidalWaveResult;
-  })
+  });
 };
 
 

@@ -14,7 +14,6 @@ var Q = require('q');
 Q.longStackSupport = true;
 var assert = require('assert');
 var compress = require('compression');
-var ApiUtil = require('./src/api/util');
 
 var React = require('react');
 var Router = require('react-router');
@@ -78,23 +77,23 @@ function launch(config) {
   var routes = require('./src/ui/routes');
   var RevisionStore = require('./src/ui/stores/RevisionStore');
 
-  app.get('/', function(req, res, next) {
+  app.get('/', function(req, res) {
     var store = RevisionStore.create();
     RevisionsApi.get[''](req)
     .then(store.storeRevisions.bind(store))
     .catch(asError)
-    .done(bindDataOnHTML(req, res, store))
+    .done(bindDataOnHTML(req, res, store));
   });
 
-  app.get('/revisions/:id', function(req, res, next) {
+  app.get('/revisions/:id', function(req, res) {
     var store = RevisionStore.create();
     RevisionsApi.get[':id/captures'](req)
     .then(store.storeCaptures.bind(store))
     .catch(asError)
-    .done(bindDataOnHTML(req, res, store))
+    .done(bindDataOnHTML(req, res, store));
   });
 
-  app.get('/revisions/:id/captures/:capture', function(req, res, next) {
+  app.get('/revisions/:id/captures/:capture', function(req, res) {
     var store = RevisionStore.create();
     Q.all([
       RevisionsApi.get[':id/captures'](req)
@@ -103,7 +102,7 @@ function launch(config) {
       .then(store.storeCapture.bind(store))
     ])
     .catch(asError)
-    .done(bindDataOnHTML(req, res, store))
+    .done(bindDataOnHTML(req, res, store));
   });
 
 
@@ -118,18 +117,7 @@ function launch(config) {
         });
       });
       store.clearStore();
-    }
-  }
-
-  function handleBrowserRequest(req, res) {
-    Router.run(routes, req.path, function(Handler) {
-      var markup = React.renderToString(React.createElement(Handler));
-      res.render('index', {
-        markup: markup
-        // , initialData: JSON.stringify(RevisionStore.getStore())
-      });
-    });
-    RevisionStore.clearStore();
+    };
   }
 
   // API Routing
@@ -158,7 +146,7 @@ function launch(config) {
 
   if (app.get('env') === 'development') {
     /*eslint-disable no-unused-vars*/
-    app.use(function(err, req, res, next) {
+    app.use(function(err, req, res) {
       res.status(err.status || 500);
       res.render('error', {
         message: err.message,

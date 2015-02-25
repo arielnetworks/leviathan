@@ -142,7 +142,7 @@ module.exports.create = () => {
     }
 
   });
-  
+
   emitter.clearStore();
 
   return emitter;

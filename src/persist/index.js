@@ -110,7 +110,7 @@ function findRevisionCaptures(rid, skip, limit, order, status, checkedAs) {
   order = parseOrderParam_(order);
   if (status) query.status = status;
   if (checkedAs) query.checkedAs = checkedAs;
-  var cursor = db.captures.find(query, {_id: false})
+  var cursor = db.captures.find(query, {_id: false});
   return Q.all([
     Q.ninvoke(cursor, 'count'),
     Q.ninvoke(cursor
@@ -129,7 +129,7 @@ function findRevisionCaptures(rid, skip, limit, order, status, checkedAs) {
         total: total
       },
       items: items
-    }
+    };
   });
 }
 

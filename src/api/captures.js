@@ -1,6 +1,5 @@
 
 var persist = require('../persist');
-var ApiUtil = require('./util');
 
 
 
@@ -15,5 +14,5 @@ GET[''] = function(req) {
     return {
       items: docs || []
     };
-  })
+  });
 };
