@@ -27,9 +27,6 @@ POST[':id'] = function(req) {
     var tidalWaveResult = result[0];
     return tidalWaveResult;
   })
-  // .then(ApiUtil.putResolvedValue(req))
-  // .catch(ApiUtil.putRejectedReason(req))
-  // .done(next);
 };
 
 

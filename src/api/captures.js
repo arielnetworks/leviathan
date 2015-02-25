@@ -16,7 +16,4 @@ GET[''] = function(req) {
       items: docs || []
     };
   })
-  // .then(ApiUtil.putResolvedValue(req))
-  // .catch(ApiUtil.putRejectedReason(req))
-  // .done(next);
 };

@@ -96,10 +96,19 @@ function launch(config) {
     .done(bindDataOnResponse(req, res, store))
   });
 
-  app.get('/revisions/:revision/captures/:capture', function(req, res, next) {
-    RevisionStore.storeCaptures(req['@resolvedValue']);
-    next();
-  }, handleBrowserRequest);
+  app.get('/revisions/:id/captures/:capture', function(req, res, next) {
+    var store = RevisionStore.create();
+    Q.all([
+      RevisionsApi.get[':id/captures'](req),
+      RevisionsApi.get[':id/captures/:capture'](req)
+    ])
+    .then(function(results) {
+      store.storeCaptures(results[0]);
+      store.storeCapture(results[1]);
+    })
+    .catch(function(err) {console.log(err.stack)})
+    .done(bindDataOnResponse(req, res, store))
+  });
 
 
   function bindDataOnResponse(req, res, store) {

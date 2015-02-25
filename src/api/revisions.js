@@ -1,10 +1,7 @@
 
 var Q = require('q');
 var _ = require('underscore');
-// DB Shemas
 var persist = require('../persist');
-// var STATUS_CODES = require('http').STATUS_CODES;
-// var ApiUtil = require('./util');
 
 
 
@@ -16,9 +13,6 @@ var POST = module.exports.post = {};
 GET[''] = function(req) {
   var query = req.query || {};
   return persist.findRevisions(+query.skip, +query.limit, query.order);
-  // .then(ApiUtil.putResolvedValue(req))
-  // .catch(ApiUtil.putRejectedReason(req))
-  // .done(next);
 };
 
 GET[':id'] = function(req) {
@@ -26,9 +20,6 @@ GET[':id'] = function(req) {
   .then(function(current) {
     return { current: current };
   });
-  // .then(ApiUtil.putResolvedValue(req))
-  // .catch(ApiUtil.putRejectedReason(req))
-  // .done(next);
 };
 
 GET[':id/captures'] = function(req) {
@@ -49,16 +40,10 @@ GET[':id/captures'] = function(req) {
       items: items
     });
   });
-  // .then(ApiUtil.putResolvedValue(req))
-  // .catch(ApiUtil.putRejectedReason(req))
-  // .done(next);
 };
 
 GET[':id/captures/:capture'] = function(req) {
   return buildCapture(req.params.id, req.params.capture);
-  // .then(ApiUtil.putResolvedValue(req))
-  // .catch(ApiUtil.putRejectedReason(req))
-  // .done(next);
 };
 
 POST[':id/captures/:capture'] = function(req) {
@@ -74,9 +59,6 @@ POST[':id/captures/:capture'] = function(req) {
     }
     throw new Error('404');
   });
-  // .then(ApiUtil.putResolvedValue(req))
-  // .catch(ApiUtil.putRejectedReason(req))
-  // .done(next);
 };
 
 
@@ -88,6 +70,7 @@ function buildCapture(revision, capture) {
     persist.findSiblingRevisionCaptureOf(revision, capture, 1)
   ])
   .then(function(results) {
+    console.log(results)
     var current = results[0];
     var previous = results[1];
     var next = results[2];
