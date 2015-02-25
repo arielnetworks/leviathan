@@ -17,11 +17,26 @@ var CHANGE_EVENT = 'change';
 
 module.exports.create = () => {
   var _store;
+  var _dispatcherId;
 
   var emitter = assign({}, EventEmitter.prototype, {
 
     initialize(store) {
       _store = store;
+
+      _dispatcherId = Dispatcher.register(action => {
+        switch(action.type) {
+          case Actions.CHECKAS:
+            // We should not erase record here, otherwise UI will
+            // be rendered twice and it's not good look.
+            if (_store.revisionsTable[action.revision])
+              _store.revisionsTable[action.revision]['@expired'] = true;
+            if (_store.capturesTable[action.capture])
+              _store.capturesTable[action.capture]['@expired'] = true;
+            emitter.checkAs(action.revision, action.capture, action.as);
+            break;
+        }
+      });
     },
 
     getStore() {
@@ -35,14 +50,17 @@ module.exports.create = () => {
         revisionsTable: {},
         capturesTable: {}
       };
+      if (_dispatcherId) {
+        Dispatcher.unregister(_dispatcherId);
+      }
     },
 
     addChangeListener(callback) {
-      this.on(CHANGE_EVENT, callback);
+      emitter.on(CHANGE_EVENT, callback);
     },
 
     removeChangeListener(callback) {
-      this.removeListener(CHANGE_EVENT, callback);
+      emitter.removeListener(CHANGE_EVENT, callback);
     },
 
     syncRevisions(page) {
@@ -51,7 +69,7 @@ module.exports.create = () => {
         return;
       }
       xhr('/api/revisions?' + QueryString.stringify({skip, limit}))
-      .then(storeRevisions)
+      .then(emitter.storeRevisions)
       .catch(err => console.error(err.stack));
     },
 
@@ -67,7 +85,7 @@ module.exports.create = () => {
         return;
       }
       xhr(Path.join('/api/revisions', revision, 'captures?') + QueryString.stringify({skip, limit}))
-      .then(this.storeCaptures)
+      .then(emitter.storeCaptures)
       .catch((err) => console.error(err.stack));
     },
 
@@ -79,14 +97,13 @@ module.exports.create = () => {
       // Use _.extend to keep _store.revisions[i] and _store.revisionsTable[revision] the same reference.
       _store.revisionsTable[revision] = _.extend(_store.revisionsTable[revision] || {}, json.current);
       _store.revisionsTable[revision]['@captures'] = _store.revisionsTable[revision]['@captures'] || [];
-      var skip = range[0] || 0;
       _.each(range, i => {
         var item = json.items[i - skip];
         if (!item) return;
         _store.revisionsTable[revision]['@captures'][i] = item;
         _store.capturesTable[item.capture] = item;
       });
-      this.emit(CHANGE_EVENT);
+      emitter.emit(CHANGE_EVENT);
     },
 
     syncCapture(revision, capture) {
@@ -94,7 +111,7 @@ module.exports.create = () => {
           !_store.capturesTable[capture]['@expired'] &&
           _store.capturesTable[capture]['@siblings']) return;
       xhr(Path.join('/api/revisions', revision, 'captures', capture))
-      .then(this.storeCapture)
+      .then(emitter.storeCapture)
       .catch((err) => console.error(err.stack));
     },
 
@@ -102,7 +119,7 @@ module.exports.create = () => {
       xhr.post(Path.join('/api/revisions', revision, 'captures', capture), {
         checkedAs: as
       })
-      .then(this.storeCapture)
+      .then(emitter.storeCapture)
       .catch(err => console.error(err.stack));
     },
 
@@ -116,28 +133,14 @@ module.exports.create = () => {
         _store.revisions[i] = item;
         _store.revisionsTable[item.id] = item;
       });
-      this.emit(CHANGE_EVENT);
+      emitter.emit(CHANGE_EVENT);
     },
 
     storeCapture(json) {
       _store.capturesTable[json.current.capture] = json.current;
-      this.emit(CHANGE_EVENT);
+      emitter.emit(CHANGE_EVENT);
     }
 
-  });
-
-  Dispatcher.register(function(action) {
-    switch(action.type) {
-      case Actions.CHECKAS:
-        // We should not erase record here, otherwise UI will
-        // be rendered twice and it's not good look.
-        if (_store.revisionsTable[action.revision])
-          _store.revisionsTable[action.revision]['@expired'] = true;
-        if (_store.capturesTable[action.capture])
-          _store.capturesTable[action.capture]['@expired'] = true;
-        checkAs(action.revision, action.capture, action.as);
-        break;
-    }
   });
   
   emitter.clearStore();
