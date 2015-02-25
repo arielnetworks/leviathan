@@ -99,12 +99,11 @@ module.exports.create = () => {
       return;
     }
     xhr(Path.join('/api/revisions', revision, 'captures?') + QueryString.stringify({skip, limit}))
-    .then(storeCaptures.bind(null, range))
+    .then(storeCaptures)
     .catch((err) => console.error(err.stack));
   }
 
   function storeCaptures(json) {
-    console.log(json)
     var range = _.range(json.meta.skip, json.meta.skip + json.meta.limit);
     var skip = range[0] || 0;
     var revision = json.current.id;

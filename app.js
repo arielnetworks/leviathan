@@ -81,37 +81,34 @@ function launch(config) {
   app.get('/', function(req, res, next) {
     var store = RevisionStore.create();
     RevisionsApi.get[''](req)
-    .then(function(data) {
-      store.storeRevisions(data);
-    })
-    .done(bindDataOnResponse(req, res, store))
+    .then(store.storeRevisions.bind(store))
+    .catch(asError)
+    .done(bindDataOnHTML(req, res, store))
   });
 
   app.get('/revisions/:id', function(req, res, next) {
     var store = RevisionStore.create();
     RevisionsApi.get[':id/captures'](req)
-    .then(function(data) {
-      store.storeCaptures(data);
-    })
-    .done(bindDataOnResponse(req, res, store))
+    .then(store.storeCaptures.bind(store))
+    .catch(asError)
+    .done(bindDataOnHTML(req, res, store))
   });
 
   app.get('/revisions/:id/captures/:capture', function(req, res, next) {
     var store = RevisionStore.create();
     Q.all([
-      RevisionsApi.get[':id/captures'](req),
+      RevisionsApi.get[':id/captures'](req)
+      .then(store.storeCaptures.bind(store)),
       RevisionsApi.get[':id/captures/:capture'](req)
+      .then(store.storeCapture.bind(store))
     ])
-    .then(function(results) {
-      store.storeCaptures(results[0]);
-      store.storeCapture(results[1]);
-    })
-    .catch(function(err) {console.log(err.stack)})
-    .done(bindDataOnResponse(req, res, store))
+    .catch(asError)
+    .done(bindDataOnHTML(req, res, store))
   });
 
 
-  function bindDataOnResponse(req, res, store) {
+
+  function bindDataOnHTML(req, res, store) {
     return function() {
       Router.run(routes, req.path, function(Handler) {
         var markup = React.renderToString(React.createElement(Handler, { store: store }));
@@ -124,8 +121,6 @@ function launch(config) {
     }
   }
 
-
-
   function handleBrowserRequest(req, res) {
     Router.run(routes, req.path, function(Handler) {
       var markup = React.renderToString(React.createElement(Handler));
@@ -137,9 +132,6 @@ function launch(config) {
     RevisionStore.clearStore();
   }
 
-
-
-
   // API Routing
   _.each([
     'revisions',
@@ -150,22 +142,23 @@ function launch(config) {
       _.each(actions, function(buildData, action) {
         app[method](Path.join('/api/', name, action), function(req, res) {
           buildData(req)
-          .catch(function(reason) {
-            throw new Error(reason);
-            return { error: true, reason: reason };
-          })
-          .done(function(data) {
-            res.json(data);
-          })
+          .catch(asError)
+          .done(res.json.bind(res));
         });
       });
     });
   });
 
+  function asError(reason) {
+    console.error(reason);
+    return { error: true, reason: reason };
+  }
+
+
+
   if (app.get('env') === 'development') {
     /*eslint-disable no-unused-vars*/
     app.use(function(err, req, res, next) {
-      // console.log(err.stack);
       res.status(err.status || 500);
       res.render('error', {
         message: err.message,

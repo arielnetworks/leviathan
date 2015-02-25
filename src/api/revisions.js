@@ -70,7 +70,6 @@ function buildCapture(revision, capture) {
     persist.findSiblingRevisionCaptureOf(revision, capture, 1)
   ])
   .then(function(results) {
-    console.log(results)
     var current = results[0];
     var previous = results[1];
     var next = results[2];
