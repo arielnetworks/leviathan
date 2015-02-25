@@ -73,8 +73,11 @@ function launch(config) {
   app.use(global.configure.publicCaptureDir, express.static(global.configure.baseImageDir));
   app.use(express.static(Path.join(__dirname, 'public')));
 
+
+
+  // Browser Access Routes
   var RevisionsApi = require('./src/api/revisions');
-  var routes = require('./src/ui/routes');
+  var UiRoutes = require('./src/ui/routes');
   var RevisionStore = require('./src/ui/stores/RevisionStore');
 
   app.get('/', function(req, res) {
@@ -105,11 +108,9 @@ function launch(config) {
     .done(bindDataOnHTML(req, res, store));
   });
 
-
-
   function bindDataOnHTML(req, res, store) {
     return function() {
-      Router.run(routes, req.path, function(Handler) {
+      Router.run(UiRoutes, req.path, function(Handler) {
         var markup = React.renderToString(React.createElement(Handler, { store: store }));
         res.render('index', {
           markup: markup,
@@ -119,6 +120,8 @@ function launch(config) {
       store.clearStore();
     };
   }
+
+
 
   // API Routing
   _.each([
