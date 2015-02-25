@@ -103,7 +103,10 @@ module.exports.create = () => {
     .catch((err) => console.error(err.stack));
   }
 
-  function storeCaptures(range, json) {
+  function storeCaptures(json) {
+    console.log(json)
+    var range = _.range(json.meta.skip, json.meta.skip + json.meta.limit);
+    var skip = range[0] || 0;
     var revision = json.current.id;
     if (_store.revisionsTable[revision]) delete _store.revisionsTable[revision]['@expired'];
     // Use _.extend to keep _store.revisions[i] and _store.revisionsTable[revision] the same reference.

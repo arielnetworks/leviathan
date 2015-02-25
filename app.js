@@ -89,7 +89,7 @@ function launch(config) {
 
   app.get('/revisions/:id', function(req, res, next) {
     var store = RevisionStore.create();
-    RevisionsApi.get[':id'](req)
+    RevisionsApi.get[':id/captures'](req)
     .then(function(data) {
       store.storeCaptures(data);
     })
