@@ -19,9 +19,9 @@ module.exports.create = () => {
   var _store;
   var _dispatcherId;
 
-  var emitter = assign({}, EventEmitter.prototype, {
+  var emitter = window.emitter = assign({}, EventEmitter.prototype, {
 
-    initialize(store) {
+    initStore(store) {
       _store = store;
 
       _dispatcherId = Dispatcher.register(action => {
@@ -76,7 +76,7 @@ module.exports.create = () => {
     syncCaptures(revision, page) {
       // TODO: Not clear enough. Use "rid" as an revision id.
       var { skip, limit, range } = getRequestParams(page,
-          _store.revisionsTable[revision] ? _store.revisionsTable[revision].total : 0);
+          _store.revisionsTable[revision] ? _store.revisionsTable[revision].total : -1);
       if (_store.revisionsTable[revision] &&
           !_store.revisionsTable[revision]['@expired'] &&
           _store.revisionsTable[revision]['@captures'] &&
