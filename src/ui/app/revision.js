@@ -16,24 +16,25 @@ var Link = require('../components/Link');
 var Revision = React.createClass({
 
   getInitialState() {
-    var store = RevisionStore.getStore();
-    return {
-      revision: store.revisionsTable[this.getParams().revision]
-    };
+    return this._getState();
   },
 
   _onChange() {
-    var store = RevisionStore.getStore();
-    this.setState({
-      revision: store.revisionsTable[this.getParams().revision]
-    });
+    this.setState(this._getState());
+  },
+
+  _getState() {
+    return {
+      revision: this.props.store.getStore().revisionsTable[this.getParams().revision]
+    };
   },
 
   mixins: [_mixins, Router.State],
 
   render() {
+
     var currPage = +this.getQuery().page || 1;
-    RevisionStore.syncCaptures(this.getParams().revision, currPage);
+    this.props.store.syncCaptures(this.getParams().revision, currPage);
     var revision = this.state.revision;
     if (!revision || revision.total === null || !revision['@captures']) return <span>...</span>;
 

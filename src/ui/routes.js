@@ -22,7 +22,7 @@ var App = React.createClass({
 
   render: function () {
     return (
-      <RouteHandler/>
+      <RouteHandler store={this.props.store}/>
     );
   }
 });

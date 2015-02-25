@@ -96,8 +96,8 @@ function launch(config) {
     Router.run(routes, req.path, function(Handler) {
       var markup = React.renderToString(React.createElement(Handler));
       res.render('index', {
-        markup: markup,
-        initialData: JSON.stringify(RevisionStore.getStore())
+        markup: markup
+        // , initialData: JSON.stringify(RevisionStore.getStore())
       });
     });
     RevisionStore.clearStore();
