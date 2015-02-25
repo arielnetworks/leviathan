@@ -12,10 +12,10 @@ module.exports.post = POST;
 
 
 
-POST[':id'] = function(req, res, next) {
+POST[':id'] = function(req) {
   var rid = req.params.id;
   var revisionAt = req.body && req.body.revisionAt;
-  Q().then(function() {
+  return Q().then(function() {
     if (!revisionAt) throw new Error('Specify "revisionAt" which refers to a datetime of the commit');
     revisionAt = toDate(revisionAt);
     return Q.all([
@@ -27,9 +27,9 @@ POST[':id'] = function(req, res, next) {
     var tidalWaveResult = result[0];
     return tidalWaveResult;
   })
-  .then(ApiUtil.putResolvedValue(req))
-  .catch(ApiUtil.putRejectedReason(req))
-  .done(next);
+  // .then(ApiUtil.putResolvedValue(req))
+  // .catch(ApiUtil.putRejectedReason(req))
+  // .done(next);
 };
 
 

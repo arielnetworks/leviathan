@@ -13,27 +13,27 @@ var POST = module.exports.post = {};
 
 
 
-GET[''] = function(req, res, next) {
+GET[''] = function(req) {
   var query = req.query || {};
-  persist.findRevisions(+query.skip, +query.limit, query.order)
-  .then(ApiUtil.putResolvedValue(req))
-  .catch(ApiUtil.putRejectedReason(req))
-  .done(next);
+  return persist.findRevisions(+query.skip, +query.limit, query.order)
+  // .then(ApiUtil.putResolvedValue(req))
+  // .catch(ApiUtil.putRejectedReason(req))
+  // .done(next);
 };
 
-GET[':id'] = function(req, res, next) {
-  persist.findRevision(req.params.id)
+GET[':id'] = function(req) {
+  return persist.findRevision(req.params.id)
   .then(function(current) {
     return { current: current };
   })
-  .then(ApiUtil.putResolvedValue(req))
-  .catch(ApiUtil.putRejectedReason(req))
-  .done(next);
+  // .then(ApiUtil.putResolvedValue(req))
+  // .catch(ApiUtil.putRejectedReason(req))
+  // .done(next);
 };
 
-GET[':id/captures'] = function(req, res, next) {
+GET[':id/captures'] = function(req) {
   var query = req.query || {};
-  Q.all([
+  return Q.all([
     persist.findRevision(req.params.id),
     persist.findRevisionCaptures(req.params.id,
         +query.skip, +query.limit, query.order,
@@ -45,25 +45,25 @@ GET[':id/captures'] = function(req, res, next) {
       items: results[1]
     };
   })
-  .then(ApiUtil.putResolvedValue(req))
-  .catch(ApiUtil.putRejectedReason(req))
-  .done(next);
+  // .then(ApiUtil.putResolvedValue(req))
+  // .catch(ApiUtil.putRejectedReason(req))
+  // .done(next);
 };
 
-GET[':id/captures/:capture'] = function(req, res, next) {
-  buildCapture(req.params.id, req.params.capture)
-  .then(ApiUtil.putResolvedValue(req))
-  .catch(ApiUtil.putRejectedReason(req))
-  .done(next);
+GET[':id/captures/:capture'] = function(req) {
+  return buildCapture(req.params.id, req.params.capture)
+  // .then(ApiUtil.putResolvedValue(req))
+  // .catch(ApiUtil.putRejectedReason(req))
+  // .done(next);
 };
 
-POST[':id/captures/:capture'] = function(req, res, next) {
+POST[':id/captures/:capture'] = function(req) {
   var data = {};
   var checkedAs = getStatusFromReqest(req);
   if (checkedAs) {
     data['checkedAs'] = checkedAs;
   }
-  persist.updateCapture(req.params.id, req.params.capture, data)
+  return persist.updateCapture(req.params.id, req.params.capture, data)
   .then(function(doc) {
     if (doc) {
       return buildCapture(req.params.id, req.params.capture);
@@ -71,9 +71,9 @@ POST[':id/captures/:capture'] = function(req, res, next) {
     res.status(404);
     throw new Error('404');
   })
-  .then(ApiUtil.putResolvedValue(req))
-  .catch(ApiUtil.putRejectedReason(req))
-  .done(next);
+  // .then(ApiUtil.putResolvedValue(req))
+  // .catch(ApiUtil.putRejectedReason(req))
+  // .done(next);
 };
 
 

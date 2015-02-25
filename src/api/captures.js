@@ -8,15 +8,15 @@ var GET = module.exports['get'] = {};
 
 
 
-GET[''] = function(req, res, next) {
+GET[''] = function(req) {
   var query = req.query || {};
-  persist.findCaptures(+query.skip, +query.limit)
+  return persist.findCaptures(+query.skip, +query.limit)
   .then(function(docs) {
     return {
       items: docs || []
     };
   })
-  .then(ApiUtil.putResolvedValue(req))
-  .catch(ApiUtil.putRejectedReason(req))
-  .done(next);
+  // .then(ApiUtil.putResolvedValue(req))
+  // .catch(ApiUtil.putRejectedReason(req))
+  // .done(next);
 };

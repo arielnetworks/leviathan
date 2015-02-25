@@ -113,9 +113,16 @@ function launch(config) {
     'tidal-wave'
   ], function(name) {
     _.each(require('./src/api/' + name), function(actions, method) {
-      _.each(actions, function(handler, action) {
-        app[method](Path.join('/api/', name, action),
-            handler, ApiUtil.handleAsJSONResponse);
+      _.each(actions, function(buildData, action) {
+        app[method](Path.join('/api/', name, action), function(req, res) {
+          buildData(req)
+          .catch(function(reason) {
+            return res.json({ error: true, reason: reason });
+          })
+          .done(function(data) {
+            res.json(data);
+          })
+        });
       });
     });
   });
