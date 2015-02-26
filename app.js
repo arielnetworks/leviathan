@@ -147,18 +147,6 @@ function launch(config) {
 
 
 
-  if (app.get('env') === 'development') {
-    /*eslint-disable no-unused-vars*/
-    app.use(function(err, req, res) {
-      res.status(err.status || 500);
-      res.render('error', {
-        message: err.message,
-        error: err
-      });
-    });
-    /*eslint-enable no-unused-vars*/
-  }
-
   var server = http.createServer(app);
 
   var promiseLaunch = Q.ninvoke(server, 'listen', app.get('port'))

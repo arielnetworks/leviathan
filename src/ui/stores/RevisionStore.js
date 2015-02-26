@@ -19,7 +19,7 @@ module.exports.create = () => {
   var _store;
   var _dispatcherId;
 
-  var emitter = window.emitter = assign({}, EventEmitter.prototype, {
+  var emitter = assign({}, EventEmitter.prototype, {
 
     initStore(store) {
       _store = store;
