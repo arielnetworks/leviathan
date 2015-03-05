@@ -1,6 +1,6 @@
 
 var Dispatcher = require('../dispatcher/Dispatcher');
-var {Actions, ToggleCheckedAsOrder} = require('../const');
+var {Actions, ToggleCheckedAsOrder} = require('../../const');
 var _ = require('underscore');
 
 

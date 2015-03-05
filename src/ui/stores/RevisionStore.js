@@ -1,7 +1,7 @@
 
 var Dispatcher = require('../dispatcher/Dispatcher');
 var EventEmitter = require('events').EventEmitter;
-var {Actions, PER_PAGE} = require('../const');
+var {Actions, PER_PAGE} = require('../../const');
 var assign = require('object-assign');
 var Q = require('q');
 Q.longStackSupport = true;

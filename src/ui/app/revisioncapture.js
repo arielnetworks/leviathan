@@ -7,7 +7,7 @@ var reactKeyboardShortcut = require('react-keyboardshortcut');
 var {State, HistoryLocation} = require('react-router');
 var {StatusClassNameMap,
      CheckedAsClassNameMap,
-     ToggleCheckedAsOrder} = require('../const');
+     ToggleCheckedAsOrder} = require('../../const');
 var Actions = require('../actions/Actions');
 var ProgressBar = require('../components/ProgressBar');
 var Navbar = require('../components/Navbar');
