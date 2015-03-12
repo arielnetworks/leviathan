@@ -1,17 +1,16 @@
 
 var React = require('react');
-var Router = require('react-router');
+var {State, Link} = require('react-router');
 var Path = require('path');
-var Link = require('../components/Link');
 
 
 
 var Navbar = React.createClass({
-  mixins: [Router.State],
+  mixins: [State],
   render() {
     var revision = this.getParams().revision;
     var crumbs = [
-      <li key="brand" className="breadcrumb--headernav__brand"><Link path="/">
+      <li key="brand" className="breadcrumb--headernav__brand"><Link to="/">
         Leviathan
       </Link></li>
     ];
@@ -19,7 +18,7 @@ var Navbar = React.createClass({
       if (this.props.capture) {
         crumbs.push(
           <li key="revision" className="active">
-            <Link path={Path.join('/revisions', revision)}>{revision}</Link>
+            <Link to="/revisions/:revision" params={{revision: revision}}>{revision}</Link>
           </li>
         );
       } else {

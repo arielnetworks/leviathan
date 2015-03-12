@@ -4,14 +4,13 @@ var _ = require('underscore');
 var React = require('react');
 var Path = require('path');
 var reactKeyboardShortcut = require('react-keyboardshortcut');
-var {State, HistoryLocation} = require('react-router');
+var {State, HistoryLocation,Link} = require('react-router');
 var {StatusClassNameMap,
      CheckedAsClassNameMap,
      ToggleCheckedAsOrder} = require('../../const');
 var Actions = require('../actions/Actions');
 var ProgressBar = require('../components/ProgressBar');
 var Navbar = require('../components/Navbar');
-var Link = require('../components/Link');
 
 var keyboardShortcut = reactKeyboardShortcut('onKeyboardShortcut', {
   'LEFT': 'left',
@@ -155,7 +154,7 @@ function renderPrevNextNavigation_() {
   if (siblings.previous) {
     items.push(
       <li key="previous" className="previous">
-        <Link path={Path.join('/revisions', this.getParams().revision, 'captures', siblings.previous.capture)}>
+        <Link to="/revisions/:revision/captures/:capture" params={{revision: this.getParams().revision, captures: siblings.previous.capture}}>
           <span aria-hidden="true">&larr;</span> {siblings.previous.captureName}
         </Link>
       </li>
@@ -164,7 +163,7 @@ function renderPrevNextNavigation_() {
   if (siblings.next) {
     items.push(
       <li key="next" className="next">
-        <Link path={Path.join('/revisions', this.getParams().revision, 'captures', siblings.next.capture)}>
+        <Link to="/revisions/:revision/captures/:capture" params={{revision: this.getParams().revision, captures: siblings.next.capture}}>
           {siblings.next.captureName} <span aria-hidden="true">&rarr;</span>
         </Link>
       </li>

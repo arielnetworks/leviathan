@@ -1,6 +1,7 @@
 var React = require('react');
 var _ = require('underscore');
-var Link = require('./Link');
+// var Link = require('./Link');
+var {Link} = require('react-router');
 
 var perPage = 20; // TODO: Const
 
@@ -53,26 +54,26 @@ var Table = React.createClass({
     var leftskip;
     var rightskip;
     if (rangeStart > 1) {
-      leftskip = <li><Link path={this.props.pageUrlBuilder(rangeStart - 1)}>...</Link></li>;
+      leftskip = <li><Link to={this.props.urlBase} query={{page: rangeStart - 1}}>...</Link></li>;
     }
     if (rangeEnd < maxPage) {
-      rightskip = <li><Link path={this.props.pageUrlBuilder(rangeEnd + 1)}>...</Link></li>;
+      rightskip = <li><Link to={this.props.urlBase} query={{page: rangeEnd + 1}}>...</Link></li>;
     }
     return (
       <nav className="text-center">
         <ul className="pagination">
           <li className={isLeftEdge ? 'disabled' : null}>
-            <Link path={this.props.pageUrlBuilder(1)}>&laquo;</Link>
+            <Link to={this.props.urlBase} query={{page: 1}}>&laquo;</Link>
           </li>
           {leftskip}
           {_.map(_.range(rangeStart, rangeEnd + 1), page =>
             <li key={page} className={this.props.currPage === page ? 'active' : null}>
-              <Link path={this.props.pageUrlBuilder(page)}>{page}</Link>
+              <Link to={this.props.urlBase} query={{page: page}}>{page}</Link>
             </li>
           )}
           {rightskip}
           <li className={isRightEdge ? 'disabled' : null}>
-            <Link path={this.props.pageUrlBuilder(maxPage)}>&raquo;</Link>
+            <Link to={this.props.urlBase} query={{page: maxPage}}>&raquo;</Link>
           </li>
         </ul>
       </nav>

@@ -1,15 +1,22 @@
 
 var _mixins = require('./_mixins');
 var React = require('react');
-var Router = require('react-router');
+var {State, Link} = require('react-router');
 var Table = require('../components/Table');
 var Path = require('path');
 var ProgressBar = require('../components/ProgressBar');
 
 var Navbar = require('../components/Navbar');
-var Link = require('../components/Link');
 
 var Index = React.createClass({
+
+  componentDidMount() {
+    this.props.store.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount() {
+    this.props.store.removeChangeListener(this._onChange);
+  },
 
   getInitialState() {
     var store = this.props.store.getStore();
@@ -27,7 +34,7 @@ var Index = React.createClass({
     });
   },
 
-  mixins: [_mixins, Router.State],
+  mixins: [State],
 
   render() {
     var currPage = +this.getQuery().page || 1;
@@ -36,7 +43,7 @@ var Index = React.createClass({
 
     var Columns = [
       {id: 'revision', label: '#', formatter: revision =>
-        <Link path={Path.join('/revisions/', revision.id)}>{revision.id}</Link> },
+        <Link to="/revisions/:id" params={{id: revision.id}}>{revision.id}</Link> },
       {id: 'reported-as', label: '機械検知', formatter: revision => {
         var className = 'label ' + (
           revision.reportedAs.ERROR || revision.reportedAs.SUSPICIOUS ? 'label-warning' :
@@ -62,7 +69,7 @@ var Index = React.createClass({
                  total={this.state.revisionsTotal}
                  columns={Columns}
                  currPage={currPage}
-                 pageUrlBuilder={page => '/?page=' + page}/>
+                 urlBase="/" />
         </div>
       </div>
     );
