@@ -1,4 +1,4 @@
-リヴァイアサン [![Build Status](https://travis-ci.org/arielnetworks/leviathan.svg?branch=master)](https://travis-ci.org/arielnetworks/leviathan)
+リバイアサン [![Build Status](https://travis-ci.org/arielnetworks/leviathan.svg?branch=master)](https://travis-ci.org/arielnetworks/leviathan)
 ===================
 
 スクリーンショットをリビジョン間で比較し、UIの変化を報告する開発支援ツールです。
@@ -23,7 +23,7 @@
 
 利点
 -------------
-従来のSeleniumを使った値検査が保証できる範囲は限られていました。リヴァイアサンを使ったスクリーンショット比較では、これまで見つけにくかったUIのリグレッションに素早く気づくことができ、また画像に含まれる広い範囲のバグ検知を期待できます。
+従来のSeleniumを使った値検査が保証できる範囲は限られていました。リバイアサンを使ったスクリーンショット比較では、これまで見つけにくかったUIのリグレッションに素早く気づくことができ、また画像に含まれる広い範囲のバグ検知を期待できます。
 
 
 

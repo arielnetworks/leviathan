@@ -12,7 +12,7 @@ var POST = module.exports.post = {};
 
 GET[''] = function(req) {
   var query = req.query || {};
-  return persist.findRevisions(+query.skip, +query.limit, query.order);
+  return persist.findRevisions(query.page, query.order);
 };
 
 GET[':id'] = function(req) {
@@ -27,7 +27,7 @@ GET[':id/captures'] = function(req) {
   return Q.all([
     persist.findRevision(req.params.id),
     persist.findRevisionCaptures(req.params.id,
-        +query.skip, +query.limit, query.order,
+        +query.page, query.order,
         query.status, query.checkedAs)
   ])
   .then(function(results) {

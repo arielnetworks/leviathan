@@ -64,18 +64,18 @@ module.exports.create = () => {
     },
 
     syncRevisions(page) {
-      var { skip, limit, range } = getRequestParams(page, _store.revisionsTotal);
+      var range = getRequestParams(page, _store.revisionsTotal);
       if (range.every(i => _store.revisions[i])) {
         return;
       }
-      xhr('/api/revisions?' + QueryString.stringify({skip, limit}))
+      xhr('/api/revisions?' + QueryString.stringify({page}))
       .then(emitter.storeRevisions)
       .catch(err => console.error(err.stack));
     },
 
     syncCaptures(revision, page) {
       // TODO: Not clear enough. Use "rid" as an revision id.
-      var { skip, limit, range } = getRequestParams(page,
+      var range = getRequestParams(page,
           _store.revisionsTable[revision] ? _store.revisionsTable[revision].total : -1);
       if (_store.revisionsTable[revision] &&
           !_store.revisionsTable[revision]['@expired'] &&
@@ -84,7 +84,7 @@ module.exports.create = () => {
       ) {
         return;
       }
-      xhr(Path.join('/api/revisions', revision, 'captures?') + QueryString.stringify({skip, limit}))
+      xhr(Path.join('/api/revisions', revision, 'captures?') + QueryString.stringify({page}))
       .then(emitter.storeCaptures)
       .catch((err) => console.error(err.stack));
     },
@@ -156,5 +156,5 @@ function getRequestParams(page, total) {
       total >= 0 ? total - skip : Number.MAX_VALUE,
       PER_PAGE);
   var range = _.range(skip, skip + limit);
-  return { skip, limit, total, range };
+  return range;
 }
