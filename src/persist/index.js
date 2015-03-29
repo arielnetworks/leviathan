@@ -10,7 +10,7 @@ var isTesting = process.env.NODE_ENV === 'test';
 var collectionNames = ['revisions', 'captures'];
 var db = require('mongoskin').db(global.configure.mongodb, {'native_parser': true, options: { w: 1 }});
 collectionNames.forEach(db.bind.bind(db));
-var DEFAULT_LIMIT = 20;
+var {PER_PAGE} = require('../const');
 
 
 
@@ -72,7 +72,7 @@ function updateCapture(rid, capture, data) {
 
 // TODO: return "meta" and "items"
 function findCaptures(page) {
-  var skip = page > 0 ? (page - 1) * DEFAULT_LIMIT : 0;
+  var skip = page > 0 ? (page - 1) * PER_PAGE : 0;
   return Q.ninvoke(db.captures, 'aggregate', [
     {$match: {checkedAs: 'IS_OK'}},
     {$group: {
@@ -82,7 +82,7 @@ function findCaptures(page) {
       expectedRevisions: { $push: '$revision' } } },
     {$sort: {_id: -1}},
     {$skip: skip || 0},
-    {$limit: DEFAULT_LIMIT || DEFAULT_LIMIT}
+    {$limit: PER_PAGE || PER_PAGE}
   ]);
 }
 
@@ -105,7 +105,7 @@ function findRevisionCapture(rid, capture) {
 }
 
 function findRevisionCaptures(rid, page, order, status, checkedAs) {
-  var skip = page > 0 ? (page - 1) * DEFAULT_LIMIT : 0;
+  var skip = page > 0 ? (page - 1) * PER_PAGE : 0;
   var query = { revision: rid };
   order = parseOrderParam_(order);
   if (status) query.status = status;
@@ -115,7 +115,7 @@ function findRevisionCaptures(rid, page, order, status, checkedAs) {
     Q.ninvoke(cursor, 'count'),
     Q.ninvoke(cursor
       .skip(skip)
-      .limit(DEFAULT_LIMIT)
+      .limit(PER_PAGE)
       .sort(order.by || 'captureName', order.in || 1)
     , 'toArray')
   ])
@@ -125,7 +125,7 @@ function findRevisionCaptures(rid, page, order, status, checkedAs) {
     return {
       meta: {
         skip: skip,
-        limit: DEFAULT_LIMIT,
+        limit: PER_PAGE,
         total: total
       },
       items: items
@@ -197,16 +197,16 @@ function expandCountFromAggregatedDocuments_(aggregated) {
 }
 
 function findRevisions(page, order) {
-  var skip = +page > 0 ? (+page - 1) * DEFAULT_LIMIT : 0;
+  var skip = +page > 0 ? (+page - 1) * PER_PAGE : 0;
   order = !order ? [['revisionAt', 'descending']] :
       _.isString(order) ? [order.split(':')] :
-      order.map(function(p) { return p.split(':') });
+      order.map(function(p) { return p.split(':'); });
   var cursor = db.revisions.find({}, {_id: false});
   return Q.all([
     Q.ninvoke(cursor, 'count'),
     Q.ninvoke(cursor
       .skip(skip)
-      .limit(DEFAULT_LIMIT)
+      .limit(PER_PAGE)
       .sort(order)
     , 'toArray')
   ]).then(function(result) {
@@ -220,7 +220,7 @@ function findRevisions(page, order) {
       return {
         meta: {
           skip: skip,
-          limit: DEFAULT_LIMIT,
+          limit: PER_PAGE,
           total: total
         },
         items: results

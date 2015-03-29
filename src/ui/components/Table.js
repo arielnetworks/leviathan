@@ -12,7 +12,7 @@ var Table = React.createClass({
 
     var start = (this.props.currPage - 1) * perPage;
     var end = Math.min(start + perPage, this.props.total);
-    var rows = this.props.rows.slice(start, end);
+    var rows = this.props.rows.slice(start, end).filter(row => row);
 
     return (
       <div className={'paged-table ' + (this.props.cssModifier ? 'paged-table--' + this.props.cssModifier : '')}>

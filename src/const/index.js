@@ -33,6 +33,8 @@ var ToggleCheckedAsOrder = [CheckedAs.IS_OK, // UP
              CheckedAs.UNPROCESSED,
              CheckedAs.IS_BUG]; // DOWN
 
+var PER_PAGE = 20;
+
 module.exports = {
   ReportedAs,
   Status,
@@ -41,5 +43,5 @@ module.exports = {
   CheckedAsClassNameMap,
   Actions,
   ToggleCheckedAsOrder,
-  PER_PAGE: 20
+  PER_PAGE
 };
