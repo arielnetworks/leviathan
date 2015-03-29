@@ -1,9 +1,7 @@
 
-var _mixins = require('./_mixins');
 var React = require('react');
 var {State, Link} = require('react-router');
 var Table = require('../components/Table');
-var Path = require('path');
 var ProgressBar = require('../components/ProgressBar');
 
 var Navbar = require('../components/Navbar');

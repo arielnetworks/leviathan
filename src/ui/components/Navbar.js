@@ -1,7 +1,6 @@
 
 var React = require('react');
 var {State, Link} = require('react-router');
-var Path = require('path');
 
 
 

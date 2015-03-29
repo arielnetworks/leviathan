@@ -4,7 +4,7 @@ var _ = require('underscore');
 var React = require('react');
 var Path = require('path');
 var reactKeyboardShortcut = require('react-keyboardshortcut');
-var {State, HistoryLocation,Link} = require('react-router');
+var {State, HistoryLocation, Link} = require('react-router');
 var {StatusClassNameMap,
      CheckedAsClassNameMap,
      ToggleCheckedAsOrder} = require('../../const');
