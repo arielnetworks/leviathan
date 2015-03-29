@@ -10,7 +10,7 @@ var isTesting = process.env.NODE_ENV === 'test';
 var collectionNames = ['revisions', 'captures'];
 var db = require('mongoskin').db(global.configure.mongodb, {'native_parser': true, options: { w: 1 }});
 collectionNames.forEach(db.bind.bind(db));
-var DEFAULT_LIMIT = 20;
+var {PER_PAGE} = require('../const');
 
 
 
@@ -71,7 +71,8 @@ function updateCapture(rid, capture, data) {
 }
 
 // TODO: return "meta" and "items"
-function findCaptures(skip, limit) {
+function findCaptures(page) {
+  var skip = page > 0 ? (page - 1) * PER_PAGE : 0;
   return Q.ninvoke(db.captures, 'aggregate', [
     {$match: {checkedAs: 'IS_OK'}},
     {$group: {
@@ -81,7 +82,7 @@ function findCaptures(skip, limit) {
       expectedRevisions: { $push: '$revision' } } },
     {$sort: {_id: -1}},
     {$skip: skip || 0},
-    {$limit: limit || DEFAULT_LIMIT}
+    {$limit: PER_PAGE || PER_PAGE}
   ]);
 }
 
@@ -103,9 +104,8 @@ function findRevisionCapture(rid, capture) {
   return Q.ninvoke(db.captures, 'findOne', {revision: rid, capture: capture}, {_id: false});
 }
 
-function findRevisionCaptures(rid, skip, limit, order, status, checkedAs) {
-  skip = skip || 0;
-  limit = limit || DEFAULT_LIMIT;
+function findRevisionCaptures(rid, page, order, status, checkedAs) {
+  var skip = page > 0 ? (page - 1) * PER_PAGE : 0;
   var query = { revision: rid };
   order = parseOrderParam_(order);
   if (status) query.status = status;
@@ -114,8 +114,8 @@ function findRevisionCaptures(rid, skip, limit, order, status, checkedAs) {
   return Q.all([
     Q.ninvoke(cursor, 'count'),
     Q.ninvoke(cursor
-      .skip(skip || 0)
-      .limit(limit || DEFAULT_LIMIT)
+      .skip(skip)
+      .limit(PER_PAGE)
       .sort(order.by || 'captureName', order.in || 1)
     , 'toArray')
   ])
@@ -125,7 +125,7 @@ function findRevisionCaptures(rid, skip, limit, order, status, checkedAs) {
     return {
       meta: {
         skip: skip,
-        limit: limit,
+        limit: PER_PAGE,
         total: total
       },
       items: items
@@ -196,19 +196,18 @@ function expandCountFromAggregatedDocuments_(aggregated) {
   return rv;
 }
 
-function findRevisions(skip, limit, order) {
-  skip = skip || 0;
-  limit = limit || DEFAULT_LIMIT;
-  order = parseOrderParam_(order);
-  order.by = order.by || 'revisionAt';
-  order.in = order.in || -1;
+function findRevisions(page, order) {
+  var skip = +page > 0 ? (+page - 1) * PER_PAGE : 0;
+  order = !order ? [['revisionAt', 'descending']] :
+      _.isString(order) ? [order.split(':')] :
+      order.map(function(p) { return p.split(':'); });
   var cursor = db.revisions.find({}, {_id: false});
   return Q.all([
     Q.ninvoke(cursor, 'count'),
     Q.ninvoke(cursor
       .skip(skip)
-      .limit(limit)
-      .sort(order.by, order.in)
+      .limit(PER_PAGE)
+      .sort(order)
     , 'toArray')
   ]).then(function(result) {
     var total = result[0];
@@ -221,7 +220,7 @@ function findRevisions(skip, limit, order) {
       return {
         meta: {
           skip: skip,
-          limit: limit,
+          limit: PER_PAGE,
           total: total
         },
         items: results
